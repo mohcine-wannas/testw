@@ -1,1 +1,11 @@
-# Add any directories, files, or patterns you don't want to be tracked by version control
+coverage/
+dist/
+html-report/
+node_modules/
+typings/
+**/*npm-debug.log.*
+**/*yarn-error.log.*
+.idea/
+.DS_Store
+package-lock.json
+.npmrc
