@@ -1,0 +1,46 @@
+<clr-main-container>
+  <clr-header class="header-4">
+    <div class="branding">
+      <a class="nav-link">
+        <img style="height:100%" src="assets/img/logo-b.png" alt="Tawassol" />        
+      </a>
+    </div>
+    <div class="header-nav">
+      <a class=" nav-link nav-icon" routerLink='/admin/main' routerLinkActive='active'>
+        <clr-icon shape="home"></clr-icon>
+      </a>
+      <a class=" nav-link nav-icon" routerLink='/admin/contacts' routerLinkActive='active'>
+        <clr-icon shape="group"></clr-icon>
+      </a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown class="dropdown bottom-right">
+        <button class="nav-text" clrDropdownToggle>
+          {{ fullname}}
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <div class="dropdown-menu">
+          <a (click)="logout()" clrDropdownItem>Déconnexion</a>
+        </div>
+      </clr-dropdown>
+    </div>
+  </clr-header>
+
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
+        <a clrVerticalNavLink routerLink="./contacts/" routerLinkActive="active">
+          <clr-icon clrVerticalNavIcon shape="view-list"></clr-icon>
+          List des contacts
+      </a>
+      <a clrVerticalNavLink routerLink="./contacts/add" routerLinkActive="active">
+          <clr-icon clrVerticalNavIcon shape="plus"></clr-icon>
+          Nouveau contact
+      </a>
+  </clr-vertical-nav>
+  </div>
+
+</clr-main-container>

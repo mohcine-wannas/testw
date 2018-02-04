@@ -1,0 +1,40 @@
+
+
+      <div class="row">
+          <h1>Contact List</h1>
+          <clr-datagrid class="col-xs-12" *ngIf="contacts">
+              <clr-dg-column>Nom</clr-dg-column>
+              <clr-dg-column>Telephone</clr-dg-column>
+              <clr-dg-column>Action</clr-dg-column>
+              <clr-dg-row *clrDgItems="let contact of contacts">
+                  <clr-dg-cell>{{contact.name | titlecase}}</clr-dg-cell>
+                  <clr-dg-cell>{{contact.phoneNumber}}</clr-dg-cell>
+                  <clr-dg-cell>
+                        <button class="btn btn-sm btn-icon btn-link" (click)="goToForm(contact.id)">
+                                <clr-icon shape="pencil" class="is-solid"></clr-icon>                               
+                            Editer
+                        </button>
+                        <button class="btn btn-sm btn-icon btn-link" (click)="delete(contact.id)">
+                                <clr-icon shape="trash" class="is-solid"></clr-icon>                               
+                            Supprimer
+                        </button>
+                    </clr-dg-cell>
+              </clr-dg-row>
+          
+              <clr-dg-footer>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+                  of {{pagination.totalItems}} Contact
+                  <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]=contacts.length></clr-dg-pagination>
+              </clr-dg-footer>
+          </clr-datagrid>
+      </div>
+      <hr>
+
+        <div class="row flex-items-xs-right">
+            <div class="">
+                <button type="button" class="btn btn-icon btn-success" (click)="goToForm()">
+                        <clr-icon shape="plus"></clr-icon>
+                        Nouveau
+                </button>
+            </div>
+         </div>
