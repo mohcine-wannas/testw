@@ -6,6 +6,7 @@ import { ToastyModule } from 'ng2-toasty';
 import { ToastService } from 'app/shared/services/toast.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { CoreModule } from 'app/core/core.module';
+import { NgDatepickerModule } from 'ng2-datepicker';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { CoreModule } from 'app/core/core.module';
     FormsModule,
     ReactiveFormsModule,
     ToastyModule.forRoot(),
-    CoreModule
+    CoreModule,
+    NgDatepickerModule
   ],
   providers : [ 
     AlertService,
@@ -25,6 +27,7 @@ import { CoreModule } from 'app/core/core.module';
     FormsModule,
     ReactiveFormsModule,
     ToastyModule,
+    NgDatepickerModule
   ]
 })
 export class SharedModule { }
