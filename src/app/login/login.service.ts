@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Injectable, Inject} from "@angular/core";
 import {Router} from "@angular/router";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpHandler } from '@angular/common/http/src/backend';
 
 
 @Injectable()
@@ -13,17 +15,16 @@ export class LoginService {
   private loggedIn = false;
   public resource: string = 'auth/authenticate';
 
-  constructor(@Inject('API_URL') private url: string,private http: Http,private router : Router) {
+  constructor(@Inject('API_URL') private url: string,private http: HttpClient,private router : Router) {
     this.loggedIn = !!localStorage.getItem('token');
   }
 
   login(credentials: any) {
-    let options: RequestOptionsArgs = new RequestOptions();
-    options.headers = new Headers();
-    options.headers.append('Content-Type', 'application/json');
-    return this.http.post(this.url + this.resource, JSON.stringify(credentials),options)
-      .map((res: Response) => {
-        return res.json();
+    let headers: HttpHeaders = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.post(this.url + this.resource, JSON.stringify(credentials),{headers})
+      .map((res: any) => {
+        return res;
       })
       .catch(this.handleError);
   }

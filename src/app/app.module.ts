@@ -16,6 +16,7 @@ import { AuthGuard } from './auth-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ToastyModule } from 'ng2-toasty';
 import { SharedModule } from 'app/shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { SharedModule } from 'app/shared/shared.module';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     ClarityModule.forRoot(),
     AppRoutingModule,
     LoginModule,
