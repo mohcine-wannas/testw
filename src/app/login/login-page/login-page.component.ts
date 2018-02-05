@@ -17,6 +17,8 @@ export class LoginPageComponent implements OnInit {
   password: string;
   jwtHelper: JwtHelper = new JwtHelper();
   isLogging = false;
+  passwordTouched = false;
+  usernameTouched = false;
 
   constructor(
     private loginService: LoginService,
@@ -36,6 +38,14 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
+  enterUsername(event) {
+    this.usernameTouched = true;
+    this.enterLogin(event)
+  }
+  enterPassword(event) {
+    this.passwordTouched =  true;
+    this.enterLogin(event)
+  }
   doLogin() {
 
     this.isLogging = true;
