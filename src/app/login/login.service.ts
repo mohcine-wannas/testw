@@ -20,9 +20,8 @@ export class LoginService {
   }
 
   login(credentials: any) {
-    let headers: HttpHeaders = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    return this.http.post(this.url + this.resource, JSON.stringify(credentials),{headers})
+
+    return this.http.post(this.url + this.resource, JSON.stringify(credentials))
       .map((res: any) => {
         return res;
       })

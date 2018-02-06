@@ -16,7 +16,8 @@ import { AuthGuard } from './auth-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ToastyModule } from 'ng2-toasty';
 import { SharedModule } from 'app/shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpInterceptorImpl } from 'app/core/interceptors/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     AuthGuard,
     { provide: 'API_URL', useValue: environment.apiUrl },
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorImpl, multi: true}
   ],
   bootstrap: [AppComponent]
 })
