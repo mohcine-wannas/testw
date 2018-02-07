@@ -19,6 +19,18 @@ export class AlertService {
 
   }
 
+  warning(text = '',title = 'Attention !',) {
+    
+        const option: SweetAlertOptions = {
+          title: title,
+          text: text,
+          type: 'warning',
+          confirmButtonText: 'Ok !'
+        };
+        swal(option);
+    
+      }
+
   success(title = 'Succes', text = '') {
 
     const option: SweetAlertOptions = {
