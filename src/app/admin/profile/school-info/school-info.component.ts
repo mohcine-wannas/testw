@@ -1,8 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { ToastService } from 'app/shared/services/toast.service';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as frLocale from 'date-fns/locale/fr';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormComponent } from 'app/shared/components/form.component';
+import { Ville } from 'app/shared/models/ville.model';
+import { School } from 'app/admin/models/school.model';
+import { Pays } from 'app/shared/models/PAys.model';
+import { SessionDataService } from 'app/core/session/session-data.service';
+import { RestService } from 'app/shared/services/rest.service';
+import { Cycle } from 'app/admin/models/cycle.model';
+import { BaseModel } from 'app/shared/models/base-model.model';
+import { SchoolService } from 'app/admin/services/school.service';
+import { CycleService } from 'app/admin/services/cycle.service';
 
 
 @Component({
@@ -10,11 +21,114 @@ import * as frLocale from 'date-fns/locale/fr';
   templateUrl: './school-info.component.html',
   styleUrls: ['./school-info.component.css']
 })
-export class SchoolInfoComponent implements OnInit {
+export class SchoolInfoComponent extends FormComponent<School> implements OnInit {
+  private savedSchool: School;
+  private savedCycles: Cycle[];
+  private  cycles: Cycle[];
 
-  constructor() { } 
+  constructor(private fb: FormBuilder,
+              private sessionData: SessionDataService,
+              private cycleService : CycleService,
+              private schoolService : SchoolService) {
+
+    super();
+    this.restService = schoolService;
+  }
 
   ngOnInit() {
-
+    let school = this.sessionData.getCurrentSchool();
+    this.getAllCycles();
+    this.id = school.id;
+    this.modeEdit = true;
+    this.createForm(school);
   }
+
+  createForm(school?: School) {
+    if (!school) {
+      school = new School();
+    }
+    this.entityForm = this.fb.group({
+      'id': [school.id],
+      'nom': [school.nom, Validators.required],
+      'ville': [school.ville, Validators.required],
+      'tel': [school.tel, Validators.required],
+      'tel2': [school.tel2],
+      'email': [school.email, Validators.required],
+      'adresse': [school.adresse],
+      'code': [school.code, Validators.required],
+      'codeMassar': [school.codeMassar, Validators.required],
+      'siteWeb': [school.siteWeb],
+      'pays': [school.pays],
+      'villeName': [{ value: school.ville.libelle + ', ' + school.pays.name, disabled: true }, Validators.required],
+      'cycles' : new FormArray([]),
+    });
+  }
+
+  public submitForm($ev, model: any) {
+    let selectedCycles : Cycle[] = [];
+    model.cycles.forEach(element => {
+      if(element.selected) {
+        selectedCycles.push(element.item);
+      }
+    });
+    this.savedSchool = new School(model);
+    this.savedCycles = selectedCycles;
+    (this.savedSchool as any).cycles = selectedCycles;
+    this.submit($ev,this.savedSchool,this.updateSessioData.bind(this));
+  }
+
+  public updateSessioData(id:string) {
+    this.sessionData.schoolDetails.school = this.savedSchool;
+    this.sessionData.schoolDetails.cycles = this.savedCycles;  
+    let currentCycleId= this.sessionData.schoolDetails.currentCycle;
+    let found = false;
+    this.sessionData.schoolDetails.cycles.forEach(element => {
+      if(element.id === currentCycleId) {
+        found = true;
+      }
+    });
+    if(!found) {
+      currentCycleId = undefined;
+      if(this.savedCycles[this.savedCycles.length -1]) {
+        currentCycleId = this.savedCycles[this.savedCycles.length -1].id;
+      }
+      this.sessionData.schoolDetails.currentCycle = currentCycleId;
+    }
+  }
+
+  
+  setCyclesFormArray(): any {
+    let array = [];
+    let currentCycles = this.sessionData.getCycles();
+    if(this.cycles) {
+      this.cycles.forEach(element => {
+        let selectItem: SelectItem<Cycle> = new SelectItem<Cycle>();
+        selectItem.item = element;
+        selectItem.selected = false;
+  
+        currentCycles.forEach(affectedCycle => {
+          if(affectedCycle.id === element.id)  {
+            selectItem.selected = true;
+          }
+        });
+        array.push( this.fb.group(selectItem));
+      });
+    }
+    this.entityForm.setControl('cycles', this.fb.array(array));
+  }
+
+  private getAllCycles() {
+    this.cycleService.getAll().subscribe(
+      resp => {
+        this.cycles = resp,
+        this.setCyclesFormArray();
+      },
+      error => console.log(error) //TODO error
+    );
+  }
+
+}
+class SelectItem<T extends BaseModel> {
+  selected :boolean;
+  item : T;
 }

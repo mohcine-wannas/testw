@@ -1,24 +1,32 @@
 import {Injectable} from "@angular/core";
 import {SessionConstants} from "./session.constants";
+import { School } from "app/admin/models/school.model";
 @Injectable()
 export class SessionDataService {
 
   data: any;
   permissions: any;
- // organization: any;
   role: any;
   operations: any;
-
-  constructor(
-         //     public organizationConstants: OrganizationConstants,
-              public sessionConstants: SessionConstants) {}
+  schoolDetails: any;
+  currentCycle : any;
+  
+  constructor(public sessionConstants: SessionConstants) {}
 
   create(data: any) {
     if (data) {
       this.data = data;
+      this.schoolDetails = this.data.user.school;
+      
+      if(this.schoolDetails) {
+          this.schoolDetails.cycles.forEach(element => {
+            if(element.id === Number(this.schoolDetails.currentCycle)) {
+              this.currentCycle = element;
+            }
+          });
+      }
     }
   }
-
   
   clear() {
     if (localStorage) {
@@ -41,9 +49,28 @@ export class SessionDataService {
 
   getDefaultPage() {
     var page = 'home';
-
     return page;
   };
 
+  getCurrentSchool() : School {
+    return  <School>(this.schoolDetails.school);
+  }
+
+  getCurrentAnneScolaire() {
+    return this.schoolDetails.anneeScolaire;
+  }
+
+  getCycles() {
+    return this.schoolDetails.cycles;
+  }
+
+  getCurrentCycle() {
+    return this.currentCycle;
+  }
+
+  getSchoolName() : string {
+    let school :School = this.getCurrentSchool();
+    return school.nom + ' : ' + school.codeMassar;
+  }
 }
 

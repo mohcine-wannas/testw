@@ -28,3 +28,11 @@
     height:100% !important;
     min-height: auto !important;
 }
+
+.main-icon-wrapper .main-icon {
+    width: 80%;
+    height: 80%;
+}
+.main-icon-wrapper {
+    text-align: center;
+}

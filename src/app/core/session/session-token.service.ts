@@ -25,7 +25,7 @@ export class SessionTokenService {
         let self = this;
 
         this.timeout = setInterval(function () {
-          this.alertService.
+          this.alertService.warning("Votre session est expiré");
         }, this.getExpirationTimestamp());
       }
       return true;

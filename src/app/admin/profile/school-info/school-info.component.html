@@ -1,0 +1,95 @@
+<form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form" name="entityForm"
+    id="entityForm" novalidate="" (submit)="submitForm($event, entityForm.value)">
+
+    <section class="form-block">
+        <label>Modifier les informations de l'établissement</label>
+        <div class="form-group">
+            <label for="villeName">Ville</label>
+            <label for="villeName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md">
+                <input type="text" id="ville" required name="villeName" formControlName="villeName">
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="nom">Nom de l'établissement</label>
+            <label for="nom" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md" [class.invalid]="isNotValid('nom')">
+                <input type="text" id="nom" placeholder="Entrez le nom de l'ecole" required name="nom" formControlName="nom">
+                <span class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <label for="email" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md" [class.invalid]="isNotValid('email')">
+                <input type="text" id="mail" placeholder="Entrez l'email de l'ecole" required name="email" pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+                    formControlName="email">
+                <span *ngIf="isNotValidRequired(entityForm.controls['email'])" class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+                <span *ngIf="isNotValidPattern(entityForm.controls['email'])" class="tooltip-content">
+                    Veuillez saisir un email valide
+                </span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="code">Code</label>
+            <label for="code" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md" [class.invalid]="isNotValid('code')">
+                <input type="text" id="code" placeholder="Entez un code pour l'école" required name="code" formControlName="code">
+                <span class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="codeMassar">Code massar</label>
+            <label for="codeMassar" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md" [class.invalid]="isNotValid('codeMassar')">
+                <input type="text" id="codeMassar" placeholder="Entez le code massar de l'école" required name="codeMassar" formControlName="codeMassar">
+                <span class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="tel">Teléphone</label>
+            <label for="tel" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md" [class.invalid]="isNotValid('tel')">
+                <input type="text" id="tel" placeholder="Entez le numoro du telephone" required name="tel" formControlName="tel">
+                <span class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="tel2">Teléphone</label>
+            <label for="tel2" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md">
+                <input type="text" id="tel2" placeholder="Entez le numoro du telephone" required name="tel2" formControlName="tel2">
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="siteWeb">Site web</label>
+            <label for="siteWeb" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md">
+                <input type="text" id="siteWeb" placeholder="Entez le siteWeb de l'école" name="siteWeb" formControlName="siteWeb">
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="adresse">Adresse</label>
+            <label for="adresse" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md">
+                <input type="text" id="adresse" placeholder="Entez l'adresse de l'etablissement" name="adresse" formControlName="adresse">
+            </label>
+        </div>
+        <div class="form-group" formArrayName="cycles">
+            <label>Niveau enseignés</label>
+            <clr-checkbox *ngFor="let element of entityForm.get('cycles').controls; let ind = index" [formControl]="element.get('selected')">
+                {{ element.value.item.libelle }}
+            </clr-checkbox>
+        </div>
+        <div style="text-align: center" *ngIf="submitting">
+            <span class="spinner spinner-inline">
+                Chargement...
+            </span>
+            <span>
+                Connexion en cours...
+            </span>
+        </div>
+        <button class="btn btn-primary" type="submit" [disabled]="submitting">Enregistrer</button>
+    </section>
+</form>

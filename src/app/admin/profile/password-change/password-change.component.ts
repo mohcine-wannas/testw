@@ -1,19 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
-import { ToastService } from 'app/shared/services/toast.service';
-import { DatepickerOptions } from 'ng2-datepicker';
-import * as frLocale from 'date-fns/locale/fr';
+import { FormComponent } from 'app/shared/components/form.component';
+import { FormBuilder, Validators } from '@angular/forms';
+import { UserService } from 'app/admin/services/user.service';
 
+import { User } from 'app/admin/models/User.model';
 
 @Component({
   selector: 'app-password-change',
   templateUrl: './password-change.component.html',
   styleUrls: ['./password-change.component.css']
 })
-export class PasswordChangeComponent implements OnInit {
+export class PasswordChangeComponent extends FormComponent<User> implements OnInit {
 
-  constructor() { } 
-  
-  ngOnInit() { }
 
+  constructor(private fb: FormBuilder,
+              private userService : UserService) {
+    super();
+    this.restService = userService;
+  }
+
+  ngOnInit() {
+    this.createForm();
+  }
+
+  createForm() {
+    
+    this.entityForm = this.fb.group({
+      'oldPassword': ['', Validators.required],
+      'newPassword': ['', Validators.required],
+      'confirmation': ['', Validators.required],
+    },this.validatePassword.bind(this));
+  }
+
+  public submitForm($ev, model: any) {
+    this.userService.passewordChange(model);
+  }
+
+  public validatePassword(group:any): { [s: string]: boolean }{
+    if(group.get("newPassword") && group.get("confirmation").value) {
+      return {
+        unmatch: true
+      }
+    }
+    return null;
+  };
 }
+
+

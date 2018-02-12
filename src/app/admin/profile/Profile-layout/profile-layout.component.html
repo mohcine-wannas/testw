@@ -1,1 +1,26 @@
-<router-outlet></router-outlet>
+
+<div class="content-container">
+
+            <div class="content-area">
+                    <router-outlet></router-outlet>
+            </div>
+            <nav class="sidenav">
+                <section class="sidenav-content">
+                    <section class="nav-group">
+                        <input id="tabexample1" type="checkbox">
+                        <label for="tabexample1">Utilisateur</label>
+                        <ul class="nav-list">
+                            <li><a class="nav-link">Changer le mot de passe</a></li>
+                        </ul>
+                    </section>
+                    <section class="nav-group">
+                        <input id="tabexample2" type="checkbox">
+                        <label for="tabexample2">Ecole</label>
+                        <ul class="nav-list">
+                            <li><a class="nav-link">Changer le logo</a></li>
+                            <li><a class="nav-link active">Modifier les infos</a></li>
+                        </ul>
+                    </section>
+                </section>
+            </nav>
+        </div>
