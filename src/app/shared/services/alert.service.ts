@@ -36,12 +36,10 @@ export class AlertService {
     const option: SweetAlertOptions = {
       title: title,
       text: text,
-      timer: 3000,
       type: 'success',
       confirmButtonText: 'Ok !'
     };
-    swal(option)
-      .then(() => { });
+    return swal(option);
 
   }
 

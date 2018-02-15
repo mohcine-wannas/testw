@@ -4,6 +4,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'app/admin/services/user.service';
 
 import { User } from 'app/admin/models/User.model';
+import { AlertService } from 'app/shared/services/alert.service';
+import { Router } from '@angular/router';
+import { SessionService } from 'app/core/session/session.service';
 
 @Component({
   selector: 'app-password-change',
@@ -14,7 +17,9 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
 
 
   constructor(private fb: FormBuilder,
-              private userService : UserService) {
+              private userService : UserService,
+              private alertService : AlertService,
+              private sessionService: SessionService) {
     super();
     this.restService = userService;
   }
@@ -29,15 +34,20 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
       'oldPassword': ['', Validators.required],
       'newPassword': ['', Validators.required],
       'confirmation': ['', Validators.required],
-    },this.validatePassword.bind(this));
+    }, {validator: this.validatePassword});
   }
 
   public submitForm($ev, model: any) {
+    this.markAllInputAsTouched();
+    if(!this.entityForm.valid) return;
+    
     this.submitting = true;
     this.userService.passewordChange(model).subscribe(
       resp => {
         this.submitting = false;
-        this.saveSucceed();
+        this.alertService.success("Parfait !","Votre mot de passe et bien modifié, vous allez être renvoyer vers la page d'authentification")
+          .then(() => {this.sessionService.logout(true)});
+        this.sessionService.logout();
       },
       error => {
         this.submitting = false;
@@ -47,13 +57,17 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
   }
 
   public validatePassword(group:any): { [s: string]: boolean }{
-    if(group.get("newPassword") && group.get("confirmation").value) {
+    if(group.get("newPassword").value && group.get("confirmation").value && group.get("newPassword").value !== group.get("confirmation").value) {
       return {
         unmatch: true
       }
     }
     return null;
   };
+
+  isNotValidConfirmation() {
+    return this.entityForm.hasError('unmatch');
+  }
 }
 
 
