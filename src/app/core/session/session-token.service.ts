@@ -26,6 +26,8 @@ export class SessionTokenService {
 
         this.timeout = setInterval(function () {
           this.alertService.warning("Votre session est expiré");
+          this.router.navigate(['/login']);
+          this.clear();
         }, this.getExpirationTimestamp());
       }
       return true;
