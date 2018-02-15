@@ -25,6 +25,7 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
   private savedSchool: School;
   private savedCycles: Cycle[];
   private  cycles: Cycle[];
+  private errorCycles: boolean = false;
 
   constructor(private fb: FormBuilder,
               private sessionData: SessionDataService,
@@ -48,29 +49,34 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
       school = new School();
     }
     this.entityForm = this.fb.group({
-      'id': [school.id],
-      'nom': [school.nom, Validators.required],
-      'ville': [school.ville, Validators.required],
+      'id': [{ value: school.id, disabled: true }],
+      'nom': [{ value: school.nom, disabled: true }, Validators.required],
+      'adresse': [{ value: school.adresse, disabled: true }],
+      'code': [{ value: school.code, disabled: true }, Validators.required],
+      'ville': [{ value: school.ville, disabled: true }, Validators.required],
+      'codeMassar': [{ value: school.codeMassar, disabled: true }, Validators.required],
+      'pays': [{ value: school.pays, disabled: true }],
       'tel': [school.tel, Validators.required],
-      'tel2': [school.tel2],
       'email': [school.email, Validators.required],
-      'adresse': [school.adresse],
-      'code': [school.code, Validators.required],
-      'codeMassar': [school.codeMassar, Validators.required],
+      'tel2': [school.tel2],
       'siteWeb': [school.siteWeb],
-      'pays': [school.pays],
       'villeName': [{ value: school.ville.libelle + ', ' + school.pays.name, disabled: true }, Validators.required],
       'cycles' : new FormArray([]),
     });
   }
 
   public submitForm($ev, model: any) {
+    this.errorCycles = false;
     let selectedCycles : Cycle[] = [];
     model.cycles.forEach(element => {
       if(element.selected) {
         selectedCycles.push(element.item);
       }
     });
+    if(selectedCycles.length == 0) {
+      this.errorCycles = true;
+      return;
+    }
     this.savedSchool = new School(model);
     this.savedCycles = selectedCycles;
     (this.savedSchool as any).cycles = selectedCycles;
@@ -78,7 +84,7 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
   }
 
   public updateSessioData(id:string) {
-    this.sessionData.schoolDetails.school = this.savedSchool;
+    this.sessionData.updateSchool(this.savedSchool);
     this.sessionData.schoolDetails.cycles = this.savedCycles;  
     let currentCycleId= this.sessionData.schoolDetails.currentCycle;
     let found = false;
@@ -95,7 +101,6 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
       this.sessionData.schoolDetails.currentCycle = currentCycleId;
     }
   }
-
   
   setCyclesFormArray(): any {
     let array = [];
@@ -126,6 +131,10 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
       error => console.log(error) //TODO error
     );
   }
+
+
+  
+ 
 
 }
 class SelectItem<T extends BaseModel> {

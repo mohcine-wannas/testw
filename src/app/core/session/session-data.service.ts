@@ -70,7 +70,14 @@ export class SessionDataService {
 
   getSchoolName() : string {
     let school :School = this.getCurrentSchool();
-    return school.nom + ' : ' + school.codeMassar;
+    return school.nom + ' : ' + school.code;
   }
+
+  updateSchool(school: School): any {
+    this.schoolDetails.school.tel =school.tel;
+    this.schoolDetails.school.tel2 =school.tel2;
+    this.schoolDetails.school.email =school.email;
+    this.schoolDetails.school.siteWeb =school.siteWeb;
+    }
 }
 

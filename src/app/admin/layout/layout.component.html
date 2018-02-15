@@ -12,6 +12,13 @@
       <a class=" nav-link nav-icon" routerLink='/admin/contacts' routerLinkActive='active'>
         <clr-icon shape="group"></clr-icon>
       </a>
+
+
+        <span style="background-color: #035e80;line-height: 2.5rem;" class="nav-text">
+            <clr-icon shape="calendar"></clr-icon>
+            {{ getCurrentAnneScolaire()}}
+        </span>
+      
     </div>
     
     <div class="header-actions">
@@ -24,6 +31,9 @@
                 <clr-icon shape="caret down"></clr-icon> <a  *ngFor="let cycle of sessionDataService.schoolDetails.cycles" (click)="currentCycleChanged(cycle)" clrDropdownItem>{{cycle.libelle}}</a>
             </clr-dropdown-menu>
         </clr-dropdown>
+        <div id="avatar-wrapper" class="flex-items-xs-middle">
+              <div id="avatar" ></div>     
+          </div>
       <clr-dropdown class="dropdown bottom-right">
         <button class="nav-text" clrDropdownToggle>
           {{ getSchoolName()}}

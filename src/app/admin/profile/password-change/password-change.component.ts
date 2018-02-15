@@ -33,7 +33,17 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
   }
 
   public submitForm($ev, model: any) {
-    this.userService.passewordChange(model);
+    this.submitting = true;
+    this.userService.passewordChange(model).subscribe(
+      resp => {
+        this.submitting = false;
+        this.saveSucceed();
+      },
+      error => {
+        this.submitting = false;
+        this.showError(error);
+      }
+    );
   }
 
   public validatePassword(group:any): { [s: string]: boolean }{
