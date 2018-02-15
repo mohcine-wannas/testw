@@ -1,0 +1,42 @@
+<clr-main-container>
+  <clr-header class="header-4">
+  <div class="branding">
+    <a class="nav-link">
+            <img style="height:100%" src="assets/img/logo-b.png" alt="Tawassol" />
+    </a>
+  </div>
+</clr-header>
+<div class="login-wrapper">
+    <form class="login">
+        <label class="title">
+            Administration
+        </label>
+        <div class="login-group">
+            <label for="login_username" aria-haspopup="true" role="tooltip" [ngClass]="{'invalid': !username && usernameTouched}" class="tooltip tooltip-validation tooltip-sm">       
+                <input id="login_username" (keydown)="enterUsername($event)" class="username" [(ngModel)]="username" type="text" name="login_username" placeholder="Identifiant">
+                <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+            </label>
+            <label for="login_password" aria-haspopup="true" role="tooltip" [ngClass]="{'invalid': !password && passwordTouched}" class="tooltip tooltip-validation tooltip-sm">       
+                <input id="login_password" (keydown)="enterPassword($event)" class="password" [(ngModel)]="password" type="password" name="login_password" placeholder="Mot de passe">
+                <span class="tooltip-content">
+                    Ce champs est obligatoire
+                </span>
+            </label>
+           <a href="" class="get-password" style="text-align: right">Mot de passe oublié ?</a>
+            <div style="text-align: center" *ngIf="isLogging">
+              <span class="spinner spinner-inline">
+                  Chargement...
+              </span>
+              <span>
+                  Connexion en cours...
+              </span>
+            </div>
+            <button type="button" (click)="doLogin()" class="btn btn-primary" [disabled]="!username || !password || isLogging">Connexion</button>
+        </div>
+        <br>
+        <a href="" class="get-password" style="text-align: center">Créer un compte</a>   
+    </form>
+</div>
+</clr-main-container>

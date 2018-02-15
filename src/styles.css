@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+.ngx-datepicker-container input.ngx-datepicker-input {
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    -webkit-appearance : none;
+    margin: 0;
+    border: none !important;
+    border-radius: 0;
+    box-shadow: none;
+    height: 1rem;
+    color: #000;
+    display: inline-block;
+    min-width: 2.5rem;
+    border-bottom: 1px solid #9a9a9a !important;
+    padding: 0 .25rem !important;
+    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;   
+    background-size: 0% 100%;      
+    transition: background-size .2s ease; 
+}
+.ngx-datepicker-container input.ngx-datepicker-input:focus {
+    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;   
+    background-size: 100% 100%;
+    transition: background-size .2s ease; 
+}
+
+.login-wrapper, .login-wrapper .login {
+    height:100% !important;
+    min-height: auto !important;
+}
