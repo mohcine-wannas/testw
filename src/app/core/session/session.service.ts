@@ -42,7 +42,7 @@ export class SessionService {
     this.clear();
     if(goToLoginPage) {
       this.router.navigate(['/login']);
-    }
+    } 
   }
 
   // clear timeout and removed session data

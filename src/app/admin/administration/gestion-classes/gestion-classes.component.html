@@ -1,0 +1,55 @@
+<form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form" name="entityForm"
+id="entityForm" novalidate="" (submit)="submitForm($event, entityForm.value)">
+
+<section class="form-block">
+    <label>Gestion des classes</label>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group" >
+                    <label>Choisir l'appellation des niveaux</label>
+            
+                    <span  *ngFor="let element of groupeAppelations; let ind = index" >
+                            <input [value]="element" formControlName="groupeAppellation"
+                            type="radio">
+                        {{ element.displayName }}
+                    </span>
+                </div>
+                <div class="form-group" >
+                        <label>Choisir l'appellation des classes</label>
+                
+                        <label><input value="ALPHABETIQUE" formControlName="classeNominationType"   type="radio">
+                            Alphabétique</label>
+                        <label ><input value="NUMERIQUE" formControlName="classeNominationType"   type="radio">
+                            Numérique
+                        </label>
+                    </div>
+    </div>
+    <div class="col-lg-6">
+            <label>Choisir le nombre de classe par niveau</label>
+            <div  *ngFor="let element of entityForm.get('affectationNiveaux').controls; let ind = index" >
+                    <label class="col-xs-2"></label>
+                <label class="col-xs-4" for="siteWeb">{{getNiveauAppellation(element)}}</label>
+                    <label for="siteWeb" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md col-xs-4"
+                    [class.invalid]="isNotValidControl(element.get('nombreDeClasse'))"  >
+                        <input class="col-xs-12" type="number" id="siteWeb" placeholder="Entez le siteWeb de l'école" name="siteWeb"  size="3" [formControl]="element.get('nombreDeClasse')">
+                        <span *ngIf="isNotValidControl(element.get('nombreDeClasse'))" class="tooltip-content">
+                                Veuillez saisr un nombre positif
+                            </span>
+                    </label>
+                </div>
+    </div>
+    
+
+    </div>
+   
+    <div style="text-align: center" *ngIf="submitting">
+        <span class="spinner spinner-inline">
+            Chargement...
+        </span>
+        <span>
+            Connexion en cours...
+        </span>
+    </div>
+    <button class="btn btn-primary" type="submit" [disabled]="submitting">Enregistrer</button>
+</section>
+</form>

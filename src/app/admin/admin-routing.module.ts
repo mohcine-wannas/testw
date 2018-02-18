@@ -11,6 +11,8 @@ import { ProfileMainComponent } from 'app/admin/profile/profile-main/profile-mai
 import { SchoolInfoComponent } from 'app/admin/profile/school-info/school-info.component';
 import { PasswordChangeComponent } from 'app/admin/profile/password-change/password-change.component';
 import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
+import { GestionClassesComponent } from 'app/admin/administration/gestion-classes/gestion-classes.component';
+import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel-layout/referentiel-layout.component';
 
 const routes: Routes = [
   {
@@ -24,9 +26,14 @@ const routes: Routes = [
       { path: 'contacts/:state', component: ContactFormComponent},
       { path: 'contacts', component: ContactListComponent },
       { path: 'profile', component:ProfileLayoutComponent,  children: [
-        { path: '', redirectTo: 'ecole', pathMatch: 'full' }, 
+        { path: '', redirectTo: 'ecole', pathMatch: 'full'}, 
         { path: 'ecole', component: SchoolInfoComponent },
         { path: 'password-change', component: PasswordChangeComponent},
+        { path: '**', component: PageNotFoundComponent }, 
+      ] },
+      { path: 'gestion', component:ReferentielLayoutComponent,  children: [
+        { path: '', redirectTo: 'ecole', pathMatch: 'full' }, 
+        { path: 'classes', component: GestionClassesComponent },
         { path: '**', component: PageNotFoundComponent },
       ] },
       { path: '**', component: PageNotFoundComponent },

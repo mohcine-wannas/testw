@@ -7,24 +7,18 @@ import { AuthHttp } from 'angular2-jwt';
 import { RestService } from 'app/shared/services/rest.service';
 import { School } from 'app/admin/models/school.model';
 import { HttpClient } from '@angular/common/http';
-import { Cycle } from 'app/admin/models/cycle.model';
 import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
 
 
 @Injectable()
-export class CycleService extends RestService<Cycle>{
-  
+export class GroupeAppellationService extends RestService<GroupeAppellation>{
+
   constructor(@Inject('API_URL') protected baseUrl: string,protected http: HttpClient) {
     super(baseUrl,http);
-    super.setResource('cycles');
+    super.setResource('groupe-appellation');
  }
 
- getAllGroupeAppellation(): Observable<GroupeAppellation[]> {
-  return this.http.get(this.getFullUrl('/groupes-appellations/'))
-    .map((res: GroupeAppellation[]) => {
-      return res;
-    })
-    .catch(this.handleError);
-}
+
+
 
 }

@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from 'clarity-angular';
-
 import { AdminRoutingModule } from './admin-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
-
 import { MainService } from './main.service';
 import { LayoutComponent } from './layout/layout.component';
 import { ContactService } from 'app/admin/contact.service';
@@ -21,6 +19,9 @@ import { RestService } from 'app/shared/services/rest.service';
 import { CycleService } from 'app/admin/services/cycle.service';
 import { SchoolService } from 'app/admin/services/school.service';
 import { UserService } from 'app/admin/services/user.service';
+import { GestionClassesComponent } from 'app/admin/administration/gestion-classes/gestion-classes.component';
+import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
+import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel-layout/referentiel-layout.component';
 
 @NgModule({
   imports: [
@@ -39,13 +40,17 @@ import { UserService } from 'app/admin/services/user.service';
      ProfileMainComponent,
      ProfileLayoutComponent,
      SchoolInfoComponent,
-     PasswordChangeComponent],
+     PasswordChangeComponent,
+     GestionClassesComponent,
+     ReferentielLayoutComponent
+  ],
   providers: [
     MainService,
     ContactService,
     SchoolService,
     CycleService,
-    UserService
+    UserService,
+    AffectationCycleService,
   ]
 })
 export class AdminModule { }

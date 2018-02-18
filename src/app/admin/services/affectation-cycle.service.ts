@@ -7,24 +7,33 @@ import { AuthHttp } from 'angular2-jwt';
 import { RestService } from 'app/shared/services/rest.service';
 import { School } from 'app/admin/models/school.model';
 import { HttpClient } from '@angular/common/http';
-import { Cycle } from 'app/admin/models/cycle.model';
-import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
+import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
+
 
 
 @Injectable()
-export class CycleService extends RestService<Cycle>{
-  
+export class AffectationCycleService extends RestService<AffectationCycle>{
+
   constructor(@Inject('API_URL') protected baseUrl: string,protected http: HttpClient) {
     super(baseUrl,http);
-    super.setResource('cycles');
+    super.setResource('affectation-cycle');
  }
 
- getAllGroupeAppellation(): Observable<GroupeAppellation[]> {
-  return this.http.get(this.getFullUrl('/groupes-appellations/'))
-    .map((res: GroupeAppellation[]) => {
+
+getCurrentAffectationCycle():Observable<AffectationCycle>  {
+  return this.http.get(this.getFullUrl('/'))
+    .map((res: AffectationCycle) => {
       return res;
     })
     .catch(this.handleError);
 }
+save(model: AffectationCycle):Observable<Number> {
+  return this.http.put(this.getFullUrl('/'),model)
+  .map((res: Number) => {
+    return res;
+  })
+  .catch(this.handleError);
+}
+
 
 }

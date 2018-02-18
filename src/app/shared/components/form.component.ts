@@ -1,10 +1,11 @@
 import "rxjs/add/operator/catch";
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import {Directive, Output, EventEmitter} from '@angular/core';
 import { BaseModel } from "app/shared/models/base-model.model";
 import { ToastService } from "app/shared/services/toast.service";
 import { ServiceLocator } from "app/shared/services/service-locator.service";
 import { RestService } from "app/shared/services/rest.service";
+import { FormControl } from "@angular/forms/src/model";
 
 
 
@@ -126,6 +127,14 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
     }
   }
 
+  protected getSelectedObjectFromList(list: any[], Objectid: number, formControleName: string, formGroup: FormGroup = this.entityForm) {
+    list.forEach(e => {
+      if (e.id === Objectid) {
+        formGroup.get(formControleName).setValue(e);
+      }
+    });
+  }
+
   //------------ Validators -----------------
 
   isNotValidRequired(control: any) {
@@ -141,14 +150,19 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
 
   isNotValid(key: string) {
     let control = this.entityForm.controls[key];
-    if(control)
-      return !control.valid && (control.dirty || control.touched);
-    else
+    if (control) {
+      return this.isNotValidControl(control);
+    } else {
       console.log("Error : Undefined control form " + key);
+    }
+  }
+
+  isNotValidControl(control : AbstractControl) {
+      return control && !control.valid && (control.dirty || control.touched);
   }
 
   showError(arg0: any): any {
-    throw new Error("Method not implemented.");
+    throw this.toastService.error();
   }
 
 }
