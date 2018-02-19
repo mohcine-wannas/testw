@@ -24,7 +24,6 @@ export class ContactService {
       });
   }
   public create(object: Contact): Observable<string> {
-    
         return this.http.post(`${this.url}/contacts`, JSON.stringify(object))
           .map((res: Response) => {
             return res.json();

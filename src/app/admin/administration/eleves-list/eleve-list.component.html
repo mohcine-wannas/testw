@@ -1,0 +1,53 @@
+
+
+      <div class="row">
+          <h1>Eleve List</h1>
+          <div class="col-xs-12" *ngIf="!eleves">
+            <span class="spinner spinner-md">
+                Chargement...
+            </span>
+          </div>
+
+          <clr-datagrid class="col-xs-12 datagrid-compact" *ngIf="eleves">
+              <clr-dg-column>Nom</clr-dg-column>
+              <clr-dg-column>Prenom</clr-dg-column>
+              <clr-dg-column>Telephone</clr-dg-column>
+              <clr-dg-column>Mail</clr-dg-column>
+              <clr-dg-column>Activer</clr-dg-column>
+              <clr-dg-column>Action</clr-dg-column>
+              <clr-dg-row *clrDgItems="let eleve of eleves">
+                  <clr-dg-cell>{{eleve.lastname  | titlecase}}</clr-dg-cell>
+                  <clr-dg-cell>{{eleve.firstname | titlecase}}</clr-dg-cell>
+                  <clr-dg-cell>{{eleve.phoneNumber}}</clr-dg-cell>
+                  <clr-dg-cell>{{eleve.mail}}</clr-dg-cell>
+                  <clr-dg-cell>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle_7">
+                            <label for="toggle_7"></label>
+                        </div>
+                    </clr-dg-cell>
+                  <clr-dg-cell>
+                        <button class="btn btn-sm btn-icon btn-link" (click)="goToForm(eleve.id)">
+                                <clr-icon shape="pencil" class="is-solid"></clr-icon>                               
+                            Editer
+                        </button>
+                    </clr-dg-cell>
+              </clr-dg-row>
+          
+              <clr-dg-footer>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+                  of {{pagination.totalItems}} Eleves
+                  <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]=eleves.length></clr-dg-pagination>
+              </clr-dg-footer>
+          </clr-datagrid>
+      </div>
+      <hr>
+
+        <div class="row flex-items-xs-right">
+            <div class="">
+                <button type="button" class="btn btn-icon btn-success" (click)="goToForm()">
+                        <clr-icon shape="plus"></clr-icon>
+                        Nouveau
+                </button>
+            </div>
+         </div>

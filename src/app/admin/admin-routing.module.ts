@@ -13,6 +13,7 @@ import { PasswordChangeComponent } from 'app/admin/profile/password-change/passw
 import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
 import { GestionClassesComponent } from 'app/admin/administration/gestion-classes/gestion-classes.component';
 import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel-layout/referentiel-layout.component';
+import { EleveListComponent } from 'app/admin/administration/eleves-list/eleve-list.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'gestion', component:ReferentielLayoutComponent,  children: [
         { path: '', redirectTo: 'ecole', pathMatch: 'full' }, 
         { path: 'classes', component: GestionClassesComponent },
+        { path: 'eleves', component: EleveListComponent },
         { path: '**', component: PageNotFoundComponent },
       ] },
       { path: '**', component: PageNotFoundComponent },

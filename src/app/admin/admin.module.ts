@@ -22,6 +22,9 @@ import { UserService } from 'app/admin/services/user.service';
 import { GestionClassesComponent } from 'app/admin/administration/gestion-classes/gestion-classes.component';
 import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
 import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel-layout/referentiel-layout.component';
+import { EleveService } from 'app/admin/services/eleve.service';
+import { EleveListComponent } from 'app/admin/administration/eleves-list/eleve-list.component';
+import { ClasseService } from 'app/admin/services/classe.service';
 
 @NgModule({
   imports: [
@@ -42,7 +45,8 @@ import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel
      SchoolInfoComponent,
      PasswordChangeComponent,
      GestionClassesComponent,
-     ReferentielLayoutComponent
+     ReferentielLayoutComponent,
+     EleveListComponent,
   ],
   providers: [
     MainService,
@@ -51,6 +55,9 @@ import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel
     CycleService,
     UserService,
     AffectationCycleService,
+    UserService,
+    EleveService,
+    ClasseService
   ]
 })
 export class AdminModule { }
