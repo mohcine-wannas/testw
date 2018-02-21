@@ -1,4 +1,4 @@
-<form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form" name="entityForm"
+<form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg dox-content-wrapper" role="form" name="entityForm"
     id="entityForm" novalidate="" (submit)="submitForm($event, entityForm.value)">
 
     <section class="form-block">
@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <h4>Choisir l'appellation</h4>                
                 <div class="form-group">
-                    <label>Choisir l'appellation des niveaux</label>
+                    <label>Choisir l'appellation des niveaux</label> 
                     <div class="radio" *ngFor="let element of groupeAppelations; let ind = index">
                         <input type="radio" id="radioAppellation{{ind}}" [value]="element" formControlName="groupeAppellation">
                         <label for="radioAppellation{{ind}}"> {{ element.displayName }}</label>
@@ -28,11 +28,11 @@
 
             <div class="col-lg-6">
                 <h4>Choisir le nombre de classe par niveau</h4>
-                <div *ngFor="let element of entityForm.get('affectationNiveaux').controls; let ind = index">
+                <div class="form-group" *ngFor="let element of entityForm.get('affectationNiveaux').controls; let ind = index">
                     <label class="col-xs-2"></label>
                     <label class="col-xs-4" for="siteWeb">{{getNiveauAppellation(element)}}</label>
                     <label for="siteWeb" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-md col-xs-4" [class.invalid]="isNotValidControl(element.get('nombreDeClasse'))">
-                        <input class="col-xs-12" type="number" id="siteWeb" placeholder="Entez le siteWeb de l'école" name="siteWeb" size="3" [formControl]="element.get('nombreDeClasse')">
+                        <input class="col-xs-12" type="text" id="siteWeb" placeholder="Entez le siteWeb de l'école" name="siteWeb" size="10" [formControl]="element.get('nombreDeClasse')">
                         <span *ngIf="isNotValidControl(element.get('nombreDeClasse'))" class="tooltip-content">
                             Veuillez saisr un nombre positif
                         </span>

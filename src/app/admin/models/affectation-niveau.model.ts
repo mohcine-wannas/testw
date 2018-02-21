@@ -2,12 +2,14 @@ import { BaseModel } from "app/shared/models/base-model.model";
 import { Pays } from "app/shared/models/PAys.model";
 import { Ville } from "app/shared/models/ville.model";
 import { Niveau } from "app/admin/models/niveau.model";
+import { Classe } from "app/admin/models/groupe-appellation.model.1";
 
-export class AffectationNiveau extends BaseModel {
+export  class AffectationNiveau extends BaseModel {
 
     affectationCycle: string;
     nombreDeClasse: string;
     niveau: Niveau;
+    classes: Classe[];
 
     constructor(values: Object = {}) {
         super(values);

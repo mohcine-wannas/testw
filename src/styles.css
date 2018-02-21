@@ -60,3 +60,55 @@
     margin-right: -15px;
     width: 40px;
 }
+
+
+.dox-wrapper {
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 100%;
+  }
+  .dox-header {
+    padding-top: 18px;
+    -webkit-box-flex: 0;
+    padding-left: 36px;
+    position: relative;
+    flex: 0 0 108px;
+    border-bottom: 1px solid rgb(204, 204, 204);
+  }
+  .dox-content {
+    -webkit-box-flex: 1;
+    overflow-y: scroll;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    border-top: 1px solid transparent;
+  }
+  .dox-content-wrapper {
+    padding-left: 36px;
+    padding-top: 6px;
+    padding-bottom: 96px;
+    max-width: 900px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
+    display: block;
+  }
+
+  .tawassol-area , .tawassol-area .content-area {
+      width:100%
+  }
+
+  .dox-content-panel {
+    display: flex;
+    padding: 0px;
+    overflow: hidden;
+    height: 100%;
+  }
+  .datagrid-body {
+      overflow-y: unset !important;
+  }
