@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
@@ -18,6 +18,7 @@ import { ToastyModule } from 'ng2-toasty';
 import { SharedModule } from 'app/shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorImpl } from 'app/core/interceptors/http.interceptor';
+import { ServiceLocator } from 'app/shared/services/service-locator.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,9 @@ import { HttpInterceptorImpl } from 'app/core/interceptors/http.interceptor';
     HttpClientModule,
     ClarityModule.forRoot(),
     AppRoutingModule,
-    LoginModule,
+    LoginModule, 
     AdminModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [
     AuthGuard,
@@ -42,4 +43,8 @@ import { HttpInterceptorImpl } from 'app/core/interceptors/http.interceptor';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor( private injector: Injector) {
+    ServiceLocator.injector = this.injector;
+  }  
+ }

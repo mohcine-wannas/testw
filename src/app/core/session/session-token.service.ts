@@ -1,12 +1,16 @@
 import {Injectable} from "@angular/core";
 import {SessionConstants} from "./session.constants";
 import {Router} from "@angular/router";
+import { SessionService } from "app/core/session/session.service";
+import { AlertService } from "app/shared/services/alert.service";
 @Injectable()
 export class SessionTokenService {
   token: string;
-  timeout: any;
+  timeout: any; 
 
-  constructor(private router : Router, public sessionConstants: SessionConstants) {}
+  constructor(private router : Router,
+         public sessionConstants: SessionConstants,
+         public alertService : AlertService) {}
 
   // create token
   create(token: any) {
@@ -21,8 +25,9 @@ export class SessionTokenService {
         let self = this;
 
         this.timeout = setInterval(function () {
-          self.clear();
-          this.router.navigate([this.sessionDataService.getDefaultPage()]);
+          this.alertService.warning("Votre session est expiré");
+          this.router.navigate(['/login']);
+          this.clear();
         }, this.getExpirationTimestamp());
       }
       return true;

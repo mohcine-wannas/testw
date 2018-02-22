@@ -15,7 +15,6 @@ export class SessionService {
               public sessionTokenService: SessionTokenService,
               public sessionConstants: SessionConstants,
   ) {
-    this.load();
   }
 
   // create session

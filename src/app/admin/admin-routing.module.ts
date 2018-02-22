@@ -7,6 +7,10 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 import { ContactListComponent } from 'app/admin/contact-list/contact-list.component';
 import { ContactFormComponent } from 'app/admin/contact-form/contact-form.component';
+import { ProfileMainComponent } from 'app/admin/profile/profile-main/profile-main.component';
+import { SchoolInfoComponent } from 'app/admin/profile/school-info/school-info.component';
+import { PasswordChangeComponent } from 'app/admin/profile/password-change/password-change.component';
+import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
 
 const routes: Routes = [
   {
@@ -19,6 +23,12 @@ const routes: Routes = [
       { path: 'contacts/:id/:state', component: ContactFormComponent},
       { path: 'contacts/:state', component: ContactFormComponent},
       { path: 'contacts', component: ContactListComponent },
+      { path: 'profile', component:ProfileLayoutComponent,  children: [
+        { path: '', redirectTo: 'ecole', pathMatch: 'full' }, 
+        { path: 'ecole', component: SchoolInfoComponent },
+        { path: 'password-change', component: PasswordChangeComponent},
+        { path: '**', component: PageNotFoundComponent },
+      ] },
       { path: '**', component: PageNotFoundComponent },
     ]
   }

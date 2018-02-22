@@ -7,6 +7,8 @@ import { ToastService } from 'app/shared/services/toast.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { CoreModule } from 'app/core/core.module';
 import { NgDatepickerModule } from 'ng2-datepicker';
+import { RestService } from 'app/shared/services/rest.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -16,18 +18,21 @@ import { NgDatepickerModule } from 'ng2-datepicker';
     ReactiveFormsModule,
     ToastyModule.forRoot(),
     CoreModule,
-    NgDatepickerModule
+    NgDatepickerModule,
+    BrowserAnimationsModule
   ],
   providers : [ 
     AlertService,
-    ToastService
+    ToastService,
+    RestService
   ],
   exports: [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     ToastyModule,
-    NgDatepickerModule
+    NgDatepickerModule,
+    BrowserAnimationsModule
   ]
 })
 export class SharedModule { }

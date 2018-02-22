@@ -1,42 +1,61 @@
+<div class="content-area">
+    <div class=" row">
 
-<ng-datepicker [(ngModel)]="date"  [options]="options"></ng-datepicker>
+        <div class="col-lg-3 so-icon.pngcol-md-6 col-sm-6">
+            <a routerLink='/admin/main'>
+                <div class="card clickable">
+                    <div class="card-block">
+                        <div class="main-icon-wrapper">
+                            <clr-icon shape="users" class="main-icon"></clr-icon>
+                        </div>
+                        <p class="card-text">Communiquer avec les parens</p>
+                    </div>
+                </div>
+            </a>
 
-<markdown-to-html>
-    # Mini CRM : Mohcine WANNAS
-    
-    ## Installation
-    
-    ```
-    git clone https://github.com/angularmrTraining/miniCRM-Mohcine.wannas.git
-    
-    cd miniCRM-Mohcine.wannas
-    
-    npm i
-    
-    npm install -g json-server
-    ```
-    
-    ## Running app
-    
-    ```
-    ng serve
-    ```
-    
-    ## Running api
-    
-    ```
-    json-server --watch db.json
-    ```
-    
-    app url `http://localhost:4200`  
-    
-    username: `admin` and password: `admin`
-    
-    ## Building
-    
-    ```
-    ng build --prod
-    ```
-    
-    
-  </markdown-to-html>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a routerLink='/admin/main'>
+                <div class="card clickable">
+                    <div class="card-block">
+                        <div class="main-icon-wrapper">
+                            <clr-icon shape="user" class="main-icon"></clr-icon>
+                        </div>
+                        <p class="card-text">Communiquer avec les professeurs</p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a routerLink='/admin/main'>
+                <div class="card clickable">
+                    <div class="card-block">
+                        <div class="main-icon-wrapper">
+                            <clr-icon shape="check" class="main-icon"></clr-icon>
+                        </div>
+                        <p class="card-text">Valider les envois des professeurs</p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a routerLink='/admin/main'>
+                <div class="card clickable">
+                    <div class="card-block">
+                        <div class="main-icon-wrapper">
+                            <clr-icon shape="history" class="main-icon"></clr-icon>
+                        </div>
+                        <p class="card-text">Historique des messages</p>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</div>
