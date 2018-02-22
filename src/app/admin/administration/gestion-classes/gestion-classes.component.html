@@ -3,7 +3,21 @@
 
     <section class="form-block">
         <h1>Gestion des classes</h1>
-        <div class="row">
+
+        <div  *ngIf="error" class="alert alert-danger alert-sm">
+            <div class="alert-items">
+                <div class="alert-item static">
+                    <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                    <span class="alert-text">
+                        {{error}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="!error">
             <div class="col-lg-6">
                 <h4>Choisir l'appellation</h4>                
                 <div class="form-group">
@@ -51,6 +65,6 @@
                 Connexion en cours...
             </span>
         </div>
-        <button class="btn btn-primary" type="submit" [disabled]="submitting">Enregistrer</button>
+        <button  *ngIf="!error" class="btn btn-primary" type="submit" [disabled]="submitting">Enregistrer</button>
     </section>
 </form>

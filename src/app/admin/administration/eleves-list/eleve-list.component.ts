@@ -22,6 +22,7 @@ export class EleveListComponent implements OnInit {
   niveauAppellation: any[];
   classe: Classe;
   classes: Classe[];
+  error:string;
 
   affectationNiveaux: AffectationNiveau[];
   selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
@@ -47,6 +48,8 @@ export class EleveListComponent implements OnInit {
             this.selectedClasse = this.classes[0];
           }
           this.refresh();
+        }else{
+          this.error = "Merci de créer des classes";
         }
       },
       error => this.showError(error)
@@ -66,6 +69,8 @@ export class EleveListComponent implements OnInit {
         resp =>  this.eleves = resp,
         error => this.showError(error)
       );
+    }else{
+      this.eleves = [];
     }
   }
   refreshClasses() {
@@ -73,9 +78,11 @@ export class EleveListComponent implements OnInit {
       this.classes = this.selectedAffectationNiveau.classes;
       if(this.classes && this.classes.length >0) {
         this.selectedClasse = this.classes[0];
+      }else {
+        this.selectedClasse = null;
       }
-      this.refresh();
     }
+    this.refresh();
   }
 
   showError(error: any): any {

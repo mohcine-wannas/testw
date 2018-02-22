@@ -10,10 +10,25 @@
     <section class="dox-content" hash-listener="" style="position:relative;">
         <div class="dox-content-wrapper">
             <a id="top"></a>
-
-            <article>
+            <article  *ngIf="error">
+                <div  class="alert alert-danger alert-sm">
+                        <div class="alert-items">
+                            <div class="alert-item static">
+                                <div class="alert-icon-wrapper">
+                                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                                <span class="alert-text">
+                                    {{error}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+            </article>
+            
+            <article *ngIf="!error">
                 
-                    <div class="row" *ngIf="!eleves">
+                
+                    <div class="row" *ngIf="!this.affectationNiveaux">
                         <div class="col-xs-12">
                             <span class="spinner spinner-md">
                                 Chargement...

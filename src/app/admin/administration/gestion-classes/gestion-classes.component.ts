@@ -26,6 +26,7 @@ export class GestionClassesComponent extends FormComponent<AffectationCycle> imp
   niveauAppellation: any;
   groupeAppelations: GroupeAppellation[];
   currentCycle: any;
+  error:string;
 
    affectationCycle : AffectationCycle;
 
@@ -51,6 +52,9 @@ export class GestionClassesComponent extends FormComponent<AffectationCycle> imp
     this.cycleService.getAllGroupeAppellation().subscribe(
       resp => { 
         this.groupeAppelations = resp;
+        if(!this.groupeAppelations || this.groupeAppelations.length == 0) {
+          this.error = "Problème de configuration ! Merci de contacter votre administrateur";
+        }
         if (this.affectationCycle && this.affectationCycle.groupeAppellation) {
           this.getSelectedObjectFromList(this.groupeAppelations, this.affectationCycle.groupeAppellation.id, 'groupeAppellation');
         }
