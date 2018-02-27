@@ -9,6 +9,9 @@ export class Eleve extends User implements BaseModel {
 	dateNaissance : Date;
 	codeMassar : string;
     observation: string;
+    hasToBeEnabled: boolean;
+    hasAffectations: boolean;
+    enabledAffectations: boolean;
     
     constructor(values: Object = {}) {
         super(values);

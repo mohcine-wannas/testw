@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from 'app/shared/services/alert.service';
 import { EleveService } from 'app/admin/services/eleve.service';
-import { Eleve } from 'app/admin/models/eleve.model';
 import { ClasseService } from 'app/admin/services/classe.service';
 import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
 import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
 import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
 import { Classe } from 'app/admin/models/groupe-appellation.model.1';
 import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
+import { ToastyService } from 'ng2-toasty';
+import { Eleve } from 'app/admin/models/eleve.model';
 
 @Component({
   selector: 'app-eleve-list',
@@ -23,6 +24,8 @@ export class EleveListComponent implements OnInit {
   classe: Classe;
   classes: Classe[];
   error:string;
+  @ViewChild("grid") public grid;
+  
 
   affectationNiveaux: AffectationNiveau[];
   selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
@@ -32,7 +35,8 @@ export class EleveListComponent implements OnInit {
               public classeService:ClasseService,
               private alert: AlertService,
               private router: Router,
-              private affectationCycleService : AffectationCycleService) { }
+              private affectationCycleService : AffectationCycleService,
+              private toastyService : ToastyService) { }
               
   eleves : Eleve[];
   ngOnInit() {
@@ -87,6 +91,16 @@ export class EleveListComponent implements OnInit {
 
   showError(error: any): any {
     this.alert.error(error);
+  }
+
+  enableParent(eleve : Eleve) {
+    this.eleveService.enableParent(eleve.id,eleve.enabledAffectations).subscribe(
+      resp => {
+        this.toastyService.success("Operation effectuée avec succès");
+        eleve.hasToBeEnabled = false;
+        },
+      error => this.showError(error)
+    );
   }
   // goToForm(id?:number) {
   //   if(!id) {

@@ -61,19 +61,20 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <clr-datagrid class="col-xs-12 datagrid-compact" *ngIf="eleves">
+                            <clr-datagrid #grid class="col-xs-12 datagrid-compact" *ngIf="eleves">
                                 <clr-dg-column>Nom</clr-dg-column>
                                 <clr-dg-column>Prenom</clr-dg-column>
                                 <clr-dg-column>Code Massar</clr-dg-column>
                                 <clr-dg-column>Activer</clr-dg-column>
                                 <clr-dg-column>Action</clr-dg-column>
-                                <clr-dg-row *clrDgItems="let eleve of eleves">
+                                <clr-dg-row *clrDgItems="let eleve of eleves"  [class.hasToBeEnbaled]="eleve.hasToBeEnabled ">
                                     <clr-dg-cell>{{eleve.lastname | titlecase}}</clr-dg-cell>
                                     <clr-dg-cell>{{eleve.firstname | titlecase}}</clr-dg-cell>
                                     <clr-dg-cell>{{eleve.codeMassar}}</clr-dg-cell>
                                     <clr-dg-cell>
                                         <div class="toggle-switch">
-                                            <input type="checkbox" id="toggle_{{eleve.id}}">
+                                            <input type="checkbox" id="toggle_{{eleve.id}}"  [(ngModel)] = "eleve.enabledAffectations" 
+                                            (ngModelChange)="enableParent(eleve)" [disabled]="!eleve.hasAffectations">
                                             <label for="toggle_{{eleve.id}}"></label>
                                         </div>
                                     </clr-dg-cell>

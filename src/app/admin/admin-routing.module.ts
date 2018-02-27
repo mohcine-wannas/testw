@@ -32,7 +32,7 @@ const routes: Routes = [
         { path: 'password-change', component: PasswordChangeComponent},
         { path: '**', component: PageNotFoundComponent }, 
       ] },
-      { path: 'gestion', component:ReferentielLayoutComponent,  children: [
+      { path: 'gestion', component:ReferentielLayoutComponent,   children: [
         { path: '', redirectTo: 'ecole', pathMatch: 'full' }, 
         { path: 'classes', component: GestionClassesComponent },
         { path: 'eleves', component: EleveListComponent },

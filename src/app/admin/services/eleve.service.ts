@@ -16,6 +16,12 @@ export class EleveService extends RestService<Eleve>{
     super.setResource('eleves');
  }
 
-
+ enableParent(id : number, enabled : boolean): Observable<void> {
+  return this.http.put(this.getFullUrl('/'+ id +'/enable'),enabled)
+    .map((res) => {
+      return;
+    })
+    .catch(super.handleError);
+  }
 
 }
