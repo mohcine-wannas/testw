@@ -1,11 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-//Grab everything with import 'rxjs/Rx';
-import {Observable} from "rxjs/Observable";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-import {environment} from "../../../environments/environment";
-import {Injectable, Inject} from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { BaseModel } from 'app/shared/models/base-model.model';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+//Grab everything with import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 
 export interface IServerResponse {
@@ -16,9 +15,10 @@ export interface IServerResponse {
 @Injectable()
 export class RestService<T extends BaseModel> {
 
-  public resource: string = '';
+  public resource = '';
 
-  constructor(@Inject('API_URL') protected baseUrl: string,protected http: HttpClient) {  }
+  constructor(@Inject('API_URL') protected baseUrl: string, protected http: HttpClient) {
+  }
 
   setResource(resource: string) {
     this.resource = resource;
@@ -33,7 +33,7 @@ export class RestService<T extends BaseModel> {
   }
 
   get(id: string): Observable<T> {
-    return this.http.get(this.getFullUrl('/' + id ))
+    return this.http.get(this.getFullUrl('/' + id))
       .map((res: T) => {
         return res;
       })
@@ -50,7 +50,7 @@ export class RestService<T extends BaseModel> {
   }
 
   update(object: T): Observable<void> {
-    return this.http.put(this.getFullUrl( '/' + object.id), JSON.stringify(object))
+    return this.http.put(this.getFullUrl('/' + object.id), JSON.stringify(object))
       .map((res: T) => {
         return res;
       })
@@ -66,7 +66,7 @@ export class RestService<T extends BaseModel> {
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete(this.getFullUrl( '/' +id))
+    return this.http.delete(this.getFullUrl('/' + id))
       .map((res: Response) => {
         return;
       })
@@ -74,11 +74,11 @@ export class RestService<T extends BaseModel> {
   }
 
   deleteObject(object: T): Observable<void> {
-    return this.delete(''+object.id);
+    return this.delete('' + object.id);
   }
 
   list(object: any): Observable<IServerResponse> { //TODO make interface
-    return this.http.post(this.getFullUrl( "/list"), JSON.stringify(object))
+    return this.http.post(this.getFullUrl('/list'), JSON.stringify(object))
       .map((res: Response) => {
         return res.json();
       })
@@ -87,7 +87,7 @@ export class RestService<T extends BaseModel> {
 
   getColumnDef(): Observable<any> {
 
-    return this.http.get(this.getFullUrl( "/columnDef"))
+    return this.http.get(this.getFullUrl('/columnDef'))
       .map((res: Response) => {
         return res.json();
       })
@@ -95,24 +95,25 @@ export class RestService<T extends BaseModel> {
   }
 
   protected handleError(error: any) {
-   /* let applicationError = error.headers.get('Application-Error');
-    let serverError = error.json();
-    let modelStateErrors: string = '';
+    /* let applicationError = error.headers.get('Application-Error');
+     let serverError = error.json();
+     let modelStateErrors: string = '';
 
-    if (!serverError.type) {
-      console.log(serverError);
-      serverError.forEach( key => {
-        if(serverError[key]){
-          modelStateErrors += serverError[key] + `\n`;
-        }
-      });
-    }
+     if (!serverError.type) {
+       console.log(serverError);
+       serverError.forEach( key => {
+         if(serverError[key]){
+           modelStateErrors += serverError[key] + `\n`;
+         }
+       });
+     }
 
-    modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
+     modelStateErrors = modelStateErrors = '' ? null : modelStateErrors;
 
-    return Observable.throw(applicationError || modelStateErrors || 'Server error');*/
+     return Observable.throw(applicationError || modelStateErrors || 'Server error');*/
     return Observable.throw(error);
   }
+
   protected getFullUrl(url: string): string {
     return this.baseUrl + this.resource + url;
   }
@@ -145,7 +146,6 @@ export class RestService<T extends BaseModel> {
   //     })
   //     .catch(this.handleError);
   // }
-
 
 
 }

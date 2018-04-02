@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ClarityModule } from 'clarity-angular';
 
 import { LoginPageComponent } from './login-page/login-page.component';
+
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent }
 ];
@@ -14,4 +15,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class LoginRoutingModule { }
+export class LoginRoutingModule {
+}

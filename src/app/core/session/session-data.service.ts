@@ -1,6 +1,7 @@
-import {Injectable} from "@angular/core";
-import {SessionConstants} from "./session.constants";
-import { School } from "app/admin/models/school.model";
+import { Injectable } from '@angular/core';
+import { School } from 'app/admin/models/school.model';
+import { SessionConstants } from './session.constants';
+
 @Injectable()
 export class SessionDataService {
 
@@ -9,25 +10,26 @@ export class SessionDataService {
   role: any;
   operations: any;
   schoolDetails: any;
-  currentCycle : any;
-  
-  constructor(public sessionConstants: SessionConstants) {}
+  currentCycle: any;
+
+  constructor(public sessionConstants: SessionConstants) {
+  }
 
   create(data: any) {
     if (data) {
       this.data = data;
       this.schoolDetails = this.data.user.school;
-      
-      if(this.schoolDetails) {
-          this.schoolDetails.cycles.forEach(element => {
-            if(element.id === Number(this.schoolDetails.currentCycle)) {
-              this.currentCycle = element;
-            }
-          });
+
+      if (this.schoolDetails) {
+        this.schoolDetails.cycles.forEach(element => {
+          if (element.id === Number(this.schoolDetails.currentCycle)) {
+            this.currentCycle = element;
+          }
+        });
       }
     }
   }
-  
+
   clear() {
     if (localStorage) {
       this.data = null;
@@ -37,23 +39,23 @@ export class SessionDataService {
 
   getName() {
     return this.data.user.firstname + ' ' + this.data.user.lastname;
-  };
+  }
 
   getRoleLabel() {
-    return this.role ? this.role.label : "";
-  };
+    return this.role ? this.role.label : '';
+  }
 
   getUserDetails() {
     return this.data.user.details;
-  };
+  }
 
   getDefaultPage() {
-    var page = 'home';
+    const page = 'home';
     return page;
-  };
+  }
 
-  getCurrentSchool() : School {
-    return  <School>(this.schoolDetails.school);
+  getCurrentSchool(): School {
+    return (this.schoolDetails.school) as School;
   }
 
   getCurrentAnneScolaire() {
@@ -68,16 +70,16 @@ export class SessionDataService {
     return this.currentCycle;
   }
 
-  getSchoolName() : string {
-    let school :School = this.getCurrentSchool();
+  getSchoolName(): string {
+    const school: School = this.getCurrentSchool();
     return school.nom + ' : ' + school.code;
   }
 
   updateSchool(school: School): any {
-    this.schoolDetails.school.tel =school.tel;
-    this.schoolDetails.school.tel2 =school.tel2;
-    this.schoolDetails.school.email =school.email;
-    this.schoolDetails.school.siteWeb =school.siteWeb;
-    }
+    this.schoolDetails.school.tel = school.tel;
+    this.schoolDetails.school.tel2 = school.tel2;
+    this.schoolDetails.school.email = school.email;
+    this.schoolDetails.school.siteWeb = school.siteWeb;
+  }
 }
 

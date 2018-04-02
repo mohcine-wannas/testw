@@ -47,6 +47,7 @@
     "@types/lodash": "^4.14.74",
     "@types/node": "~8.0.29",
     "codelyzer": "^4.1.0",
+    "eslint": "^4.5.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.0",
@@ -56,14 +57,13 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
-    "ts-node": "~3.3.0",
-    "tslint": "~5.9.1",
-    "tslint-eslint-rules": "^4.1.1",
-    "typescript-eslint-parser": "^7.0.0",
     "stylefmt": "^5.1.1",
     "stylelint": "^7.7.1",
     "stylelint-scss": "^1.4.1",
-    "eslint": "^4.5.0",
-    "typescript": "2.4.2"
+    "ts-node": "~3.3.0",
+    "tslint": "~5.9.1",
+    "tslint-eslint-rules": "^4.1.1",
+    "typescript": "2.4.2",
+    "typescript-eslint-parser": "^7.0.0"
   }
 }

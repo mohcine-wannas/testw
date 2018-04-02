@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { default as swal, SweetAlertType, SweetAlertOptions } from 'sweetalert2';
+import { default as swal, SweetAlertOptions } from 'sweetalert2';
 
 @Injectable()
 export class AlertService {
 
-  constructor() { }
+  constructor() {
+  }
 
-  error(text = 'Une erreur est survenue, Merci de réessayer plus tard',title = 'Erreur !',) {
+  error(text = 'Une erreur est survenue, Merci de réessayer plus tard', title = 'Erreur !') {
 
     const option: SweetAlertOptions = {
       title: title,
@@ -19,17 +20,17 @@ export class AlertService {
 
   }
 
-  warning(text = '',title = 'Attention !',) {
-    
-        const option: SweetAlertOptions = {
-          title: title,
-          text: text,
-          type: 'warning',
-          confirmButtonText: 'Ok !'
-        };
-        swal(option);
-    
-      }
+  warning(text = '', title = 'Attention !') {
+
+    const option: SweetAlertOptions = {
+      title: title,
+      text: text,
+      type: 'warning',
+      confirmButtonText: 'Ok !'
+    };
+    swal(option);
+
+  }
 
   success(title = 'Succes', text = '') {
 
@@ -53,7 +54,7 @@ export class AlertService {
     swal(option);
   }
 
-  confirm(text = 'Êtes vous sûr ?', ) {
+  confirm(text = 'Êtes vous sûr ?') {
     const option: SweetAlertOptions = {
       title: 'Attention ! ',
       text: text,
@@ -64,6 +65,6 @@ export class AlertService {
       confirmButtonText: 'Oui, Je suis sûr !',
       cancelButtonText: 'Annulé'
     };
-     return swal(option);
+    return swal(option);
   }
 }

@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastyModule } from 'ng2-toasty';
-import { ToastService } from 'app/shared/services/toast.service';
-import { AlertService } from 'app/shared/services/alert.service';
-import { CoreModule } from 'app/core/core.module';
-import { NgDatepickerModule } from 'ng2-datepicker';
-import { RestService } from 'app/shared/services/rest.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from 'app/core/core.module';
+import { AlertService } from 'app/shared/services/alert.service';
+import { RestService } from 'app/shared/services/rest.service';
+import { ToastService } from 'app/shared/services/toast.service';
+import { NgDatepickerModule } from 'ng2-datepicker';
+import { ToastyModule } from 'ng2-toasty';
 
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgDatepickerModule,
     BrowserAnimationsModule
   ],
-  providers : [ 
+  providers: [
     AlertService,
     ToastService,
     RestService
@@ -35,4 +35,5 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

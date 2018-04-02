@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {SessionDataService} from "./session-data.service";
-import {SessionTokenService} from "./session-token.service";
-import {Router} from "@angular/router";
-import {SessionConstants} from "./session.constants";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { SessionDataService } from './session-data.service';
+import { SessionTokenService } from './session-token.service';
+import { SessionConstants } from './session.constants';
 
 @Injectable()
 export class SessionService {
@@ -13,8 +13,7 @@ export class SessionService {
   constructor(public router: Router,
               public sessionDataService: SessionDataService,
               public sessionTokenService: SessionTokenService,
-              public sessionConstants: SessionConstants,
-  ) {
+              public sessionConstants: SessionConstants) {
   }
 
   // create session
@@ -36,20 +35,20 @@ export class SessionService {
       }
     }
     return false;
-  };
+  }
 
   logout(goToLoginPage?: boolean) {
     this.clear();
-    if(goToLoginPage) {
+    if (goToLoginPage) {
       this.router.navigate(['/login']);
-    } 
+    }
   }
 
   // clear timeout and removed session data
   clear() {
     this.sessionTokenService.clear();
     this.sessionDataService.clear();
-  };
+  }
 
   load() {
     if (localStorage) {
@@ -57,12 +56,10 @@ export class SessionService {
         this.create(JSON.parse(localStorage.getItem(this.sessionConstants.SESSION)));
       }
     }
-  };
+  }
 
   isAuthenticated() {
     return this.data && this.token && this.sessionTokenService.isValid();
-  };
+  }
 
 }
-
-

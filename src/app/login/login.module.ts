@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 import { ClarityModule } from 'clarity-angular';
-
-import { LoginRoutingModule } from './login-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 
+import { LoginRoutingModule } from './login-routing.module';
+
 import { LoginService } from './login.service';
-import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -20,4 +20,5 @@ import { SharedModule } from 'app/shared/shared.module';
   declarations: [LoginPageComponent],
   providers: [LoginService]
 })
-export class LoginModule { }
+export class LoginModule {
+}

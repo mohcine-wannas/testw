@@ -90,7 +90,7 @@
     "import-destructuring-spacing": true,
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": true,
-    "pipe-naming": [true, "camelCase", "app"],
+    //"pipe-naming": [true, "camelCase", "app"],
     "invoke-injectable": true,
     "no-constant-condition": true,
     "no-control-regex": true,

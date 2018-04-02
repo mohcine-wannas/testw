@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
-
-import { default as swal, SweetAlertType, SweetAlertOptions } from 'sweetalert2';
 import { ToastyService, ToastOptions } from 'ng2-toasty';
 
 @Injectable()
 export class ToastService {
 
+  showClose = true;
+  timeout = 3000;
 
-  constructor(public toastyService : ToastyService) { }
-
-  showClose : boolean = true;
-  timeout : number = 3000;
+  constructor(public toastyService: ToastyService) {
+  }
 
   show(text = '') {
     this.toastyService.default(text);
   }
 
-  error(text = 'Une erreur est survenue, Merci de réessayer plus tard', title='erreur') {
-    let toastOptions:ToastOptions = {
+  error(text = 'Une erreur est survenue, Merci de réessayer plus tard', title = 'erreur') {
+    const toastOptions: ToastOptions = {
       title: title,
       msg: text,
       showClose: this.showClose,
@@ -26,8 +24,8 @@ export class ToastService {
     this.toastyService.error(toastOptions);
   }
 
-  success(text = "L\'operation est éfectuée avec succés",title = 'Succes') {
-    let toastOptions:ToastOptions = {
+  success(text = 'L\'operation est éfectuée avec succés', title = 'Succes') {
+    const toastOptions: ToastOptions = {
       title: title,
       msg: text,
       showClose: this.showClose,
@@ -36,8 +34,8 @@ export class ToastService {
     this.toastyService.success(toastOptions);
   }
 
-  warning(text,title = 'Attention') {
-    let toastOptions:ToastOptions = {
+  warning(text, title = 'Attention') {
+    const toastOptions: ToastOptions = {
       title: title,
       msg: text,
       showClose: this.showClose,
@@ -46,8 +44,8 @@ export class ToastService {
     this.toastyService.warning(toastOptions);
   }
 
-  info(text,title = 'Info') {
-    let toastOptions:ToastOptions = {
+  info(text, title = 'Info') {
+    const toastOptions: ToastOptions = {
       title: title,
       msg: text,
       showClose: this.showClose,
@@ -56,8 +54,8 @@ export class ToastService {
     this.toastyService.info(toastOptions);
   }
 
-  wait(text= 'Merci de patienter SVP' ,title = 'Chargement') {
-    let toastOptions:ToastOptions = {
+  wait(text = 'Merci de patienter SVP', title = 'Chargement') {
+    const toastOptions: ToastOptions = {
       title: title,
       msg: text,
       showClose: this.showClose,
@@ -65,5 +63,5 @@ export class ToastService {
     };
     this.toastyService.wait(toastOptions);
   }
-    
+
 }

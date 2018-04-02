@@ -22,7 +22,6 @@
 //     ]
 //   }
 // ];
- 
 // @NgModule({
 //   imports: [RouterModule.forChild(routes)],
 //   exports: [RouterModule]

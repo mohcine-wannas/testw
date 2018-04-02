@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormComponent } from 'app/shared/components/form.component';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UserService } from 'app/admin/services/user.service';
 
 import { User } from 'app/admin/models/User.model';
-import { AlertService } from 'app/shared/services/alert.service';
-import { Router } from '@angular/router';
+import { UserService } from 'app/admin/services/user.service';
 import { SessionService } from 'app/core/session/session.service';
+import { FormComponent } from 'app/shared/components/form.component';
+import { AlertService } from 'app/shared/services/alert.service';
 
 @Component({
   selector: 'app-password-change',
@@ -17,8 +16,8 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
 
 
   constructor(private fb: FormBuilder,
-              private userService : UserService,
-              private alertService : AlertService,
+              private userService: UserService,
+              private alertService: AlertService,
               private sessionService: SessionService) {
     super();
     this.restService = userService;
@@ -29,24 +28,29 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
   }
 
   createForm() {
-    
+
     this.entityForm = this.fb.group({
       'oldPassword': ['', Validators.required],
       'newPassword': ['', Validators.required],
       'confirmation': ['', Validators.required],
-    }, {validator: this.validatePassword});
+    }, { validator: this.validatePassword });
   }
 
   public submitForm($ev, model: any) {
     this.markAllInputAsTouched();
-    if(!this.entityForm.valid) return;
-    
+    if (!this.entityForm.valid) {
+      return;
+    }
+
     this.submitting = true;
     this.userService.passewordChange(model).subscribe(
       resp => {
         this.submitting = false;
-        this.alertService.success("Parfait !","Votre mot de passe et bien modifié, vous allez être renvoyer vers la page d'authentification")
-          .then(() => {this.sessionService.logout(true)});
+        const message = 'Votre mot de passe et bien modifié, vous allez être renvoyer vers la page d\'authentification';
+        this.alertService.success('Parfait !', message)
+          .then(() => {
+            this.sessionService.logout(true);
+          });
         this.sessionService.logout();
       },
       error => {
@@ -56,18 +60,19 @@ export class PasswordChangeComponent extends FormComponent<User> implements OnIn
     );
   }
 
-  public validatePassword(group:any): { [s: string]: boolean }{
-    if(group.get("newPassword").value && group.get("confirmation").value && group.get("newPassword").value !== group.get("confirmation").value) {
-      return {
-        unmatch: true
+  public validatePassword(group: any): { [s: string]: boolean } {
+    if (group.get('newPassword').value && group.get('confirmation').value) {
+      if (group.get('newPassword').value !== group.get('confirmation').value) {
+        return {
+          unmatch: true
+        };
       }
+
     }
     return null;
-  };
+  }
 
   isNotValidConfirmation() {
     return this.entityForm.hasError('unmatch');
   }
 }
-
-

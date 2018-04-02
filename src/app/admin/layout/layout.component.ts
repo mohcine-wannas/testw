@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService } from 'app/core/session/session.service';
-import { SessionDataService } from 'app/core/session/session-data.service';
 import { Cycle } from 'app/admin/models/cycle.model';
+import { SessionDataService } from 'app/core/session/session-data.service';
+import { SessionService } from 'app/core/session/session.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,15 +12,15 @@ import { Cycle } from 'app/admin/models/cycle.model';
 export class LayoutComponent implements OnInit {
 
   fullname: string;
-  collapsible: boolean = true;
-  collapsed: boolean = true;
-  cycles : Cycle[] = [];
-  currentCycle : Cycle  = new Cycle();
+  collapsible = true;
+  collapsed = true;
+  cycles: Cycle[] = [];
+  currentCycle: Cycle = new Cycle();
 
-  constructor(private sessionService:SessionService,
-              private sessionDataService:SessionDataService,
-              private router :Router) {
-                 
+  constructor(private sessionService: SessionService,
+              private sessionDataService: SessionDataService,
+              private router: Router) {
+
     this.fullname = sessionDataService.getSchoolName();
     this.cycles = sessionDataService.schoolDetails.cycles;
 
@@ -31,20 +31,20 @@ export class LayoutComponent implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(["admin/profile"]);
+    this.router.navigate(['admin/profile']);
   }
 
   ngOnInit() {
   }
 
-  currentCycleChanged(cycle:Cycle) {
+  currentCycleChanged(cycle: Cycle) {
     this.currentCycle = cycle;
     this.sessionDataService.schoolDetails.currentCycle = this.currentCycle.id;
   }
 
   getCurrentCycleLibelle() {
-    this.cycles.forEach(e=>{
-      if(e.id === Number(this.sessionDataService.schoolDetails.currentCycle)) {
+    this.cycles.forEach(e => {
+      if (e.id === Number(this.sessionDataService.schoolDetails.currentCycle)) {
         this.currentCycle = e;
       }
     });

@@ -10,8 +10,7 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(@Inject('API_URL') private url: string,
-              private sessionService : SessionService) {
+              private sessionService: SessionService) {
     this.sessionService.load();
-    console.log(this.url);
   }
 }

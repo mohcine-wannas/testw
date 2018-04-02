@@ -14,7 +14,6 @@
 // import { PasswordChangeComponent } from 'app/admin/profile/password-change/password-change.component';
 // import { ProfileRoutingModule } from 'app/admin/profile/profile-routing.module';
 // import { LayoutComponent } from 'app/admin/layout/layout.component';
-
 // @NgModule({
 //   imports: [
 //     CommonModule,

@@ -1,29 +1,25 @@
-import { Injectable, Inject } from '@angular/core';
-import 'rxjs/add/operator/map';
-import { Response } from '@angular/http/src/static_response';
-import { Observable } from 'rxjs/Observable';
-import { Contact } from 'app/helper/models/Contact.model';
-import { AuthHttp } from 'angular2-jwt';
-import { RestService } from 'app/shared/services/rest.service';
-import { School } from 'app/admin/models/school.model';
 import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { User } from 'app/admin/models/User.model';
+import { RestService } from 'app/shared/services/rest.service';
+import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class UserService extends RestService<User>{
+export class UserService extends RestService<User> {
 
-  constructor(@Inject('API_URL') protected baseUrl: string,protected http: HttpClient) {
-    super(baseUrl,http);
+  constructor(@Inject('API_URL') protected baseUrl: string, protected http: HttpClient) {
+    super(baseUrl, http);
     super.setResource('users');
- }
- 
- passewordChange(object: any): Observable<void> {
-  return this.http.put(this.getFullUrl( '/current/password-change/'), JSON.stringify(object))
-    .map((res : Number) => { 
-      return res;
-    })
-    .catch(this.handleError);
-}
+  }
+
+  passewordChange(object: any): Observable<void> {
+    return this.http.put(this.getFullUrl('/current/password-change/'), JSON.stringify(object))
+      .map((res: Number) => {
+        return res;
+      })
+      .catch(this.handleError);
+  }
 
 }

@@ -1,16 +1,17 @@
-import {Injectable} from "@angular/core";
-import {SessionConstants} from "./session.constants";
-import {Router} from "@angular/router";
-import { SessionService } from "app/core/session/session.service";
-import { AlertService } from "app/shared/services/alert.service";
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertService } from 'app/shared/services/alert.service';
+import { SessionConstants } from './session.constants';
+
 @Injectable()
 export class SessionTokenService {
   token: string;
-  timeout: any; 
+  timeout: any;
 
-  constructor(private router : Router,
-         public sessionConstants: SessionConstants,
-         public alertService : AlertService) {}
+  constructor(private router: Router,
+              public sessionConstants: SessionConstants,
+              public alertService: AlertService) {
+  }
 
   // create token
   create(token: any) {
@@ -22,10 +23,10 @@ export class SessionTokenService {
       this.token = token;
       if (this.isValid()) {
         localStorage.setItem(this.sessionConstants.TOKEN, token);
-        let self = this;
+        const self = this;
 
         this.timeout = setInterval(function () {
-          this.alertService.warning("Votre session est expiré");
+          this.alertService.warning('Votre session est expiré');
           this.router.navigate(['/login']);
           this.clear();
         }, this.getExpirationTimestamp());
@@ -33,7 +34,7 @@ export class SessionTokenService {
       return true;
     }
     return false;
-  };
+  }
 
 
   clear() {
@@ -44,37 +45,35 @@ export class SessionTokenService {
         localStorage.removeItem(this.sessionConstants.TOKEN);
       }
     }
-  };
+  }
 
   get() {
     return this.token;
-  };
+  }
 
   getExpirationTimestamp() {
     return this.getTimestamp(this.token) - (new Date()).getTime();
-  };
+  }
 
   getTimestamp(token: any) {
     if (token) {
-      let parts = token.split(':');
+      const parts = token.split(':');
       if (parts.length === 3) {
-        return parseInt(parts[1]);
+        return Number(parts[1]);
       }
     }
     return NaN;
   }
 
   isValid() {
-    let ts = this.getTimestamp(this.token);
+    const ts = this.getTimestamp(this.token);
     if (!isNaN(ts)) {
-      let now = (new Date()).getTime();
+      const now = (new Date()).getTime();
       if (now < ts) {
         return true;
       }
     }
     return false;
-  };
+  }
 
 }
-
-

@@ -1,10 +1,10 @@
 export class BaseModel {
-    id: number;
+  id: number;
 
-    // public REST_API_RESOURCE:string = "common";
+  // public REST_API_RESOURCE:string = "common";
 
 
-    constructor(values: Object = {}) {
-        Object.assign(this, values)
-    }
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
   }
+}
