@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 
-import { LoginService } from '../login.service';
 import { JwtHelper } from 'angular2-jwt';
-import { ToastService } from 'app/shared/services/toast.service';
-import { AlertService } from 'app/shared/services/alert.service';
 import { SessionService } from 'app/core/session/session.service';
+import { AlertService } from 'app/shared/services/alert.service';
+import { ToastService } from 'app/shared/services/toast.service';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-login-page',
@@ -20,13 +20,12 @@ export class LoginPageComponent implements OnInit {
   passwordTouched = false;
   usernameTouched = false;
 
-  constructor(
-    private loginService: LoginService,
-    private router: Router,
-    private alert: AlertService,
-    private toastService:ToastService,
-    private sessionService: SessionService
-  ) { }
+  constructor(private loginService: LoginService,
+              private router: Router,
+              private alert: AlertService,
+              private toastService: ToastService,
+              private sessionService: SessionService) {
+  }
 
   ngOnInit() {
   }
@@ -40,54 +39,56 @@ export class LoginPageComponent implements OnInit {
 
   enterUsername(event) {
     this.usernameTouched = true;
-    this.enterLogin(event)
+    this.enterLogin(event);
   }
+
   enterPassword(event) {
-    this.passwordTouched =  true;
-    this.enterLogin(event)
+    this.passwordTouched = true;
+    this.enterLogin(event);
   }
+
   doLogin() {
 
     this.isLogging = true;
-    this.loginService.login({"username": this.username, "password":this.password}).subscribe(
+    this.loginService.login({ 'username': this.username, 'password': this.password }).subscribe(
       resp => this.loginSucceed(resp),
       error => this.showError()
     );
-/*
-    try {
+    /*
+        try {
 
-      const token: any = await this.loginService.testLogin(this.username, this.password);
-      if (token) {
-        const decodedToken = this.jwtHelper.decodeToken(token);
-        const fullname = `${decodedToken.firstname} ${decodedToken.lastname}`;
+          const token: any = await this.loginService.testLogin(this.username, this.password);
+          if (token) {
+            const decodedToken = this.jwtHelper.decodeToken(token);
+            const fullname = `${decodedToken.firstname} ${decodedToken.lastname}`;
 
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('fullname', 'admin');
-        // hide spinner
-        this.isLogging = false;
-        // redirect to admin module
-        this.router.navigate(['admin']);
-        this.toastService.success('Bienvenue ' + fullname);
-      } else { 
+            sessionStorage.setItem('token', token);
+            sessionStorage.setItem('fullname', 'admin');
+            // hide spinner
+            this.isLogging = false;
+            // redirect to admin module
+            this.router.navigate(['admin']);
+            this.toastService.success('Bienvenue ' + fullname);
+          } else {
 
-      }
-    } catch (error) {
+          }
+        } catch (error) {
 
-    }*/
+        }*/
   }
-  
+
   loginSucceed(response: any) {
     if (!this.sessionService.create(response)) {
-        this.showError();
-      }else{
-        this.isLogging = false;
-        this.toastService.success('Bienvenue ' +  + response.user.firstname + ' ' + response.user.lastname,'Authentifié');
-        this.router.navigate(['admin']);
+      this.showError();
+    } else {
+      this.isLogging = false;
+      this.toastService.success('Bienvenue ' + +response.user.firstname + ' ' + response.user.lastname, 'Authentifié');
+      this.router.navigate(['admin']);
     }
   }
 
   showError() {
     this.isLogging = false;
-    this.alert.error('Login ou mot de passe incorrect','Oops !');
+    this.alert.error('Login ou mot de passe incorrect', 'Oops !');
   }
 }

@@ -8,5 +8,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-let p = platformBrowserDynamic().bootstrapModule(AppModule);
-p.then(() => { (<any>window).appBootstrap && (<any>window).appBootstrap(); })
+const p = platformBrowserDynamic().bootstrapModule(AppModule);
+p.then(() => {
+  (window as any).appBootstrap && (window as any).appBootstrap();
+});
