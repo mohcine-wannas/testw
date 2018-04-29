@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../admin/services/user.service';
 import { SessionDataService } from './session-data.service';
 import { SessionTokenService } from './session-token.service';
 import { SessionConstants } from './session.constants';
@@ -13,7 +14,8 @@ export class SessionService {
   constructor(public router: Router,
               public sessionDataService: SessionDataService,
               public sessionTokenService: SessionTokenService,
-              public sessionConstants: SessionConstants) {
+              public sessionConstants: SessionConstants,
+              public userService: UserService) {
   }
 
   // create session
@@ -38,6 +40,11 @@ export class SessionService {
   }
 
   logout(goToLoginPage?: boolean) {
+    this.userService.clearFcmToken(this.sessionDataService.getUser().id).subscribe(
+      res => {
+      },
+      err => console.log(err)
+    );
     this.clear();
     if (goToLoginPage) {
       this.router.navigate(['/login']);

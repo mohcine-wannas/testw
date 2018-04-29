@@ -1,0 +1,61 @@
+<div class="dox-wrapper">
+  <div class="dox-wrapper dox-header">
+    <section>
+      <h1>Vos notifications</h1>
+
+    </section>
+  </div>
+
+  <section class="dox-content" hash-listener="" style="position:relative;">
+    <div class="dox-content-wrapper">
+      <a id="top"></a>
+      <article *ngIf="error">
+        <div class="alert alert-danger alert-sm">
+          <div class="alert-items">
+            <div class="alert-item static">
+              <div class="alert-icon-wrapper">
+                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+              </div>
+              <span class="alert-text">
+                                    {{error}}
+                                </span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article *ngIf="!error">
+        <div class="row" *ngIf="isLoading">
+          <div class="col-xs-12">
+                            <span class="spinner spinner-md">
+                                Chargement...
+                            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <clr-datagrid #grid class="col-xs-12 datagrid-compact" *ngIf="notifications">
+              <clr-dg-column>Titre</clr-dg-column>
+              <clr-dg-column>Message</clr-dg-column>
+              <clr-dg-column>Date</clr-dg-column>
+              <clr-dg-placeholder>Aucune notification n'est trouvée</clr-dg-placeholder>
+              <clr-dg-row *clrDgItems="let notification of notifications" [ngClass]="{'data-grid-row-not-seen':!notification.isSeen}">
+                <clr-dg-cell>{{notification.title | titlecase}}</clr-dg-cell>
+                <clr-dg-cell>{{notification.body | titlecase}}</clr-dg-cell>
+                <clr-dg-cell>{{notification.createdOn | date:'dd-MM-yyyy'}}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Notifications
+                <clr-dg-pagination #pagination [clrDgPageSize]="100"
+                                   [clrDgTotalItems]=notifications.length></clr-dg-pagination>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </section>
+</div>

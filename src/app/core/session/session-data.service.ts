@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { School } from 'app/admin/models/school.model';
+import { Subject } from 'rxjs/Subject';
 import { SessionConstants } from './session.constants';
 
 @Injectable()
@@ -11,6 +12,9 @@ export class SessionDataService {
   operations: any;
   schoolDetails: any;
   currentCycle: any;
+
+  sessionDataSubject: Subject<number> = new Subject<number>();
+
 
   constructor(public sessionConstants: SessionConstants) {
   }
@@ -73,6 +77,10 @@ export class SessionDataService {
   getSchoolName(): string {
     const school: School = this.getCurrentSchool();
     return school.nom + ' : ' + school.code;
+  }
+
+  getUser() {
+    return this.data.user;
   }
 
   updateSchool(school: School): any {

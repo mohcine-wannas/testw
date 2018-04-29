@@ -20,9 +20,14 @@ import { UserService } from 'app/admin/services/user.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClarityModule } from 'clarity-angular';
 import { AdminRoutingModule } from './admin-routing.module';
+import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
+import { NotificationListComponent } from './administration/notification-list/notification-list.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { MainService } from './main.service';
+import { AffectationUniteService } from './services/affectation-unite.service';
+import { NotificationService } from './services/notification.service';
+import { UniteService } from './services/unite.service';
 
 @NgModule({
   imports: [
@@ -45,6 +50,8 @@ import { MainService } from './main.service';
     GestionClassesComponent,
     ReferentielLayoutComponent,
     EleveListComponent,
+    NotificationListComponent,
+    AffectationUniteComponent
   ],
   providers: [
     MainService,
@@ -55,7 +62,10 @@ import { MainService } from './main.service';
     AffectationCycleService,
     UserService,
     EleveService,
-    ClasseService
+    ClasseService,
+    NotificationService,
+    UniteService,
+    AffectationUniteService
   ]
 })
 export class AdminModule {

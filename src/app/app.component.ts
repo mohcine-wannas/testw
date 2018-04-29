@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { SessionService } from 'app/core/session/session.service';
+import { MessagingService } from './admin/services/messaging.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,14 @@ import { SessionService } from 'app/core/session/session.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
 
   constructor(@Inject('API_URL') private url: string,
-              private sessionService: SessionService) {
+              private sessionService: SessionService, public messagingService: MessagingService) {
+    this.messagingService.receiveMessage();
     this.sessionService.load();
+    if (this.sessionService.isAuthenticated()) {
+      this.messagingService.getPermissison();
+      //this.messagingService.tokenRefresh();
+    }
   }
 }

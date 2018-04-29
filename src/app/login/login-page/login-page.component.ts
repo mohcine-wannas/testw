@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { JwtHelper } from 'angular2-jwt';
 import { SessionService } from 'app/core/session/session.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { ToastService } from 'app/shared/services/toast.service';
+import { MessagingService } from '../../admin/services/messaging.service';
 import { LoginService } from '../login.service';
 
 @Component({
@@ -15,7 +14,6 @@ import { LoginService } from '../login.service';
 export class LoginPageComponent implements OnInit {
   username: string;
   password: string;
-  jwtHelper: JwtHelper = new JwtHelper();
   isLogging = false;
   passwordTouched = false;
   usernameTouched = false;
@@ -24,7 +22,8 @@ export class LoginPageComponent implements OnInit {
               private router: Router,
               private alert: AlertService,
               private toastService: ToastService,
-              private sessionService: SessionService) {
+              private sessionService: SessionService,
+              public messagingService: MessagingService) {
   }
 
   ngOnInit() {
@@ -82,6 +81,8 @@ export class LoginPageComponent implements OnInit {
       this.showError();
     } else {
       this.isLogging = false;
+      this.messagingService.getPermissison();
+      //this.messagingService.tokenRefresh();
       this.toastService.success('Bienvenue ' + +response.user.firstname + ' ' + response.user.lastname, 'Authentifié');
       this.router.navigate(['admin']);
     }

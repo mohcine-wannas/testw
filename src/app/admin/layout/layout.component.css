@@ -1,0 +1,22 @@
+.icon-wrapper{
+  position:relative;
+  float:left;
+}
+
+.badge{
+  background: #ff5533;
+  width: 40%;
+  height: 40%;
+  margin: 22px;
+  border-radius: 134%;
+  position: relative;
+  top: -16px;
+  right: -5px;
+  padding: 6px;
+  font-weight:bold;
+}
+
+.notif-back-ground-color{
+  background-color: #035e80 !important;
+}
+

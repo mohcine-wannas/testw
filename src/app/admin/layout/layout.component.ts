@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Cycle } from 'app/admin/models/cycle.model';
 import { SessionDataService } from 'app/core/session/session-data.service';
 import { SessionService } from 'app/core/session/session.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-layout',
@@ -17,13 +18,27 @@ export class LayoutComponent implements OnInit {
   cycles: Cycle[] = [];
   currentCycle: Cycle = new Cycle();
 
+  notifNumber: number;
+
   constructor(private sessionService: SessionService,
               private sessionDataService: SessionDataService,
-              private router: Router) {
-
+              private router: Router,
+              private notificationService: NotificationService) {
     this.fullname = sessionDataService.getSchoolName();
     this.cycles = sessionDataService.schoolDetails.cycles;
+    this.notificationService.notificationSubject.subscribe(
+      res => this.notifNumber = res
+    );
+  }
 
+  ngOnInit() {
+    if (this.sessionService.isAuthenticated()) {
+      this.notificationService.getNotSeenNumber(this.sessionDataService.getUser().id).subscribe(
+        res => {
+          this.notificationService.notificationNumber = res;
+        }
+      );
+    }
   }
 
   logout() {
@@ -34,12 +49,10 @@ export class LayoutComponent implements OnInit {
     this.router.navigate(['admin/profile']);
   }
 
-  ngOnInit() {
-  }
-
   currentCycleChanged(cycle: Cycle) {
     this.currentCycle = cycle;
     this.sessionDataService.schoolDetails.currentCycle = this.currentCycle.id;
+    this.sessionDataService.sessionDataSubject.next(this.currentCycle.id);
   }
 
   getCurrentCycleLibelle() {
