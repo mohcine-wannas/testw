@@ -30,7 +30,8 @@
     "no-angle-bracket-type-assertion": true,
     "no-bitwise": true,
     "no-consecutive-blank-lines": [true, 2],
-    "no-console": [true, "debug", "log", "time", "timeEnd", "trace", "info"],
+    //TODO : Add "log" in prod.
+    "no-console": [true, "debug", "time", "timeEnd", "trace", "info"],
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-variable": true,

@@ -10,6 +10,8 @@ import { SchoolInfoComponent } from 'app/admin/profile/school-info/school-info.c
 import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
 import { AuthGuard } from '../auth-guard.service';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
+import { NotificationListComponent } from './administration/notification-list/notification-list.component';
 import { LayoutComponent } from './layout/layout.component';
 // pages
 import { MainPageComponent } from './main-page/main-page.component';
@@ -25,6 +27,7 @@ const routes: Routes = [
       { path: 'contacts/:id/:state', component: ContactFormComponent },
       { path: 'contacts/:state', component: ContactFormComponent },
       { path: 'contacts', component: ContactListComponent },
+      { path: 'notifications', component: NotificationListComponent },
       {
         path: 'profile', component: ProfileLayoutComponent, children: [
           { path: '', redirectTo: 'ecole', pathMatch: 'full' },
@@ -38,6 +41,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'ecole', pathMatch: 'full' },
           { path: 'classes', component: GestionClassesComponent },
           { path: 'eleves', component: EleveListComponent },
+          { path: 'unites', component: AffectationUniteComponent },
           { path: '**', component: PageNotFoundComponent },
         ]
       },

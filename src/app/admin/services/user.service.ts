@@ -22,4 +22,16 @@ export class UserService extends RestService<User> {
       .catch(this.handleError);
   }
 
+  setFcmToken(id, token): Observable<any> {
+    const url = '/' + id + '/fcmWebToken';
+    return this.http.put(this.getFullUrl(url), token)
+      .catch(this.handleError);
+  }
+
+  clearFcmToken(id): Observable<any> {
+    const url = '/' + id + '/fcmWebToken';
+    return this.http.delete(this.getFullUrl(url))
+      .catch(this.handleError);
+  }
+
 }

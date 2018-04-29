@@ -5,6 +5,7 @@ import { SessionDataService } from 'app/core/session/session-data.service';
 import { SessionTokenService } from 'app/core/session/session-token.service';
 import { SessionConstants } from 'app/core/session/session.constants';
 import { SessionService } from 'app/core/session/session.service';
+import { UserService } from '../admin/services/user.service';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SessionService } from 'app/core/session/session.service';
     SessionService,
     SessionTokenService,
     SessionDataService,
-    SessionConstants
+    SessionConstants,
+    UserService
   ],
   exports: []
 })
