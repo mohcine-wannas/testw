@@ -34,6 +34,13 @@ export class HttpInterceptorImpl implements HttpInterceptor {
       req = req.clone({ headers: req.headers.set('Content-Type', 'application/json') });
     }
 
+    if (req.headers.has('Content-Type')) {
+      const content = req.headers.get('Content-Type');
+      if (content === '') {
+        req = req.clone({ headers: req.headers.delete('Content-Type') });
+      }
+    }
+
     if (currentCycle && !req.headers.has('x-current-cycle')) {
       req = req.clone({ headers: req.headers.set('x-current-cycle', String(currentCycle)) });
     }

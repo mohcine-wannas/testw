@@ -11,8 +11,16 @@ export class Eleve extends User implements BaseModel {
   hasAffectations: boolean;
   enabledAffectations: boolean;
 
+  affectationParents: AffectationParents[];
+
   constructor(values: Object = {}) {
     super(values);
     Object.assign(this, values);
   }
+}
+
+export class AffectationParents extends BaseModel {
+  parent: User; //TODO use Parent Class;
+  enabled: boolean;
+  parentingRelationship: string;
 }

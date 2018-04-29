@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
 import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
-import { Eleve } from 'app/admin/models/eleve.model';
+import { AffectationParents, Eleve } from 'app/admin/models/eleve.model';
 import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
 import { Classe } from 'app/admin/models/groupe-appellation.model.1';
 import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
@@ -25,13 +25,15 @@ export class EleveListComponent implements OnInit {
   classe: Classe;
   classes: Classe[];
   error: string;
+  public opened: Boolean = false;
   @ViewChild('grid') public grid;
 
-
+  selectedStudent: Eleve;
   affectationNiveaux: AffectationNiveau[];
   selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
   selectedClasse: Classe;
-
+  selectedAffectationNiveauForUpload: AffectationNiveau = new AffectationNiveau();
+  selectedClasseForUpload: Classe;
   constructor(public eleveService: EleveService,
               public classeService: ClasseService,
               private alert: AlertService,
@@ -99,14 +101,43 @@ export class EleveListComponent implements OnInit {
     this.alert.error(error);
   }
 
-  enableParent(eleve: Eleve) {
-    this.eleveService.enableParent(eleve.id, eleve.enabledAffectations).subscribe(
+  enableParent(affectation: AffectationParents, eleve: Eleve) {
+    this.eleveService.enableParent(affectation.id, affectation.enabled).subscribe(
       resp => {
         this.toastyService.success('Operation effectuée avec succès');
-        eleve.hasToBeEnabled = false;
+
+        let allEnabled = true;
+        eleve.affectationParents.forEach((aff) => {
+          if (aff.enabled === undefined) {
+            allEnabled = false;
+          }
+        });
+        if (allEnabled) {
+          eleve.hasToBeEnabled = false;
+        }
       },
       error => this.showError(error)
     );
+  }
+
+  openParentDialog(eleve: Eleve) {
+   this.selectedStudent = eleve;
+   this.opened = true;
+  }
+
+  fileToUpload: File = null;
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+
+  uploadFileMassar() {
+    const formData: FormData = new FormData();
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    this.classeService.postMassarFile(this.selectedClasseForUpload.id, formData).subscribe(data => {
+      this.alert.success('Succes', data+' élève(s) ont été importé(s)');
+    }, error => {
+      console.log(error);
+    });
   }
 
   // goToForm(id?:number) {
