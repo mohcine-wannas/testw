@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
-import { ClarityModule } from 'clarity-angular';
+import { ClarityModule } from '@clr/angular';
 import { LoginPageComponent } from './login-page/login-page.component';
 
 import { LoginRoutingModule } from './login-routing.module';

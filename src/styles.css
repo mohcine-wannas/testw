@@ -14,14 +14,14 @@
     min-width: 2.5rem;
     border-bottom: 1px solid #9a9a9a !important;
     padding: 0 .25rem !important;
-    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;   
-    background-size: 0% 100%;      
-    transition: background-size .2s ease; 
+    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;
+    background-size: 0% 100%;
+    transition: background-size .2s ease;
 }
 .ngx-datepicker-container input.ngx-datepicker-input:focus {
-    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;   
+    background: linear-gradient(180deg,transparent 93%,#0094d2 0) no-repeat;
     background-size: 100% 100%;
-    transition: background-size .2s ease; 
+    transition: background-size .2s ease;
 }
 
 .login-wrapper, .login-wrapper .login {
@@ -90,11 +90,10 @@
     padding-left: 36px;
     padding-top: 6px;
     padding-bottom: 96px;
-    max-width: 900px;
-    width: 100%;
+    width: 95%;
     height: 100%;
   }
-  
+
   article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
     display: block;
   }
@@ -112,3 +111,52 @@
   .datagrid-body {
       overflow-y: unset !important;
   }
+
+  /*ngx Editor override*/
+.ngx-toolbar {
+  font-size: 1em !important;
+  padding: 0.2em !important;
+}
+
+.ngx-toolbar .ngx-toolbar-set .ngx-editor-button {
+  padding: 0.1rem !important;
+  min-width: 1.5rem !important;
+}
+
+.ngx-toolbar[_ngcontent-c7] {
+  font-size: 1em !important;
+  padding: .1em !important;
+}
+
+.ngx-toolbar button {
+  margin: 0px !important;
+}
+
+.ngxePopover .btn.btn-primary {
+  font-size: 0.5rem !important;
+  line-height: 0.45rem !important;
+}
+.ngxePopover form .form-group {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.ngxe-popover div.extra-gt1 , div.ngxe-popover.extra-gt1, div.ngxe-popover.imgc-ctnr, .ngxe-popover div.extra-gt, div.ngxe-popover.extra-gt {
+  min-width: 100% !important;
+  padding-top: 0 !important;
+}
+
+.ngxePopover form .form-group .form-control-sm, .ngxe-popover.imgc-ctnr .imgc-topbar.two-tabs span  {
+  font-size: 0.6rem !important;;
+}
+.ngxePopover form label {
+  font-size: 0.6rem !important;
+}
+
+.form-group.invalid label {
+  color: #c92100 !important;
+  font-weight: bold;
+}
+.form-group.invalid .ngx-toolbar  {
+  background-color: #f5dbd91c !important;
+}

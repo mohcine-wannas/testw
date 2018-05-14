@@ -15,7 +15,7 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
   protected form: any = this;
   protected id: number;
   protected model: T;
-  private toastService: ToastService;
+  protected toastService: ToastService;
   protected restService: RestService<BaseModel>;
 
   // protected restService: RestService<BaseModel>;

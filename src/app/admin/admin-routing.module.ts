@@ -11,6 +11,7 @@ import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile
 import { AuthGuard } from '../auth-guard.service';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
+import { MessageParentFormComponent } from './administration/message-parent-form/message-parent-form.component';
 import { NotificationListComponent } from './administration/notification-list/notification-list.component';
 import { LayoutComponent } from './layout/layout.component';
 // pages
@@ -42,6 +43,13 @@ const routes: Routes = [
           { path: 'classes', component: GestionClassesComponent },
           { path: 'eleves', component: EleveListComponent },
           { path: 'unites', component: AffectationUniteComponent },
+          { path: '**', component: PageNotFoundComponent },
+        ]
+      },
+      {
+        path: 'communication', component: ReferentielLayoutComponent, children: [
+          { path: '', redirectTo: 'main', pathMatch: 'full' },
+          { path: 'send-to-parent', component: MessageParentFormComponent },
           { path: '**', component: PageNotFoundComponent },
         ]
       },

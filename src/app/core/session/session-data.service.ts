@@ -74,6 +74,10 @@ export class SessionDataService {
     return this.currentCycle;
   }
 
+  getCurrentName() {
+    return this.currentCycle;
+  }
+
   getSchoolName(): string {
     const school: School = this.getCurrentSchool();
     return school.nom + ' : ' + school.code;

@@ -3,12 +3,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { ClarityModule } from '@clr/angular';
 import { AngularFireModule } from 'angularfire2';
 import { HttpInterceptorImpl } from 'app/core/interceptors/http.interceptor';
 import { ServiceLocator } from 'app/shared/services/service-locator.service';
 import { SharedModule } from 'app/shared/shared.module';
 
-import { ClarityModule } from 'clarity-angular';
 
 import { environment } from '../environments/environment';
 import { AdminModule } from './admin/admin.module';
@@ -29,7 +29,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    ClarityModule.forRoot(),
+    ClarityModule,
     AppRoutingModule,
     LoginModule,
     AdminModule,

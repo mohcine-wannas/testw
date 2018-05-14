@@ -2,7 +2,7 @@ import { BaseModel } from 'app/shared/models/base-model.model';
 
 export class Classe extends BaseModel {
 
-  libelle: String;
+  libelle: string;
 
   constructor(values: Object = {}) {
     super(values);

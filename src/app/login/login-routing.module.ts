@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClarityModule } from 'clarity-angular';
 
 import { LoginPageComponent } from './login-page/login-page.component';
 
@@ -10,8 +9,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes),
-    ClarityModule
+    RouterModule.forChild(routes)
   ],
   exports: [RouterModule]
 })
