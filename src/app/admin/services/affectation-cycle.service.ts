@@ -31,5 +31,12 @@ export class AffectationCycleService extends RestService<AffectationCycle> {
       .catch(this.handleError);
   }
 
+  getAffectationCycleBySchoolCodeAndByCycleId(schoolCode: string, cycleId: number): Observable<AffectationCycle> {
+    return this.http.get(this.getFullUrl('/' + schoolCode + '/school/' + cycleId + '/cycle'))
+      .map((res: AffectationCycle) => {
+        return res;
+      })
+      .catch(this.handleError);
+  }
 
 }

@@ -20,7 +20,7 @@
 
     <div class="row" *ngIf="!error" formArrayName="affectationsUnite">
       <div class="col-xs-12 col-md-12">
-        <div class="form-group">
+        <div class="form-group" style="padding-left: 1.5rem;">
           <div class="col-md-4" *ngFor="let element of entityForm.get('affectationsUnite').controls; let ind = index"
                [formGroupName]="ind">
             <clr-checkbox formControlName="enabled"
@@ -39,6 +39,8 @@
                 Connexion en cours...
             </span>
     </div>
-    <button *ngIf="!error" class="btn btn-primary " type="submit" [disabled]="submitting">Enregistrer</button>
+    <button *ngIf="!error" class="btn btn-primary " type="submit" [clrLoading]="submitting" [disabled]="submitting"
+    style="position: absolute;right: 0;">Enregistrer
+    </button>
   </section>
 </form>

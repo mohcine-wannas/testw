@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClarityModule } from 'clarity-angular';
 
-import { LoginPageComponent } from './login-page/login-page.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: 'login/:user', component: LoginPageComponent },
+  { path: 'home', component: HomeComponent }
 ];
 
 @NgModule({
@@ -15,5 +15,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class LoginRoutingModule {
+export class HomeRoutingModule {
 }

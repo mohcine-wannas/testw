@@ -65,7 +65,7 @@ export class RestService<T extends BaseModel> {
       .catch(this.handleError);
   }
 
-  delete(id: string): Observable<void> {
+  delete(id: number): Observable<void> {
     return this.http.delete(this.getFullUrl('/' + id))
       .map((res: Response) => {
         return;
@@ -74,7 +74,7 @@ export class RestService<T extends BaseModel> {
   }
 
   deleteObject(object: T): Observable<void> {
-    return this.delete('' + object.id);
+    return this.delete(object.id);
   }
 
   list(object: any): Observable<IServerResponse> { //TODO make interface

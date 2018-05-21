@@ -19,9 +19,11 @@ import { SchoolService } from 'app/admin/services/school.service';
 import { UserService } from 'app/admin/services/user.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClarityModule } from 'clarity-angular';
+import { ProfesseurService } from '../prof/shared/services/professeur.service';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
 import { NotificationListComponent } from './administration/notification-list/notification-list.component';
+import { ProfsListComponent } from './administration/profs-list/profs-list.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { MainService } from './main.service';
@@ -51,7 +53,8 @@ import { UniteService } from './services/unite.service';
     ReferentielLayoutComponent,
     EleveListComponent,
     NotificationListComponent,
-    AffectationUniteComponent
+    AffectationUniteComponent,
+    ProfsListComponent
   ],
   providers: [
     MainService,
@@ -65,7 +68,8 @@ import { UniteService } from './services/unite.service';
     ClasseService,
     NotificationService,
     UniteService,
-    AffectationUniteService
+    AffectationUniteService,
+    ProfesseurService
   ]
 })
 export class AdminModule {

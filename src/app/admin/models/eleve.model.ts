@@ -11,6 +11,8 @@ export class Eleve extends User implements BaseModel {
   hasAffectations: boolean;
   enabledAffectations: boolean;
 
+
+
   constructor(values: Object = {}) {
     super(values);
     Object.assign(this, values);

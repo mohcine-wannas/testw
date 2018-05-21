@@ -1,0 +1,317 @@
+<div class="dox-wrapper">
+  <div class="dox-wrapper dox-header">
+    <section>
+      <h1>Gestion des professeurs</h1>
+    </section>
+  </div>
+
+  <section class="dox-content" hash-listener="" style="position:relative;">
+    <div class="dox-content-wrapper">
+      <a id="top"></a>
+      <article *ngIf="error">
+        <div class="alert alert-danger alert-sm">
+          <div class="alert-items">
+            <div class="alert-item static">
+              <div class="alert-icon-wrapper">
+                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+              </div>
+              <span class="alert-text">
+                                    {{error}}
+                                </span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article *ngIf="!error">
+
+
+        <div class="row" *ngIf="!professeurs">
+          <div class="col-xs-12">
+                            <span class="spinner spinner-md">
+                                Chargement...
+                            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <clr-datagrid #grid class="col-xs-12 datagrid-compact" *ngIf="professeurs">
+              <clr-dg-action-bar>
+                <div class="btn-group btn-primary">
+                  <button type="button" class="btn btn-sm btn-secondary btn-danger" (click)="enableAll(false)">
+                    <clr-icon shape="times"></clr-icon>
+                    Tout suspendre
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary btn-success" (click)="enableAll(true)">
+                    <clr-icon shape="check"></clr-icon>
+                    Tout valider
+                  </button>
+                </div>
+              </clr-dg-action-bar>
+
+              <clr-dg-column [clrDgSortBy]="fullNameProfComparator">
+                Professeurs
+                <clr-dg-string-filter [clrDgStringFilter]="fullNameProfFilter"></clr-dg-string-filter>
+              </clr-dg-column>
+              <clr-dg-column [clrDgSortBy]="phoneNumberProfComparator">
+                Téléphone
+                <clr-dg-string-filter [clrDgStringFilter]="phoneNumberProfFilter"></clr-dg-string-filter>
+              </clr-dg-column>
+              <clr-dg-column>Unité</clr-dg-column>
+              <clr-dg-column>Niveau/Classe</clr-dg-column>
+
+              <clr-dg-column>Valider Compte</clr-dg-column>
+              <clr-dg-column>Auto Envois</clr-dg-column>
+
+              <clr-dg-column>Actions</clr-dg-column>
+              <clr-dg-placeholder>aucune donnée disponible</clr-dg-placeholder>
+              <clr-dg-row *clrDgItems="let prof of professeurs" [clrDgItem]="prof">
+
+                <clr-dg-cell>{{prof.fullname | titlecase}}</clr-dg-cell>
+                <clr-dg-cell>{{prof.phoneNumber | titlecase}}</clr-dg-cell>
+
+                <clr-dg-cell>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="goToModalAffectationUnite(prof)">
+                    <clr-icon shape="pencil" class="is-solid"></clr-icon>
+                  </button>
+                </clr-dg-cell>
+                <clr-dg-cell>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="goToModalAffectationNiveauClasse(prof)">
+                    <clr-icon shape="pencil" class="is-solid"></clr-icon>
+                  </button>
+                </clr-dg-cell>
+
+                <clr-dg-cell>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="toggle_enabled_{{prof.id}}" [(ngModel)]="prof.enabled"
+                           (ngModelChange)="enableProf(prof)">
+                    <label for="toggle_enabled_{{prof.id}}"></label>
+                  </div>
+                </clr-dg-cell>
+                <clr-dg-cell>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="toggle_auto_send_{{prof.id}}" [(ngModel)]="prof.autoSend"
+                           (ngModelChange)="autoSendProf(prof)">
+                    <label for="toggle_auto_send_{{prof.id}}"></label>
+                  </div>
+                </clr-dg-cell>
+
+                <clr-dg-cell>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="deleteProf(prof)">
+                    <clr-icon shape="trash" class="is-solid"></clr-icon>
+                  </button>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="updatePassword(prof)">
+                    <clr-icon shape="lock" class="is-solid"></clr-icon>
+                  </button>
+                </clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} sur {{pagination.totalItems}} Professeurs
+                <clr-dg-pagination #pagination [clrDgPageSize]="10"
+                                   [clrDgTotalItems]=professeurs.length></clr-dg-pagination>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </section>
+</div>
+
+
+<clr-modal [(clrModalOpen)]="modalUniteOpned">
+  <h3 class="modal-title">Unités enseignées</h3>
+  <div class="modal-body">
+
+    <form *ngIf="uniteEditForm" [formGroup]="uniteEditForm"
+          class="login form-validate form-horizontal mb-lg dox-content-wrapper"
+          role="form" name="uniteEditForm"
+          id="uniteEditForm" novalidate="">
+      <div class="login-group" style="padding: 0.5rem 0 0 0;">
+
+        <div class="row" formArrayName="affectationsUniteProf">
+          <div class="col-xs-12 col-md-12">
+            <div class="form-group" style="padding-left: 1.5rem;">
+              <div class="col-md-6"
+                   *ngFor="let element of uniteEditForm.get('affectationsUniteProf').controls; let i = index"
+                   [formGroupName]="i">
+                <clr-checkbox formControlName="enabled"
+                              [clrInline]="true">
+                  {{element.get('unite').value.libelle}}
+                </clr-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modalUniteOpned = false">Annuler</button>
+    <button type="button" class="btn btn-primary" (click)="submitFormUnite($event)">Enregistrer les modifications
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="modalNiveauOpned">
+  <h3 class="modal-title">Niveau/Classe</h3>
+  <div class="modal-body">
+
+    <form *ngIf="niveauEditForm" [formGroup]="niveauEditForm"
+          class="login form-validate form-horizontal mb-lg dox-content-wrapper"
+          role="form" name="niveauEditForm"
+          id="niveauEditForm" novalidate="">
+      <div class="login-group" style="padding: 0.5rem 0 0 0;">
+
+        <table class="table" formArrayName="affectationsNiveauClasseProf">
+          <thead>
+          <tr>
+            <th>Niveau</th>
+            <th>Classe</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let affectation of niveauEditForm.get('affectationsNiveauClasseProf').controls; let ind = index"
+              [formGroupName]="ind">
+            <td>
+              <label for="affectation-niveau" aria-haspopup="true" role="tooltip"
+                     class="tooltip tooltip-validation tooltip-md"
+                     [class.invalid]="isNotValidRequired(affectation.get('niveau'))">
+                <div class="select form-control">
+                  <select id="affectation-niveau" (change)="refreshClasses(ind)"
+                          name="niveau" formControlName="niveau" required>
+                    <option *ngFor="let element of affectationNiveaux" [ngValue]="element.niveau">
+                      {{niveauAppellation[element.niveau.id]}}
+                    </option>
+                  </select>
+                </div>
+                <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+              </label>
+            </td>
+            <td>
+              <label for="affectation-classe" aria-haspopup="true" role="tooltip"
+                     class="tooltip tooltip-validation tooltip-md"
+                     [class.invalid]="isNotValidRequired(affectation.get('classe'))">
+                <div class="select form-control">
+                  <select id="affectation-classe"
+                          name="classe" formControlName="classe" required>
+                    <option [ngValue]="" *ngIf="affectation.get('classes').value">
+                    </option>
+                    <option *ngFor="let element of affectation.get('classes').value" [ngValue]="element">
+                      {{element.libelle}}
+                    </option>
+                  </select>
+                </div>
+                <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+              </label>
+            </td>
+            <td>
+              <clr-icon shape="trash" (click)="popLine(ind)"></clr-icon>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <clr-icon shape="plus" (click)="addNewLine()"></clr-icon>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modalNiveauOpned = false">Annuler</button>
+    <button type="button" class="btn btn-primary" (click)="submitFormNiveau($event)">Enregistrer les modifications
+    </button>
+  </div>
+</clr-modal>
+
+
+<clr-modal [(clrModalOpen)]="modalChangePasswordOpned">
+        <h3 class="modal-title">Changement de mot de passe</h3>
+        <div class="modal-body">
+          <form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form"
+                name="entityForm"
+                id="entityForm" novalidate="">
+
+            <section class="form-block">
+              <div class="form-group">
+                <label for="oldPassword">Ancien mot de passe</label>
+                <label for="oldPassword" aria-haspopup="true" role="tooltip"
+                       class="tooltip tooltip-validation tooltip-md"
+                       [class.invalid]="isNotValid('oldPassword')">
+                  <input type="password" id="oldPassword" placeholder="Entrez l'ancien mot de passe" required
+                         name="oldPassword" formControlName="oldPassword" size="28">
+                  <span class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label for="newPassword">Nouveau mot de passe</label>
+                <label for="newPassword" aria-haspopup="true" role="tooltip"
+                       class="tooltip tooltip-validation tooltip-md"
+                       [class.invalid]="isNotValid('newPassword') || isNotValidConfirmation()">
+                  <input type="password" id="newPassword" placeholder="Entrez le nouveau mot de passe" required
+                         name="newPassword" formControlName="newPassword" size="28">
+                  <span class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="confirmation">Confirmation du mot de passe</label>
+                <label for="confirmation" aria-haspopup="true" role="tooltip"
+                       class="tooltip tooltip-validation tooltip-md"
+                       [class.invalid]="isNotValid('confirmation') || isNotValidConfirmation()">
+                  <input type="password" id="confirmation" placeholder="Resaisissez le mot de passe" required
+                         name="confirmation" size="28"
+                         formControlName="confirmation">
+                  <span *ngIf="isNotValidRequired(entityForm.controls['confirmation'])" class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+                </label>
+              </div>
+              <div *ngIf="isNotValidConfirmation()" class="alert alert-danger alert-sm">
+                <div class="alert-items">
+                  <div class="alert-item static">
+                    <div class="alert-icon-wrapper">
+                      <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                    <span class="alert-text">
+                        Le mot de passe et la confirmation ne sont pas identiques
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <div style="text-align: center" *ngIf="submitting">
+        <span class="spinner spinner-inline">
+            Chargement...
+        </span>
+            <span>
+            Connexion en cours...
+        </span>
+          </div>
+          <button type="button" class="btn btn-outline" (click)="modalChangePasswordOpned = false">Annuler</button>
+          <button type="button" class="btn btn-primary" (click)="resetPassword($event)" [clrLoading]="submitting">
+            réinitialiser
+          </button>
+        </div>
+</clr-modal>
