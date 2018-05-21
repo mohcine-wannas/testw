@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 import { SharedModule } from 'app/shared/shared.module';
-import { ClarityModule } from 'clarity-angular';
 import { RegisterProfComponent } from './inscription/register-prof.component';
 
 import { ProfRoutingModule } from './prof-routing.module';
