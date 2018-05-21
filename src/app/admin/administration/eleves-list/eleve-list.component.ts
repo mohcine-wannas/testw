@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
 import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
@@ -10,6 +11,7 @@ import { ClasseService } from 'app/admin/services/classe.service';
 import { EleveService } from 'app/admin/services/eleve.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { ToastyService } from 'ng2-toasty';
+import { FormComponent } from '../../../shared/components/form.component';
 
 @Component({
   selector: 'app-eleve-list',
@@ -20,7 +22,7 @@ import { ToastyService } from 'ng2-toasty';
     class: 'dox-content-panel',
   }
 })
-export class EleveListComponent implements OnInit {
+export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
   niveauAppellation: any[];
   classe: Classe;
   classes: Classe[];
@@ -29,6 +31,8 @@ export class EleveListComponent implements OnInit {
   @ViewChild('grid') public grid;
 
   selectedStudent: Eleve;
+  eleve: Eleve;
+
   affectationNiveaux: AffectationNiveau[];
   selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
   selectedClasse: Classe;
@@ -39,7 +43,9 @@ export class EleveListComponent implements OnInit {
               private alert: AlertService,
               private router: Router,
               private affectationCycleService: AffectationCycleService,
-              private toastyService: ToastyService) {
+              private toastyService: ToastyService,
+              private fb: FormBuilder) {
+    super();
   }
 
   eleves: Eleve[];
@@ -137,6 +143,15 @@ export class EleveListComponent implements OnInit {
       this.alert.success('Succes', data+' élève(s) ont été importé(s)');
     }, error => {
       console.log(error);
+    });
+  }
+
+  createForm(model?: Eleve) {
+    this.eleve = new Eleve();
+    this.entityForm = this.fb.group({
+      'codeMassar': [this.eleve.codeMassar, Validators.required],
+      'firstname': [this.eleve.firstname, Validators.required],
+      'lastname': [this.eleve.lastname, Validators.required],
     });
   }
 

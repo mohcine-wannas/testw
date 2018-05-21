@@ -44,6 +44,17 @@ export class AlertService {
 
   }
 
+  checkedSuccess() {
+
+    const option: SweetAlertOptions = {
+      type: 'success',
+      showConfirmButton: false,
+      timer: 1000
+    };
+    swal(option);
+
+  }
+
   serverError() {
     const option: SweetAlertOptions = {
       title: 'Une erreur serveur est survenue, Merci de réessayer plus tard',
@@ -64,6 +75,21 @@ export class AlertService {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, Je suis sûr !',
       cancelButtonText: 'Annulé'
+    };
+    return swal(option);
+  }
+
+  confirmSubmit(message: string) {
+    const option: SweetAlertOptions = {
+      title: 'Confirmation',
+      text: message,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#62a420',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Non',
+      confirmButtonText: 'Oui',
+      reverseButtons: true
     };
     return swal(option);
   }

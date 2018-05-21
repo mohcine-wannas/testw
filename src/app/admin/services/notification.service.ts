@@ -9,6 +9,7 @@ import { Notification } from '../models/Notification.model';
 export class NotificationService extends RestService<Notification> {
 
   notificationSubject: Subject<number> = new Subject<number>();
+  notificationListSubject: Subject<number> = new Subject<number>();
   _notificationNumber: number;
 
   constructor(@Inject('API_URL') protected baseUrl: string, protected http: HttpClient) {
@@ -23,6 +24,9 @@ export class NotificationService extends RestService<Notification> {
   set notificationNumber(value: number) {
     this.notificationSubject.next(value);
     this._notificationNumber = value;
+    if (value > 0) {
+      this.notificationListSubject.next(value);
+    }
   }
 
   getNotSeenNumber(id): Observable<any> {

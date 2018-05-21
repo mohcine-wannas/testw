@@ -47,7 +47,7 @@ export class SessionService {
     );
     this.clear();
     if (goToLoginPage) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/home']);
     }
   }
 

@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { EleveListComponent } from 'app/admin/administration/eleves-list/eleve-list.component';
 import { GestionClassesComponent } from 'app/admin/administration/gestion-classes/gestion-classes.component';
 import { ReferentielLayoutComponent } from 'app/admin/administration/referentiel-layout/referentiel-layout.component';
-import { ClarityModule } from '@clr/angular';
 import { ContactFormComponent } from 'app/admin/contact-form/contact-form.component';
 import { ContactListComponent } from 'app/admin/contact-list/contact-list.component';
 import { ContactService } from 'app/admin/contact.service';
@@ -19,10 +18,13 @@ import { EleveService } from 'app/admin/services/eleve.service';
 import { SchoolService } from 'app/admin/services/school.service';
 import { UserService } from 'app/admin/services/user.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { ClarityModule } from 'clarity-angular';
+import { ProfesseurService } from '../prof/shared/services/professeur.service';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
 import { MessageParentFormComponent } from './administration/message-parent-form/message-parent-form.component';
 import { NotificationListComponent } from './administration/notification-list/notification-list.component';
+import { ProfsListComponent } from './administration/profs-list/profs-list.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { MainService } from './main.service';
@@ -62,7 +64,8 @@ import {LazLoadedElevesComponent} from "./administration/message-parent-form/laz
     NotificationListComponent,
     AffectationUniteComponent,
     MessageParentFormComponent,
-    LazLoadedElevesComponent
+    LazLoadedElevesComponent,
+    ProfsListComponent
   ],
   providers: [
     MainService,
@@ -77,7 +80,8 @@ import {LazLoadedElevesComponent} from "./administration/message-parent-form/laz
     NotificationService,
     UniteService,
     AffectationUniteService,
-    CommunicationAdministrationService
+    CommunicationAdministrationService,
+    ProfesseurService
   ]
 })
 export class AdminModule {

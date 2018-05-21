@@ -1,5 +1,5 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,9 +16,11 @@ import { MessagingService } from './admin/services/messaging.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './auth-guard.service';
+import { HomeModule } from './home/home.module';
 
 import { LoginModule } from './login/login.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProfModule } from './prof/prof.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     AppRoutingModule,
     LoginModule,
     AdminModule,
+    HomeModule,
+    ProfModule,
     SharedModule,
     AngularFireModule.initializeApp(environment.firebase),
   ],

@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
 import { MessageParentFormComponent } from './administration/message-parent-form/message-parent-form.component';
 import { NotificationListComponent } from './administration/notification-list/notification-list.component';
+import { ProfsListComponent } from './administration/profs-list/profs-list.component';
 import { LayoutComponent } from './layout/layout.component';
 // pages
 import { MainPageComponent } from './main-page/main-page.component';
@@ -43,6 +44,7 @@ const routes: Routes = [
           { path: 'classes', component: GestionClassesComponent },
           { path: 'eleves', component: EleveListComponent },
           { path: 'unites', component: AffectationUniteComponent },
+          { path: 'professeurs', component: ProfsListComponent },
           { path: '**', component: PageNotFoundComponent },
         ]
       },

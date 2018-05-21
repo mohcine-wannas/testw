@@ -1,0 +1,246 @@
+<clr-main-container>
+  <clr-header class="header-4">
+    <div class="branding">
+      <a class="nav-link">
+        <img style="height:100%;opacity:0.8" src="assets/img/logo-b.png" alt="Tawassol"/>
+      </a>
+    </div>
+  </clr-header>
+  <div class="login-wrapper" *ngIf="!isValid">
+    <form class="login" #validateSchoForm="ngForm">
+      <label class="title" style="text-align: center">
+        Inscription
+      </label>
+      <div class="login-group">
+        <label for="school-code" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="schoolCodeInput.invalid && (schoolCodeInput.dirty || schoolCodeInput.touched)">
+
+          <input id="school-code" [(ngModel)]="schoolCode" class="username" required
+                 type="text" name="schoolCode" placeholder="Code d'inscription" #schoolCodeInput="ngModel">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+
+        <div style="text-align: center" *ngIf="isLogging">
+              <span class="spinner spinner-inline">
+                  Chargement...
+              </span>
+          <span>
+                  Connexion en cours...
+              </span>
+        </div>
+        <button type="button" style="margin: 0rem 0 0 0;" (click)="validateSchoolCode()" class="btn btn-primary"
+                [disabled]="!validateSchoForm.form.valid" [clrLoading]="isLogging">Valider
+        </button>
+        <br>
+        <a (click)="goToProfLogin()" class="get-password" style="text-align: center">Connectez-Vous</a>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="login-wrapper" *ngIf="isValid">
+    <form *ngIf="entityForm" [formGroup]="entityForm"
+          class="login form-validate form-horizontal mb-lg dox-content-wrapper"
+          role="form" name="entityForm"
+          id="entityForm" novalidate="" (submit)="submitForm($event, entityForm.value)">
+      <label class="title" style="text-align: center;line-height: 0.5rem;">
+        Inscription
+      </label>
+      <div class="login-group" style="padding: 0.5rem 0 0 0;">
+        <label for="school-code-prof" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['schoolCode'])">
+
+          <input id="school-code-prof" formControlName="schoolCode" class="username" required
+                 type="text" name="schoolCode" placeholder="Code d'inscription" (keyup)="codeChanged()">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+        <label for="first-name" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['firstname'])">
+
+          <input id="first-name" formControlName="firstname" class="username" required
+                 type="text" name="firstname" placeholder="Votre prénom">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+        <label for="last-name" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['lastname'])">
+
+          <input id="last-name" formControlName="lastname" class="username" required
+                 type="text" name="lastname" placeholder="Votre nom">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+
+        <label for="cycle" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['cycle'])">
+          <div class="select form-control">
+            <select id="cycle" (change)="cycleChanged()"
+                    name="cycle" class="username"
+                    formControlName="cycle">
+              <option value="">Cycle</option>
+              <option *ngFor="let cycle of cycles" [ngValue]="cycle">{{cycle.libelle}}</option>
+            </select>
+          </div>
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+
+        <table class="table" formArrayName="affectationsNiveauClasseProf">
+          <thead>
+          <tr>
+            <th>Niveau</th>
+            <th>Classe</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let affectation of entityForm.get('affectationsNiveauClasseProf').controls; let ind = index"
+              [formGroupName]="ind">
+            <td>
+              <label for="affectation-niveau" aria-haspopup="true" role="tooltip"
+                     class="tooltip tooltip-validation tooltip-md"
+                     [class.invalid]="isNotValidRequired(affectation.get('niveau'))">
+                <div class="select form-control">
+                  <select id="affectation-niveau" (change)="refreshClasses(ind)"
+                          name="niveau" formControlName="niveau">
+                    <option *ngFor="let element of affectationNiveaux" [ngValue]="element.niveau">
+                      {{niveauAppellation[element.niveau.id]}}
+                    </option>
+                  </select>
+                </div>
+                <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+              </label>
+            </td>
+            <td>
+              <label for="affectation-classe" aria-haspopup="true" role="tooltip"
+                     class="tooltip tooltip-validation tooltip-md"
+                     [class.invalid]="isNotValidRequired(affectation.get('classe'))">
+                <div class="select form-control">
+                  <select id="affectation-classe"
+                          name="classe" formControlName="classe">
+                    <option [ngValue]="" *ngIf="affectation.get('classes').value">
+                    </option>
+                    <option *ngFor="let element of affectation.get('classes').value" [ngValue]="element">
+                      {{element.libelle}}
+                    </option>
+                  </select>
+                </div>
+                <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+              </label>
+            </td>
+            <td>
+              <clr-icon shape="trash" (click)="popLine(ind)"></clr-icon>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <clr-icon shape="plus" (click)="addNewLine()"></clr-icon>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <br>
+        <div>
+          <button class="btn btn-outline btn-block" (click)="goToModal()" style="margin: 0rem 0 0 0;">Unités
+            enseignées
+          </button>
+        </div>
+        <br>
+        <clr-modal [(clrModalOpen)]="opened">
+          <h3 class="modal-title">Unités enseignées</h3>
+          <div class="modal-body">
+            <div class="row" formArrayName="affectationsUniteProf">
+              <div class="col-xs-12 col-md-12">
+                <div class="form-group" style="padding-left: 1.5rem;">
+                  <div class="col-md-6"
+                       *ngFor="let element of entityForm.get('affectationsUniteProf').controls; let i = index"
+                       [formGroupName]="i">
+                    <clr-checkbox formControlName="enabled"
+                                  [clrInline]="true">
+                      {{element.get('unite').value.libelle}}
+                    </clr-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="opened = false">Annuler</button>
+            <button type="button" class="btn btn-primary" (click)="opened = false">Valider</button>
+          </div>
+        </clr-modal>
+
+        <label for="phoneNumber" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['phoneNumber'])">
+
+          <input id="phoneNumber" formControlName="phoneNumber" class="username" required
+                 type="number" name="phoneNumber" placeholder="Votre numéro de téléphone">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+
+        <label for="password" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['password'])">
+
+          <input id="password" formControlName="password" class="username" required
+                 type="password" name="password" placeholder="Mot de passe">
+          <span class="tooltip-content">
+                        Ce champs est obligatoire
+                </span>
+        </label>
+
+        <label for="passwordConfirm" aria-haspopup="true" role="tooltip"
+               class="tooltip tooltip-validation tooltip-md"
+               [class.invalid]="isNotValidRequired(entityForm.controls['passwordConfirm']) || !validatePassword()">
+
+          <input id="passwordConfirm" formControlName="passwordConfirm" class="username" required
+                 type="password" name="passwordConfirm" placeholder="Confirmer mot de passe">
+          <span class="tooltip-content" *ngIf="isNotValidRequired(entityForm.controls['password'])">
+                        Ce champs est obligatoire
+                </span>
+          <span class="tooltip-content" *ngIf="!validatePassword()">
+                        Les deux mots de passe sont différents
+                </span>
+        </label>
+
+        <div style="text-align: center" *ngIf="submitting">
+              <span class="spinner spinner-inline">
+                  Chargement...
+              </span>
+          <span>
+                  Connexion en cours...
+              </span>
+        </div>
+        <div>
+          <button *ngIf="!error" style="margin: 0rem 0 0 0;" class="btn btn-primary  btn-block" type="submit"
+                  [disabled]="submitting" [clrLoading]="submitting">
+            S'inscrire
+          </button>
+          <br>
+        </div>
+        <a (click)="goToProfLogin()" class="get-password" style="text-align: center">Connectez-Vous</a>
+      </div>
+    </form>
+  </div>
+</clr-main-container>

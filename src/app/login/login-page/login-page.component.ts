@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from 'app/core/session/session.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { ToastService } from 'app/shared/services/toast.service';
@@ -18,15 +18,34 @@ export class LoginPageComponent implements OnInit {
   passwordTouched = false;
   usernameTouched = false;
 
+  isAdmin = true;
+
   constructor(private loginService: LoginService,
               private router: Router,
               private alert: AlertService,
               private toastService: ToastService,
               private sessionService: SessionService,
-              public messagingService: MessagingService) {
+              public messagingService: MessagingService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe(
+      params => {
+        if (params['user']) {
+          const param = params['user'];
+          if (param === 'admin') {
+            this.isAdmin = true;
+          } else if (param === 'prof') {
+            this.isAdmin = false;
+          }
+        }
+      });
+  }
+
+
+  goToRegisterProf() {
+    this.router.navigate(['prof/register']);
   }
 
   enterLogin(event) {
