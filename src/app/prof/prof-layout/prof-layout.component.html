@@ -1,0 +1,95 @@
+<clr-main-container>
+  <clr-header class="header-4">
+    <div class="branding">
+      <a class="nav-link">
+        <img style="height:100%;opacity:0.8" src="assets/img/logo-b.png" alt="Tawassol"/>
+      </a>
+    </div>
+    <div class="header-nav">
+      <a class=" nav-link nav-icon" routerLink='/admin/main' routerLinkActive='active'>
+        <clr-icon shape="home"></clr-icon>
+      </a>
+
+      <div class="icon-wrapper" >
+        <a class=" nav-link nav-icon" routerLink='/admin/notifications' routerLinkActive='active'>
+          <clr-icon shape="bell"></clr-icon>
+          <span class="badge" *ngIf="notifNumber>0">{{notifNumber}}</span>
+        </a>
+      </div>
+
+      <span style="background-color: #035e80;line-height: 2.5rem;" class="nav-text">
+            <clr-icon shape="calendar"></clr-icon>
+            {{ getCurrentAnneScolaire()}}
+        </span>
+
+    </div>
+
+    <div class="header-actions">
+      <clr-dropdown style="background-color: #035e80;">
+        <button class="nav-text" clrDropdownTrigger>
+          {{getCurrentCycleLibelle()}}
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <clr-icon shape="caret down"></clr-icon>
+          <a *ngFor="let cycle of sessionDataService.schoolDetails.cycles" (click)="currentCycleChanged(cycle)"
+             clrDropdownItem>{{cycle.libelle}}</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+
+      <div id="avatar-wrapper" class="flex-items-xs-middle">
+        <div id="avatar"></div>
+      </div>
+      <clr-dropdown class="dropdown bottom-right">
+        <button class="nav-text" clrDropdownToggle>
+          {{ getSchoolName()}}
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <div class="dropdown-menu">
+          <a (click)="goToProfile()" clrDropdownItem>Profile</a>
+          <div class="dropdown-divider"></div>
+          <a (click)="logout()" clrDropdownItem>Déconnexion</a>
+        </div>
+      </clr-dropdown>
+    </div>
+  </clr-header>
+
+  <div class="content-container">
+    <router-outlet></router-outlet>
+
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
+      <a clrVerticalNavLink routerLink="./main/" routerLinkActive="active">
+        <clr-icon clrVerticalNavIcon shape="envelope"></clr-icon>
+        Communiquer
+      </a>
+      <clr-vertical-nav-group
+        routerLinkActive="active">
+        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+        Gérer
+        <clr-vertical-nav-group-children>
+          <a clrVerticalNavLink
+             routerLink="./gestion/classes"
+             routerLinkActive="active">
+            Gérer les classes
+          </a>
+          <a clrVerticalNavLink
+             routerLink="./gestion/unites"
+             routerLinkActive="active">
+            Gérer les unités
+          </a>
+          <a clrVerticalNavLink
+             routerLink="./gestion/eleves"
+             routerLinkActive="active">
+            Gérer les élèves
+          </a>
+          <a clrVerticalNavLink
+             routerLink="./gestion/professeurs"
+             routerLinkActive="active">
+            Gérer les professeurs
+          </a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  </div>
+
+</clr-main-container>

@@ -1,0 +1,198 @@
+<div class="dox-wrapper">
+    <div class="dox-wrapper dox-header">
+        <section>
+                <h1>Gestion des élèves</h1>
+
+        </section>
+    </div>
+
+    <section class="dox-content" hash-listener="" style="position:relative;">
+        <div class="dox-content-wrapper">
+            <a id="top"></a>
+            <article  *ngIf="error">
+                <div  class="alert alert-danger alert-sm">
+                        <div class="alert-items">
+                            <div class="alert-item static">
+                                <div class="alert-icon-wrapper">
+                                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                                <span class="alert-text">
+                                    {{error}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+            </article>
+
+            <article *ngIf="!error">
+
+
+                    <div class="row" *ngIf="!this.affectationNiveaux">
+                        <div class="col-xs-12">
+                            <span class="spinner spinner-md">
+                                Chargement...
+                            </span>
+          </div>
+        </div>
+        <div class="row" *ngIf="eleves">
+          <div class="col-xs-12">
+            <form>
+              <section class="form-block">
+                <label>Filtre</label>
+                <div class="form-group">
+                  <label for="selects_niveaux">Selectionner le niveau et le groupe</label>
+                  <div class="select">
+                    <select id="selects_niveaux" [(ngModel)]="selectedAffectationNiveau"
+                            (ngModelChange)="refreshClasses()" [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let element of affectationNiveaux" [ngValue]="element">
+                        {{niveauAppellation[element.niveau.id]}}
+                      </option>
+                      -->
+                    </select>
+                  </div>
+                  <div class="select">
+                    <select id="selects_Classe" [(ngModel)]="selectedClasse" (ngModelChange)="refresh()"
+                            [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let element of selectedAffectationNiveau.classes" [ngValue]="element">
+                        {{element.libelle}}
+                      </option>
+                      -->
+                    </select>
+                  </div>
+                </div>
+
+              </section>
+
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <clr-datagrid #grid class="col-xs-12 datagrid-compact" *ngIf="eleves">
+              <clr-dg-action-bar>
+                <div class="btn-group btn-primary">
+                  <button type="button" class="btn btn-sm btn-secondary btn-danger" (click)="enableAll(false)">
+                    <clr-icon shape="times"></clr-icon>
+                    Tout suspendre
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary btn-success" (click)="enableAll(true)">
+                    <clr-icon shape="check"></clr-icon>
+                    Tout valider
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" (click)="addNew()">
+                    <clr-icon shape="plus"></clr-icon>
+                    Nouveau élève
+                  </button>
+                </div>
+              </clr-dg-action-bar>
+              <clr-dg-column>Nom</clr-dg-column>
+              <clr-dg-column>Prenom</clr-dg-column>
+              <clr-dg-column>Code Massar</clr-dg-column>
+              <clr-dg-column>Activer</clr-dg-column>
+              <clr-dg-column>Actions</clr-dg-column>
+              <clr-dg-placeholder>aucune donnée disponible</clr-dg-placeholder>
+              <clr-dg-row *clrDgItems="let eleve of eleves" [class.hasToBeEnbaled]="eleve.hasToBeEnabled ">
+                <clr-dg-cell>{{eleve.lastname | titlecase}}</clr-dg-cell>
+                <clr-dg-cell>{{eleve.firstname | titlecase}}</clr-dg-cell>
+                <clr-dg-cell>{{eleve.codeMassar}}</clr-dg-cell>
+                <clr-dg-cell>
+                  <div class="toggle-switch">
+                    <input type="checkbox" id="toggle_{{eleve.id}}" [(ngModel)]="eleve.enabledAffectations"
+                           (ngModelChange)="enableParent(eleve)" [disabled]="!eleve.hasAffectations">
+                    <label for="toggle_{{eleve.id}}"></label>
+                  </div>
+                </clr-dg-cell>
+                <clr-dg-cell>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="goToForm(eleve.id)">
+                    <clr-icon shape="pencil" class="is-solid"></clr-icon>
+                    Editer
+                  </button>
+                  <button class="btn btn-sm btn-icon btn-link" (click)="goToForm(eleve.id)">
+                    <clr-icon shape="trash" class="is-solid"></clr-icon>
+                    Supprimer
+                  </button>
+                </clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Eleves
+                <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]=eleves.length></clr-dg-pagination>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </div>
+
+        </div>
+      </article>
+
+          <article>
+            <div class="row"  *ngIf="eleves">
+              <div class="col-xs-12">
+                <form>
+                  <section class="form-block">
+                    <label>Importer Fichier Massar</label>
+                    <div class="form-group">
+                      <label for="selects_niveaux">Selectionner le niveau et le groupe</label>
+                      <div class="select">
+                        <select id="selects_niveaux_upload" [(ngModel)] = "selectedAffectationNiveauForUpload" [ngModelOptions]="{standalone: true}">
+                          <option  *ngFor="let element of affectationNiveaux" [ngValue]="element">{{niveauAppellation[element.niveau.id]}}</option>
+                        </select>
+                      </div>
+                      <div class="select">
+                        <select id="selects_Classe_upload" [(ngModel)] = "selectedClasseForUpload"  [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let element of selectedAffectationNiveau.classes" [ngValue]="element">{{element.libelle}}</option>
+                        </select>
+                      </div>
+
+                      <div class="select">
+                        <label for="file">Choose File</label>
+                        <input type="file"
+                               id="file"
+                               (change)="handleFileInput($event.target.files)">
+                      </div>
+                      <button class="btn btn-primary" (click)="uploadFileMassar()" [disabled]="!selectedClasseForUpload || !fileToUpload">Importer </button>
+
+
+                    </div>
+
+                  </section>
+
+                </form>
+              </div>
+            </div>
+          </article>
+        </div>
+    </section>
+  <clr-modal [(clrModalOpen)]="opened">
+    <h3 class="modal-title">Parent List</h3>
+
+    <div class="modal-body">
+      <clr-datagrid #grid class="col-xs-12 datagrid-compact" *ngIf="selectedStudent && selectedStudent.affectationParents">
+        <clr-dg-column>Nom</clr-dg-column>
+        <clr-dg-column>Prenom</clr-dg-column>
+        <clr-dg-column>Relation parental</clr-dg-column>
+        <clr-dg-column>N° télephone</clr-dg-column>
+        <clr-dg-column>Activer</clr-dg-column>
+        <clr-dg-row *clrDgItems="let affectationParent of selectedStudent.affectationParents"  [class.hasToBeEnbaled]="affectationParent.enabled === null">
+          <clr-dg-cell>{{affectationParent.parent.lastname | titlecase}}</clr-dg-cell>
+          <clr-dg-cell>{{affectationParent.parent.firstname | titlecase}}</clr-dg-cell>
+          <clr-dg-cell>{{affectationParent.parentingRelationship | titlecase}}</clr-dg-cell>
+          <clr-dg-cell>{{affectationParent.parent.phoneNumber | titlecase}}</clr-dg-cell>
+          <clr-dg-cell>
+            <div class="toggle-switch">
+              <input type="checkbox" id="toggle_{{affectationParent.id}}"  [(ngModel)] = "affectationParent.enabled"
+                     (ngModelChange)="enableParent(affectationParent,selectedStudent)">
+              <label for="toggle_{{affectationParent.id}}"></label>
+            </div>
+          </clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} Parents
+          <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]=selectedStudent.affectationParents.length></clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </clr-modal>
+</div>
