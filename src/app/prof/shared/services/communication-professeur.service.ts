@@ -1,16 +1,15 @@
 import { Inject, Injectable} from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable} from 'rxjs/Observable';
-import { Eleve} from '../models/eleve.model';
-import { RestService} from '../../shared/services/rest.service';
-import {Message} from '../models/message.model';
+import { RestService} from '../../../shared/services/rest.service';
+import { Message} from '../../../admin/models/message.model';
 
 @Injectable()
-export class CommunicationAdministrationService extends RestService<Eleve> {
+export class CommunicationProfesseurService extends RestService<Message> {
 
   constructor(@Inject('API_URL') protected baseUrl: string, protected http: HttpClient) {
     super(baseUrl, http);
-    super.setResource('messages/admin');
+    super.setResource('messages/prof');
   }
 
   send(message: Message): Observable<void> {

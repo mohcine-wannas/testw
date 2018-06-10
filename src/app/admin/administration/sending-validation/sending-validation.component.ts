@@ -1,76 +1,46 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
-import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
-import { AffectationParents, Eleve } from 'app/admin/models/eleve.model';
-import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
-import { Classe } from 'app/admin/models/groupe-appellation.model.1';
-import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
-import { ClasseService } from 'app/admin/services/classe.service';
-import { EleveService } from 'app/admin/services/eleve.service';
-import { AlertService } from 'app/shared/services/alert.service';
-import { ToastyService } from 'ng2-toasty';
-import { FormComponent } from '../../../shared/components/form.component';
+import {Component, OnInit} from '@angular/core';
+import {CommunicationAdministrationService} from "../../services/communication-administration.service";
+import {Message} from "../../models/message.model";
+import {AffectationCycle} from "../../models/affectation-cycle.model";
+import {AffectationCycleService} from "../../services/affectation-cycle.service";
+import {GroupeAppellation} from "../../models/groupe-appellation.model";
+import {AffectationMessageNiveau} from "../../models/affectation-message-niveau.model";
+import {ToastyService} from "ng2-toasty";
 
 @Component({
-  selector: 'app-eleve-list',
-  templateUrl: './eleve-list.component.html',
-  styleUrls: ['./eleve-list.component.css'],
+  selector: 'app-message-list',
+  templateUrl: './sending-validation.component.html',
+  styleUrls: ['./sending-validation.component.css'],
   // todo: Mohcine
   host: {
     class: 'dox-content-panel',
   }
 })
-export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
-  niveauAppellation: any[];
-  classe: Classe;
-  classes: Classe[];
-  error: string;
-  public opened: Boolean = false;
-  @ViewChild('grid') public grid;
+export class SendingValidationComponent implements OnInit {
 
-  selectedStudent: Eleve;
-  eleve: Eleve;
 
-  affectationNiveaux: AffectationNiveau[];
-  selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
-  selectedClasse: Classe;
-  selectedAffectationNiveauForUpload: AffectationNiveau = new AffectationNiveau();
-  selectedClasseForUpload: Classe;
-  constructor(public eleveService: EleveService,
-              public classeService: ClasseService,
-              private alert: AlertService,
-              private router: Router,
+  constructor(private messageService: CommunicationAdministrationService,
               private affectationCycleService: AffectationCycleService,
-              private toastyService: ToastyService,
-              private fb: FormBuilder) {
-    super();
+              private toastyService: ToastyService) {
   }
 
-  eleves: Eleve[];
+  messages: Message[];
+  niveauAppellation: any[];
 
   ngOnInit() {
 
+    this.messageService.getAllMessagesForValidation().subscribe(
+      resp => this.messages = resp,
+      //error => this.showError(error)
+      error => console.log(error) //TODO
+    );
     this.affectationCycleService.getCurrentAffectationCycle().subscribe(
       (resp: AffectationCycle) => {
-        this.affectationNiveaux = resp.affectationNiveaux;
         this.getNiveauAppellationMap(resp.groupeAppellation);
-        if (this.affectationNiveaux && this.affectationNiveaux.length > 0) {
-          this.selectedAffectationNiveau = this.affectationNiveaux[0];
-          this.classes = this.selectedAffectationNiveau.classes;
-          if (this.classes && this.classes.length > 0) {
-            this.selectedClasse = this.classes[0];
-          }
-          this.refresh();
-        } else {
-          this.error = 'Merci de créer des classes';
-        }
       },
-      error => this.showError(error)
-    );
-  }
+      error => console.log(error));
 
+  }
   getNiveauAppellationMap(groupeAppellation: GroupeAppellation) {
     if (groupeAppellation && groupeAppellation.appellations) {
       this.niveauAppellation = [];
@@ -80,102 +50,44 @@ export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
     }
   }
 
-  refresh() {
-    if (this.selectedClasse && this.selectedClasse.id) {
-      this.classeService.getAllEleves(this.selectedClasse.id).subscribe(
-        resp => this.eleves = resp,
-        error => this.showError(error)
-      );
-    } else {
-      this.eleves = [];
-    }
+  getNiveauName(affectationNiveau: AffectationMessageNiveau) {
+    return this.niveauAppellation[affectationNiveau.niveau.id];
   }
 
-  refreshClasses() {
-    if (this.selectedAffectationNiveau) {
-      this.classes = this.selectedAffectationNiveau.classes;
-      if (this.classes && this.classes.length > 0) {
-        this.selectedClasse = this.classes[0];
-      } else {
-        this.selectedClasse = null;
-      }
-    }
-    this.refresh();
-  }
-
-  showError(error: any): any {
-    this.alert.error(error);
-  }
-
-  enableParent(affectation: AffectationParents, eleve: Eleve) {
-    this.eleveService.enableParent(affectation.id, affectation.enabled).subscribe(
-      resp => {
-        this.toastyService.success('Operation effectuée avec succès');
-
-        let allEnabled = true;
-        eleve.affectationParents.forEach((aff) => {
-          if (aff.enabled === undefined) {
-            allEnabled = false;
-          }
-        });
-        if (allEnabled) {
-          eleve.hasToBeEnabled = false;
-        }
+  deleteMessage(id) {
+    return this.messageService.delete(id).subscribe(
+    () => {
+      this.toastyService.success('Operation effectuée avec succès');
+      this.messages.splice(this.messages.findIndex(item => item.id === id), 1);
       },
-      error => this.showError(error)
+        (error) => console.log(error)
     );
   }
 
-  openParentDialog(eleve: Eleve) {
-   this.selectedStudent = eleve;
-   this.opened = true;
+  enableMessage(id) {
+    return this.messageService.enable(id).subscribe(
+      () => {
+        this.toastyService.success('Operation effectuée avec succès');
+        this.messages.splice(this.messages.findIndex(item => item.id === id), 1);
+      },
+      (error) => console.log(error)
+    );
   }
 
-  fileToUpload: File = null;
-  handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
-  }
 
-  uploadFileMassar() {
-    const formData: FormData = new FormData();
-    formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    this.classeService.postMassarFile(this.selectedClasseForUpload.id, formData).subscribe(data => {
-      this.alert.success('Succes', data+' élève(s) ont été importé(s)');
-    }, error => {
-      console.log(error);
-    });
-  }
+  /*
+    getNiveauAppellationMap(groupeAppellation: GroupeAppellation) {
+      if (groupeAppellation && groupeAppellation.appellations) {
+        this.niveauAppellation = [];
+        groupeAppellation.appellations.forEach(e => {
+          this.niveauAppellation[e.niveau.id] = e.libelle;
+        });
+      }
+    }
 
-  createForm(model?: Eleve) {
-    this.eleve = new Eleve();
-    this.entityForm = this.fb.group({
-      'codeMassar': [this.eleve.codeMassar, Validators.required],
-      'firstname': [this.eleve.firstname, Validators.required],
-      'lastname': [this.eleve.lastname, Validators.required],
-    });
-  }
+    showError(error: any): any {
+      this.alert.error(error);
+    }
 
-  // goToForm(id?:number) {
-  //   if(!id) {
-  //     this.router.navigate(["admin/eleves/add"]);
-  //   }else{
-  //     this.router.navigate(["admin/eleves/"+id+"/edit"]);
-  //   }
-  // }
-
-  // delete(id:number) {
-  //   if(id) {
-  //     this.alert.confirm("Êtes vous sûr de vouloir supprimer ce eleve ?").then((res)=> {
-  //       if (res.value) {
-  //         this.alert.success("La suppression est effectuée avec succès");
-  //         this.eleves = this.eleves.filter(obj => obj.id!=id);
-  //       // result.dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-  //       } else if (res.dismiss === 'cancel') {
-  //       }
-  //     },
-  //         error => this.alert.error()
-  //     );
-  //   }
-  // }
-
+  */
 }

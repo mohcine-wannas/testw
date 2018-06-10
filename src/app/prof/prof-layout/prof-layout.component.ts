@@ -3,16 +3,15 @@ import { Router } from '@angular/router';
 import { Cycle } from 'app/admin/models/cycle.model';
 import { SessionDataService } from 'app/core/session/session-data.service';
 import { SessionService } from 'app/core/session/session.service';
-import { NotificationService } from '../services/notification.service';
+import {NotificationService} from "../../admin/services/notification.service";
 
 @Component({
   selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  templateUrl: './prof-layout.component.html',
+  styleUrls: ['./prof-layout.component.css']
 })
-export class LayoutComponent implements OnInit {
+export class ProfLayoutComponent implements OnInit {
 
-  fullname: string;
   collapsible = true;
   collapsed = true;
   cycles: Cycle[] = [];
@@ -24,8 +23,6 @@ export class LayoutComponent implements OnInit {
               private sessionDataService: SessionDataService,
               private router: Router,
               private notificationService: NotificationService) {
-    this.fullname = sessionDataService.getSchoolName();
-    this.cycles = sessionDataService.schoolDetails.cycles;
     this.notificationService.notificationSubject.subscribe(
       res => this.notifNumber = res
     );
@@ -46,26 +43,11 @@ export class LayoutComponent implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(['admin/profile']);
+    this.router.navigate(['prof/profile']);
   }
 
-  currentCycleChanged(cycle: Cycle) {
-    this.currentCycle = cycle;
-    this.sessionDataService.schoolDetails.currentCycle = this.currentCycle.id;
-    this.sessionDataService.sessionDataSubject.next(this.currentCycle.id);
-  }
-
-  getCurrentCycleLibelle() {
-    this.cycles.forEach(e => {
-      if (e.id === Number(this.sessionDataService.schoolDetails.currentCycle)) {
-        this.currentCycle = e;
-      }
-    });
-    return this.currentCycle.libelle;
-  }
-
-  getSchoolName() {
-    return this.sessionDataService.getSchoolName();
+  getName() {
+    return this.sessionDataService.getName();
   }
 
   getCurrentAnneScolaire() {

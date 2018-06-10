@@ -25,24 +25,13 @@
     </div>
 
     <div class="header-actions">
-      <clr-dropdown style="background-color: #035e80;">
-        <button class="nav-text" clrDropdownTrigger>
-          {{getCurrentCycleLibelle()}}
-          <clr-icon shape="caret down"></clr-icon>
-        </button>
-        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-          <clr-icon shape="caret down"></clr-icon>
-          <a *ngFor="let cycle of sessionDataService.schoolDetails.cycles" (click)="currentCycleChanged(cycle)"
-             clrDropdownItem>{{cycle.libelle}}</a>
-        </clr-dropdown-menu>
-      </clr-dropdown>
 
       <div id="avatar-wrapper" class="flex-items-xs-middle">
         <div id="avatar"></div>
       </div>
       <clr-dropdown class="dropdown bottom-right">
         <button class="nav-text" clrDropdownToggle>
-          {{ getSchoolName()}}
+          {{ getName()}}
           <clr-icon shape="caret down"></clr-icon>
         </button>
         <div class="dropdown-menu">
@@ -55,7 +44,9 @@
   </clr-header>
 
   <div class="content-container">
-    <router-outlet></router-outlet>
+    <div class="tawassol-area">
+       <router-outlet></router-outlet>
+    </div>
 
     <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
       <a clrVerticalNavLink routerLink="./main/" routerLinkActive="active">

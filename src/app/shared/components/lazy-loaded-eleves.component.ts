@@ -26,14 +26,14 @@ export class LazyLoadedElevesComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     if (this.classe && this.classe.id) {
-      if (LazLoadedElevesComponent.cacheEleves.has(this.classe.id)) {
-        this.fillStudent(LazLoadedElevesComponent.cacheEleves.get(this.classe.id));
+      if (LazyLoadedElevesComponent.cacheEleves.has(this.classe.id)) {
+        this.fillStudent(LazyLoadedElevesComponent.cacheEleves.get(this.classe.id));
         this.loading = false;
       } else {
         this.classeService.getAllEleves(this.classe.id).subscribe(
           resp => {
             const eleves = resp as Eleve[];
-            LazLoadedElevesComponent.cacheEleves.set(this.classe.id, eleves);
+            LazyLoadedElevesComponent.cacheEleves.set(this.classe.id, eleves);
             this.fillStudent(eleves);
             this.loading = false;
           },

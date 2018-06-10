@@ -10,18 +10,21 @@ import { AffectationCycleService} from 'app/admin/services/affectation-cycle.ser
 import { ClasseService} from 'app/admin/services/classe.service';
 import { EleveService} from 'app/admin/services/eleve.service';
 import { AlertService} from 'app/shared/services/alert.service';
-import {FormComponent} from "../../shared/components/form.component";
-import {Message} from "../../admin/models/message.model";
-import {CommunicationAdministrationService} from "../../admin/services/communication-administration.service";
-import {AffectationMessageClasse} from "../../admin/models/affectation-message-classe.model";
-import {Niveau} from "../../admin/models/niveau.model";
-import {AffectationMessageNiveau} from "../../admin/models/affectation-message-niveau.model";
-import {AffectationMessageUser} from "../../admin/models/affectation-message-user.model";
+import { FormComponent} from "../../shared/components/form.component";
+import { Message} from "../../admin/models/message.model";
+import { CommunicationAdministrationService} from "../../admin/services/communication-administration.service";
+import { AffectationMessageClasse} from "../../admin/models/affectation-message-classe.model";
+import { Niveau} from "../../admin/models/niveau.model";
+import { AffectationMessageNiveau} from "../../admin/models/affectation-message-niveau.model";
+import { AffectationMessageUser} from "../../admin/models/affectation-message-user.model";
+import {AffectationUniteService} from "../../admin/services/affectation-unite.service";
+import {Unite} from "../../admin/models/unite.model";
+import {CommunicationProfesseurService} from "../shared/services/communication-professeur.service";
 
 @Component({
-  selector: 'app-eleve-list',
-  templateUrl: './message-parent-form.component.html',
-  styleUrls: ['./message-parent-form.component.css'],
+  selector: 'app-prof-message-parent-form',
+  templateUrl: './prof-message-parent-form.component.html',
+  styleUrls: ['./prof-message-parent-form.component.css'],
   // todo: Mohcine
   host: {
     class: 'dox-content-panel',
@@ -33,7 +36,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
   error: string;
 
   niveauAppellation: any[];
-
+  unites: Unite[] = [];
   selectedStudent: Eleve[];
   affectationNiveaux: AffectationNiveau[];
   selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
@@ -41,6 +44,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
 
   emptyDestination = true;
   destinationsTouched = false;
+
 
 
   public editorConfig = {
@@ -70,7 +74,8 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
               private alert: AlertService,
               private router: Router,
               private affectationCycleService: AffectationCycleService,
-              private communicationService: CommunicationAdministrationService) {
+              private communicationService: CommunicationProfesseurService,
+              private affectationUniteService: AffectationUniteService) {
     super();
   }
 
@@ -78,7 +83,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
 
   ngOnInit() {
 
-    this.affectationCycleService.getCurrentAffectationCycle().subscribe(
+    this.affectationCycleService.getCurrentAffectationCycleForProf().subscribe(
       (resp: AffectationCycle) => {
         this.affectationNiveaux = resp.affectationNiveaux;
         this.getNiveauAppellationMap(resp.groupeAppellation);
@@ -89,8 +94,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
               affectationNiveau.niveau,
               TreeViewItemType.NIVEAU);
 
-            this.selectedAffectationNiveau = this.affectationNiveaux[0];
-            this.classes = this.selectedAffectationNiveau.classes;
+            this.classes = affectationNiveau.classes;
 
             if (this.classes && this.classes.length > 0) {
               const childrens = [];
@@ -109,6 +113,14 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       },
       error => this.showError(error)
     );
+
+    this.affectationUniteService.getAffectationsUnite().subscribe(
+      resp => {
+          resp.forEach(affectationUnite => {
+            this.unites.push(affectationUnite.unite);
+          });
+      },
+      error => this.showError(error));
 
     this.createForm();
   }
@@ -176,6 +188,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     }
     this.entityForm = this.fb.group({
       'recipients': [message.recipients],
+      'unite': [message.unite, Validators.required],
       'niveaux': [message.niveaux],
       'classes': [message.classes],
       'message': [message.message, Validators.required],
@@ -222,6 +235,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     if (!this.submitting) {
       this.submitting = true;
       this.markAllInputAsTouched();
+      this.destinationsTouched= true;
 
       if (this.entityForm.valid) {
         this.model = model;

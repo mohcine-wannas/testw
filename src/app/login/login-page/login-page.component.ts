@@ -103,7 +103,15 @@ export class LoginPageComponent implements OnInit {
       this.messagingService.getPermissison();
       //this.messagingService.tokenRefresh();
       this.toastService.success('Bienvenue ' + +response.user.firstname + ' ' + response.user.lastname, 'Authentifié');
-      this.router.navigate(['admin']);
+      this.router.navigate(this.getDefaultNavigation());
+    }
+  }
+
+  getDefaultNavigation(): any[] {
+    if (this.isAdmin) {
+      return ['admin'];
+    } else {
+      return ['prof', 'communication', 'send-to-parent'];
     }
   }
 

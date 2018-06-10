@@ -36,13 +36,6 @@
                 <label>Communiquer avec les parents</label>
                 <div class="form-group">
                   <label for="recipients">Destination</label>
-                  <!--   <ngx-dropdown-treeview
-                     id="recipients"
-                     [config]="treeViewConfig"
-                     [items]="items"
-                     (selectedChange)="onSelectedChange($event)">
-                   </ngx-dropdown-treeview> -->
-                    <!--<input type="text" id="destination" name="destination" formControlName="destination">-->
                   <clr-tree-node   id="recipients" [(clrSelected)]="cycleSelected">
                     Tout le cycle
                     <ng-template [clrIfExpanded]="true">
@@ -50,10 +43,10 @@
                         *ngFor="let item of items"
                         [(clrSelected)]="item.checked">
                         {{item.text}}
-                        <ng-template clrIfExpanded>
+                        <ng-template [clrIfExpanded]="false">
                           <clr-tree-node *ngFor="let child of item.children" [(clrSelected)]="child.checked">
                             {{child.text}}
-                            <ng-template clrIfExpanded>
+                            <ng-template [clrIfExpanded]="false">
                               <app-lazy-loaded-students [classe]="child.value" [childrenReference]="child.children"></app-lazy-loaded-students>
                             </ng-template>
                           </clr-tree-node>
@@ -70,7 +63,7 @@
                     </div>
                   </div>
                   <div style="margin-bottom: 10px"></div>
-                  </div>
+                </div>
 
                 <div class="form-group"><label></label> <span *ngFor="let item of getSelected()" class="label label-info">{{item.text}}</span></div>
 
@@ -87,9 +80,8 @@
                   </div>
                 </div>
 
-
                 <div class="form-group"  [class.invalid]="isNotValid('message')">
-                  <label for="message">message</label>
+                  <label for="message">Message</label>
                   <app-ngx-editor id="message" [config]="editorConfig" [placeholder]="'Entez votre message ici ...'" [spellcheck]="true" formControlName="message"></app-ngx-editor>
                 </div>
                 <div *ngIf="isNotValid('message')" class="alert alert-danger alert-sm"  style="margin-bottom: 30px">

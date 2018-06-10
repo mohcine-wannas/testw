@@ -6,7 +6,10 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RegisterProfComponent } from './inscription/register-prof.component';
 
 import { ProfRoutingModule } from './prof-routing.module';
+import { ProfLayoutComponent} from './prof-layout/prof-layout.component';
 import { ProfesseurService } from './shared/services/professeur.service';
+import {ProfMessageParentFormComponent} from './prof-message-parent-form/prof-message-parent-form.component';
+import {CommunicationProfesseurService} from './shared/services/communication-professeur.service';
 
 
 @NgModule({
@@ -17,8 +20,15 @@ import { ProfesseurService } from './shared/services/professeur.service';
     SharedModule,
     ClarityModule
   ],
-  declarations: [RegisterProfComponent],
-  providers: [ProfesseurService]
+  declarations: [
+    RegisterProfComponent,
+    ProfLayoutComponent,
+    ProfMessageParentFormComponent,
+  ],
+  providers: [
+    ProfesseurService,
+    CommunicationProfesseurService
+  ]
 })
 export class ProfModule {
 }

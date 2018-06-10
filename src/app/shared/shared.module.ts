@@ -9,17 +9,27 @@ import { RestService } from 'app/shared/services/rest.service';
 import { ToastService } from 'app/shared/services/toast.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ToastyModule } from 'ng2-toasty';
+import { LazyLoadedElevesComponent} from './components/lazy-loaded-eleves.component';
+import { ClarityModule} from '@clr/angular';
+import { NgxEditorModule} from 'ngx-editor';
+import { TreeviewModule} from 'ngx-treeview';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
+    ClarityModule,
     ReactiveFormsModule,
     ToastyModule.forRoot(),
     CoreModule,
     NgDatepickerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxEditorModule,
+    TreeviewModule.forRoot(),
+  ],
+  declarations: [
+    LazyLoadedElevesComponent,
   ],
   providers: [
     AlertService,
@@ -32,7 +42,10 @@ import { ToastyModule } from 'ng2-toasty';
     ReactiveFormsModule,
     ToastyModule,
     NgDatepickerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxEditorModule,
+    ClarityModule,
+    LazyLoadedElevesComponent
   ]
 })
 export class SharedModule {

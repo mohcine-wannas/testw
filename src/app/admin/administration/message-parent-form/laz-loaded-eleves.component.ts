@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+/*import {Component, Input, OnInit} from '@angular/core';
 import {Classe} from '../../models/groupe-appellation.model.1';
 import {ClasseService} from '../../services/classe.service';
 import {Eleve} from '../../models/eleve.model';
@@ -14,35 +14,49 @@ import {TreeViewItem, TreeViewItemType} from './message-parent-form.component';
         </ng-container>
     `
 })
-export class LazLoadedElevesComponent implements OnInit {
+export class LazyLoadedElevesComponent implements OnInit {
   @Input() classe: Classe;
   @Input('childrenReference') students: TreeViewItem[] = [];
   loading: boolean;
+  private static cacheEleves = new Map<number, Eleve[]>();
 
-  constructor(public classeService: ClasseService) {
+//  constructor(public classeService: ClasseService) {
   }
 
-  ngOnInit() {
+//  ngOnInit() {
     this.loading = true;
-
     if (this.classe && this.classe.id) {
-      this.classeService.getAllEleves(this.classe.id).subscribe(
-        resp => {
-          const eleves = resp as Eleve[];
-          this.students.length = 0; // clear all students
-          eleves.forEach((eleve) => {
-            this.students.push(new TreeViewItem(eleve.lastname + ' ' + eleve.firstname, eleve, TreeViewItemType.ELEVE))
-          });
-          this.loading = false;
-        },
-        error => {
-          console.log(error);
-          this.loading = false;
-        }
-      );
+      if (LazLoadedElevesComponent.cacheEleves.has(this.classe.id)) {
+        this.fillStudent(LazLoadedElevesComponent.cacheEleves.get(this.classe.id));
+        this.loading = false;
+      } else {
+        this.classeService.getAllEleves(this.classe.id).subscribe(
+          resp => {
+            const eleves = resp as Eleve[];
+            LazLoadedElevesComponent.cacheEleves.set(this.classe.id, eleves);
+            this.fillStudent(eleves);
+            this.loading = false;
+          },
+          error => {
+            console.log(error);
+            this.loading = false;
+          }
+        );
+      }
     } else {
       this.students = [];
       this.loading = false;
     }
   }
+
+
+  private fillStudent(eleves: Eleve[]) {
+    this.students.length = 0; // clear all students
+    eleves.forEach((eleve) => {
+      this.students.push(new TreeViewItem(eleve.lastname + ' ' + eleve.firstname, eleve, TreeViewItemType.ELEVE));
+    });
+  }
+
+
 }
+*/

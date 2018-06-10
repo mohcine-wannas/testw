@@ -23,6 +23,13 @@ export class AffectationCycleService extends RestService<AffectationCycle> {
       .catch(this.handleError);
   }
 
+  getCurrentAffectationCycleForProf(): Observable<AffectationCycle> {
+    return this.http.get(this.getFullUrl('/prof'))
+      .map((res: AffectationCycle) => {
+        return res;
+      })
+      .catch(this.handleError);
+  }
   save(model: AffectationCycle): Observable<Number> {
     return this.http.put(this.getFullUrl('/'), model)
       .map((res: Number) => {

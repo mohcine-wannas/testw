@@ -36,12 +36,10 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
 
   selectedStudent: Eleve[];
   affectationNiveaux: AffectationNiveau[];
-  selectedAffectationNiveau: AffectationNiveau = new AffectationNiveau();
   selectedClasse: Classe;
 
-  emptyDestination=true;
-  destinationsTouched=false;
-
+  emptyDestination = true;
+  destinationsTouched = false;
 
 
   public editorConfig = {
@@ -61,7 +59,7 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
 
   public treeViewConfig = {
     decoupleChildFromParent: true,
-    hasCollapseExpand : true,
+    hasCollapseExpand: true,
     hasFilter: true
   };
 
@@ -87,11 +85,10 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
         if (this.affectationNiveaux && this.affectationNiveaux.length > 0) {
           this.affectationNiveaux.forEach((affectationNiveau) => {
             const item = new TreeViewItem(this.niveauAppellation[affectationNiveau.niveau.id],
-                                          affectationNiveau.niveau,
-                                          TreeViewItemType.NIVEAU);
+              affectationNiveau.niveau,
+              TreeViewItemType.NIVEAU);
 
-            this.selectedAffectationNiveau = this.affectationNiveaux[0];
-            this.classes = this.selectedAffectationNiveau.classes;
+            this.classes = affectationNiveau.classes;
 
             if (this.classes && this.classes.length > 0) {
               const childrens = [];
@@ -128,6 +125,7 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
     this.items.forEach(item => {
       if (item.checked) {
         this.destinationsTouched = true;
+        //this.checkAllChildren(item);
         selecteds.push(item);
       } else {
         if (item.children) {
@@ -135,6 +133,7 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
             if (child.checked) {
               this.destinationsTouched = true;
               selecteds.push(child);
+              //this.checkAllChildren(item);
             } else {
               if (child.children) {
                 child.children.forEach(student => {
@@ -152,6 +151,7 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
     this.emptyDestination = selecteds.length === 0;
     return selecteds;
   }
+
   refresh() {
     if (this.selectedClasse && this.selectedClasse.id) {
       this.classeService.getAllEleves(this.selectedClasse.id).subscribe(
@@ -174,8 +174,8 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
     }
     this.entityForm = this.fb.group({
       'recipients': [message.recipients],
-      'niveaux':  [message.niveaux],
-      'classes':  [message.classes],
+      'niveaux': [message.niveaux],
+      'classes': [message.classes],
       'message': [message.message, Validators.required],
       'forDate': [message.message, Validators.required],
     });
@@ -190,19 +190,19 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
     const selected = this.getSelected();
 
     selected.forEach(item => {
-      if ( item.type === TreeViewItemType.NIVEAU) {
+      if (item.type === TreeViewItemType.NIVEAU) {
         if (!message.niveaux) {
           message.niveaux = [];
         }
         const obj = new AffectationMessageNiveau();
         obj.niveau = item.value as Niveau;
         message.niveaux.push(obj);
-      } else if ( item.type === TreeViewItemType.CLASS) {
+      } else if (item.type === TreeViewItemType.CLASS) {
         if (!message.classes) {
           message.classes = [];
         }
         message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
-      } else if ( item.type === TreeViewItemType.ELEVE) {
+      } else if (item.type === TreeViewItemType.ELEVE) {
         if (!message.recipients) {
           message.recipients = [];
         }
@@ -244,6 +244,14 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
     return this.emptyDestination && this.destinationsTouched;
   }
 
+  private checkAllChildren(item: any) {
+    item.children.forEach(child => {
+      child.checked = true;
+      if (child.children) {
+        this.checkAllChildren(child);
+      }
+    });
+  }
 }
 export class TreeViewItem {
 
