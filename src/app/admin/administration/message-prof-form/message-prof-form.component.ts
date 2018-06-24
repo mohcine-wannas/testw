@@ -1,48 +1,52 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AffectationCycle} from 'app/admin/models/affectation-cycle.model';
-import {AffectationNiveau} from 'app/admin/models/affectation-niveau.model';
-import {Eleve} from 'app/admin/models/eleve.model';
-import {GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
-import {Classe} from 'app/admin/models/groupe-appellation.model.1';
-import {AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
-import {ClasseService} from 'app/admin/services/classe.service';
-import {AlertService} from 'app/shared/services/alert.service';
-import {FormComponent} from '../../shared/components/form.component';
-import {Message} from '../../admin/models/message.model';
-import {AffectationMessageClasse} from '../../admin/models/affectation-message-classe.model';
-import {Niveau} from '../../admin/models/niveau.model';
-import {AffectationMessageNiveau} from '../../admin/models/affectation-message-niveau.model';
-import {AffectationMessageUser} from '../../admin/models/affectation-message-user.model';
-import {AffectationUniteService} from '../../admin/services/affectation-unite.service';
-import {Unite} from '../../admin/models/unite.model';
-import {CommunicationProfesseurService} from '../shared/services/communication-professeur.service';
-import {TransferService} from '../shared/services/transfer.service';
-import {Professeur} from "../shared/models/Professeur.model";
+import { Component, OnInit} from '@angular/core';
+import { FormBuilder, Validators} from '@angular/forms';
+import { Router} from '@angular/router';
+import { AffectationCycle} from 'app/admin/models/affectation-cycle.model';
+import { AffectationNiveau} from 'app/admin/models/affectation-niveau.model';
+import { GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
+import { Classe} from 'app/admin/models/groupe-appellation.model.1';
+import { AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
+import { AlertService} from 'app/shared/services/alert.service';
+import { FormComponent} from '../../../shared/components/form.component';
+import { Message} from '../../models/message.model';
+import { Niveau} from '../../models/niveau.model';
+import { CommunicationAdministrationService} from '../../services/communication-administration.service';
+import { AffectationMessageClasse} from '../../models/affectation-message-classe.model';
+import { AffectationMessageUser} from '../../models/affectation-message-user.model';
+import { AffectationMessageNiveau} from '../../models/affectation-message-niveau.model';
+import { Professeur} from '../../../prof/shared/models/Professeur.model';
+import {AffectationUnite} from "../../models/affectation-unite.model";
+import {AffectationUniteService} from "../../services/affectation-unite.service";
+import {SessionDataService} from "../../../core/session/session-data.service";
+import {
+  TreeViewItem,
+  TreeViewItemType
+} from "../../../prof/prof-message-parent-form/prof-message-parent-form.component";
+import {AffectationMessageUnite} from "../../models/affectation-message-unite.model";
+import {Unite} from "../../models/unite.model";
 
 @Component({
-  selector: 'app-prof-message-parent-form',
-  templateUrl: './prof-message-parent-form.component.html',
-  styleUrls: ['./prof-message-parent-form.component.css'],
+  selector: 'app-message-prof-form',
+  templateUrl: './message-prof-form.component.html',
+  styleUrls: ['./message-prof-form.component.css'],
   // todo: Mohcine
   host: {
     class: 'dox-content-panel',
   }
 })
-export class ProfMessageParentFormComponent extends FormComponent<Message> implements OnInit {
+export class MessageProfesseurFormComponent extends FormComponent<Message> implements OnInit {
 
-  message: Message;
   classes: Classe[];
   error: string;
 
   niveauAppellation: any[];
-  unites: Unite[] = [];
+
   affectationNiveaux: AffectationNiveau[];
-  selectedClasse: Classe;
+  affectationUnites: AffectationUnite[];
 
   emptyDestination = true;
   destinationsTouched = false;
+
 
   public editorConfig = {
     'minHeight': '300',
@@ -54,33 +58,27 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
       ['link', 'unlink']
     ]
-  }
+  };
 
   cycleSelected = false;
   public items = [];
+  uniteItems = [];
 
-  public treeViewConfig = {
-    decoupleChildFromParent: true,
-    hasCollapseExpand: true,
-    hasFilter: true
-  };
 
   constructor(private fb: FormBuilder,
-              public classeService: ClasseService,
               private alert: AlertService,
               private router: Router,
               private affectationCycleService: AffectationCycleService,
-              private communicationService: CommunicationProfesseurService,
-              private affectationUniteService: AffectationUniteService,
-              private transferService: TransferService) {
+              private affectationUniteServices: AffectationUniteService,
+              private communicationService: CommunicationAdministrationService,
+              private sessionDataService: SessionDataService) {
     super();
   }
 
-  eleves: Eleve[];
 
   ngOnInit() {
 
-    this.affectationCycleService.getCurrentAffectationCycleForProf().subscribe(
+    this.affectationCycleService.getCurrentAffectationCycle().subscribe(
       (resp: AffectationCycle) => {
         this.affectationNiveaux = resp.affectationNiveaux;
         this.getNiveauAppellationMap(resp.groupeAppellation);
@@ -111,27 +109,26 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       error => this.showError(error)
     );
 
-    if (this.transferService.message) {
-      this.message = new Message();
-      this.message.message = this.transferService.message.message;
-      this.message.unite = this.transferService.message.unite;
-      this.transferService.message = null;
-    }
 
+    this.affectationUniteServices.getAffectationsUniteByCycleId(this.sessionDataService.getCurrentCycle().id).subscribe(
+      (resp: AffectationUnite[]) => {
+        this.affectationUnites = resp;
+        this.uniteItems = [];
+        if (this.affectationUnites && this.affectationUnites.length > 0) {
+          this.affectationUnites.forEach((affectationUnite) => {
+            const item = new TreeViewItem(affectationUnite.unite.libelle,
+              affectationUnite.unite,
+              TreeViewItemType.UNITE);
+            item.children = [];
 
-    this.affectationUniteService.getAffectationsUnite().subscribe(
-      resp => {
-          resp.forEach(affectationUnite => {
-            this.unites.push(affectationUnite.unite);
+            this.uniteItems.push(item);
           });
-        if (this.message.unite) {
-          this.getSelectedObjectFromList(this.unites, this.message.unite.id, 'unite');
         }
       },
-      error => this.showError(error));
+      error => this.showError(error)
+    );;
 
-
-    this.createForm(this.message);
+    this.createForm();
   }
 
   getNiveauAppellationMap(groupeAppellation: GroupeAppellation) {
@@ -171,25 +168,28 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
         }
       }
     });
+    this.uniteItems.forEach(item => {
+      if (item.checked) {
+        this.destinationsTouched = true;
+        selecteds.push(item);
+      } else {
+        if (item.children) {
+          item.children.forEach(child => {
+            if (child.checked) {
+              this.destinationsTouched = true;
+              selecteds.push(child);
+            }
+          });
+        }
+      }
+    });
     this.emptyDestination = selecteds.length === 0;
     return selecteds;
-  }
-
-  refresh() {
-    if (this.selectedClasse && this.selectedClasse.id) {
-      this.classeService.getAllEleves(this.selectedClasse.id).subscribe(
-        resp => this.eleves = resp,
-        error => this.showError(error)
-      );
-    } else {
-      this.eleves = [];
-    }
   }
 
   showError(error: any): any {
     this.alert.error(error);
   }
-
 
   createForm(message?: Message) {
     if (!message) {
@@ -197,27 +197,16 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     }
     this.entityForm = this.fb.group({
       'recipients': [message.recipients],
-      'unite': [message.unite, Validators.required],
       'niveaux': [message.niveaux],
       'classes': [message.classes],
+      'unites': [message.unites],
       'message': [message.message, Validators.required],
       'forDate': [message.message, Validators.required],
     });
-
-
-
   }
 
   public submitForm($ev, model: any) {
     $ev.preventDefault();
-
-    this.markAllInputAsTouched();
-    this.destinationsTouched = true;
-    if (this.isInvalidDestinationControl()) {
-      this.toastService.error('Le formulaire est invalide');
-      return;
-    }
-
     const message = new Message(model);
 
     message.forDate = new Date(message.forDate);
@@ -237,7 +226,12 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
           message.classes = [];
         }
         message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
-      } else if (item.type === TreeViewItemType.ELEVE) {
+      } else if (item.type === TreeViewItemType.UNITE) {
+        if (!message.unites) {
+          message.unites = [];
+        }
+        message.unites.push({unite: item.value as Unite} as AffectationMessageUnite);
+      } else if (item.type === TreeViewItemType.PROFESSEUR) {
         if (!message.recipients) {
           message.recipients = [];
         }
@@ -254,10 +248,11 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
 
     if (!this.submitting) {
       this.submitting = true;
+      this.markAllInputAsTouched();
 
       if (this.entityForm.valid) {
         this.model = model;
-        this.communicationService.send(this.model).subscribe(
+        this.communicationService.sendToProf(this.model).subscribe(
           resp => {
             this.submitting = false;
             this.saveSucceed();
@@ -278,35 +273,4 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     return this.emptyDestination && this.destinationsTouched;
   }
 
-  private checkAllChildren(item: any) {
-    item.children.forEach(child => {
-      child.checked = true;
-      if (child.children) {
-        this.checkAllChildren(child);
-      }
-    });
-  }
-}
-export class TreeViewItem {
-
-  text: string;
-  value: Classe | Niveau | Eleve | Professeur | Unite;
-  checked = false;
-  children: TreeViewItem[];
-  type: TreeViewItemType;
-
-  constructor (text, value, type) {
-    this.text = text;
-    this.value = value;
-    this.type = type;
-  }
-
-}
-
-export enum TreeViewItemType {
-  NIVEAU = 1,
-  CLASS = 2,
-  ELEVE = 3,
-  PROFESSEUR = 4,
-  UNITE = 5,
 }

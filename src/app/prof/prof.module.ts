@@ -10,6 +10,9 @@ import { ProfLayoutComponent} from './prof-layout/prof-layout.component';
 import { ProfesseurService } from './shared/services/professeur.service';
 import {ProfMessageParentFormComponent} from './prof-message-parent-form/prof-message-parent-form.component';
 import {CommunicationProfesseurService} from './shared/services/communication-professeur.service';
+import {ProfHistoriqueComponent} from "./prof-historique/prof-historique.component";
+import {TransferService} from "./shared/services/transfer.service";
+import {ProfMessagesComponent} from "./prof-messages/prof-messages.component";
 
 
 @NgModule({
@@ -24,10 +27,13 @@ import {CommunicationProfesseurService} from './shared/services/communication-pr
     RegisterProfComponent,
     ProfLayoutComponent,
     ProfMessageParentFormComponent,
+    ProfHistoriqueComponent,
+    ProfMessagesComponent
   ],
   providers: [
     ProfesseurService,
-    CommunicationProfesseurService
+    CommunicationProfesseurService,
+    TransferService
   ]
 })
 export class ProfModule {

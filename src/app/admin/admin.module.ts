@@ -31,6 +31,8 @@ import { CommunicationAdministrationService} from './services/communication-admi
 import { NotificationService} from './services/notification.service';
 import { UniteService} from './services/unite.service';
 import {SendingValidationComponent} from './administration/sending-validation/sending-validation.component';
+import {MessageProfesseurFormComponent} from "./administration/message-prof-form/message-prof-form.component";
+import {LazyLoadedProfesseursComponent} from "./administration/message-prof-form/lazy-loaded-profs.component";
 
 @NgModule({
   imports: [
@@ -55,7 +57,9 @@ import {SendingValidationComponent} from './administration/sending-validation/se
     AffectationUniteComponent,
     MessageParentFormComponent,
     ProfsListComponent,
-    SendingValidationComponent
+    SendingValidationComponent,
+    MessageProfesseurFormComponent,
+    LazyLoadedProfesseursComponent
   ],
   providers: [
     MainService,

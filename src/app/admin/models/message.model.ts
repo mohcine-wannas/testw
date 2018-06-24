@@ -3,6 +3,7 @@ import { AffectationMessageNiveau} from './affectation-message-niveau.model';
 import { AffectationMessageClasse} from './affectation-message-classe.model';
 import { AffectationMessageUser} from './affectation-message-user.model';
 import { Unite} from './unite.model';
+import {AffectationMessageUnite} from "./affectation-message-unite.model";
 
 export class Message extends BaseModel {
 
@@ -11,8 +12,11 @@ export class Message extends BaseModel {
   unite: Unite;
   niveaux: AffectationMessageNiveau[];
   classes: AffectationMessageClasse[];
+  unites: AffectationMessageUnite[];
   forDate: Date;
   createdOn: Date;
+  recipientMessageId: number;
+  seen: boolean;
 
   constructor(values: Object = {}) {
     super(values);

@@ -1,0 +1,47 @@
+<div class="dox-wrapper">
+  <div class="dox-wrapper dox-header">
+    <section>
+      <h1>Messages reçus</h1>
+    </section>
+  </div>
+
+  <section class="dox-content" hash-listener="" style="position:relative;">
+    <div class="dox-content-wrapper">
+        <article>
+          <div class="row" *ngFor="let message of messages">
+            <div class="col-sm-12 col-xs-12">
+              <div class="card" [ngClass]="{'not-seen' : !message.seen}">
+                <div class="card-header">
+                  <small><clr-icon shape="calendar"></clr-icon> Le :{{message.createdOn | date: mediumDate}}</small>
+                </div>
+                <div class="card-block">
+                  <div class="card-text">
+                    {{getShortMessage(message.message)}}
+                    <button class="btn btn-sm btn-link  btn-icon" (click)="openMessage(message)"><clr-icon shape="redo"></clr-icon> Lire la suite</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+    </div>
+  </section>
+</div>
+<clr-modal [(clrModalOpen)]="opened">
+  <h3 class="modal-title">Contenu du message</h3>
+
+  <div class="modal-body">
+    <div class="card" *ngIf="messageToShow">
+      <div class="card-header">
+        <small><clr-icon shape="calendar"></clr-icon> Le :{{messageToShow.createdOn | date: mediumDate}}</small> |
+        <small><clr-icon shape="calendar"></clr-icon> Pour :{{messageToShow.forDate | date: mediumDate}}</small>
+      </div>
+      <div class="card-block">
+        <div class="card-text" [innerHTML]="messageToShow.message"> </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+  </div>
+</clr-modal>

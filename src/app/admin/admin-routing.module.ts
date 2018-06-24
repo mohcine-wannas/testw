@@ -18,6 +18,7 @@ import { LayoutComponent } from './layout/layout.component';
 // pages
 import { MainPageComponent } from './main-page/main-page.component';
 import {SendingValidationComponent} from "./administration/sending-validation/sending-validation.component";
+import {MessageProfesseurFormComponent} from "./administration/message-prof-form/message-prof-form.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
         path: 'communication', component: ReferentielLayoutComponent, children: [
           { path: '', redirectTo: 'main', pathMatch: 'full' },
           { path: 'send-to-parent', component: MessageParentFormComponent },
+          { path: 'send-to-prof', component: MessageProfesseurFormComponent },
           { path: 'validation-envois', component: SendingValidationComponent },
           { path: '**', component: PageNotFoundComponent },
         ]

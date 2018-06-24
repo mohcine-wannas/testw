@@ -21,6 +21,14 @@ export class CommunicationAdministrationService extends RestService<Eleve> {
       .catch(this.handleError);
   }
 
+  sendToProf(message: Message): Observable<void> {
+    return this.http.post(this.getFullUrl('/sendToProf/'), message)
+      .map(() => {
+        return;
+      })
+      .catch(this.handleError);
+  }
+
   getAllMessagesForValidation(): Observable<Message[]> {
     return this.http.get(this.getFullUrl('/not-validated/'))
       .map((resp) => {

@@ -6,7 +6,7 @@
       </a>
     </div>
     <div class="header-nav">
-      <a class=" nav-link nav-icon" routerLink='/admin/main' routerLinkActive='active'>
+      <a class=" nav-link nav-icon" routerLink='/prof/communication/send-to-parent' routerLinkActive='active'>
         <clr-icon shape="home"></clr-icon>
       </a>
 
@@ -49,34 +49,25 @@
     </div>
 
     <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [(clrVerticalNavCollapsed)]="collapsed">
-      <a clrVerticalNavLink routerLink="./main/" routerLinkActive="active">
-        <clr-icon clrVerticalNavIcon shape="envelope"></clr-icon>
-        Communiquer
-      </a>
       <clr-vertical-nav-group
         routerLinkActive="active">
-        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
-        Gérer
+        <clr-icon shape="envelope" clrVerticalNavIcon></clr-icon>
+        Communiquer
         <clr-vertical-nav-group-children>
           <a clrVerticalNavLink
-             routerLink="./gestion/classes"
+             routerLink="./communication/send-to-parent"
              routerLinkActive="active">
-            Gérer les classes
+            Communiquer avec les parents
           </a>
           <a clrVerticalNavLink
-             routerLink="./gestion/unites"
+             routerLink="./communication/inbox"
              routerLinkActive="active">
-            Gérer les unités
+            Messages reçus
           </a>
           <a clrVerticalNavLink
-             routerLink="./gestion/eleves"
+             routerLink="./communication/history"
              routerLinkActive="active">
-            Gérer les élèves
-          </a>
-          <a clrVerticalNavLink
-             routerLink="./gestion/professeurs"
-             routerLinkActive="active">
-            Gérer les professeurs
+            Historique des envois
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>

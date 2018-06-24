@@ -20,5 +20,36 @@ export class CommunicationProfesseurService extends RestService<Message> {
       .catch(this.handleError);
   }
 
+  getAllMessagesNotValid(): Observable<Message[]> {
+    return this.http.get(this.getFullUrl('/not-validated/'))
+      .map((resp) => {
+        return resp;
+      })
+      .catch(this.handleError);
+  }
 
+  getAllValidMessages(): Observable<Message[]> {
+    return this.http.get(this.getFullUrl('/validated/'))
+      .map((resp) => {
+        return resp;
+      })
+      .catch(this.handleError);
+  }
+
+  getAllRecievedMessages(): Observable<Message[]> {
+    return this.http.get(this.getFullUrl('/get-all/'))
+      .map((resp) => {
+        return resp;
+      })
+      .catch(this.handleError);
+  }
+
+  setToSeen(idAffectation: number): Observable<void> {
+    return this.http.put(this.getFullUrl('/' + idAffectation + '/seen'),null)
+      .map(() => {
+        return ;
+      })
+      .catch(super.handleError);
+  }
 }
+

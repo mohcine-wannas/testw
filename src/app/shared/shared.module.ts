@@ -45,7 +45,7 @@ import { TreeviewModule} from 'ngx-treeview';
     BrowserAnimationsModule,
     NgxEditorModule,
     ClarityModule,
-    LazyLoadedElevesComponent
+    LazyLoadedElevesComponent,
   ]
 })
 export class SharedModule {
