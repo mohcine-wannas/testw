@@ -6,7 +6,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RegisterProfComponent } from './inscription/register-prof.component';
 
 import { ProfRoutingModule } from './prof-routing.module';
-import { ProfesseurService } from './shared/services/professeur.service';
+import { RegisterService } from './shared/services/register.service';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import { ProfesseurService } from './shared/services/professeur.service';
     ClarityModule
   ],
   declarations: [RegisterProfComponent],
-  providers: [ProfesseurService]
+  providers: [RegisterService]
 })
 export class ProfModule {
 }

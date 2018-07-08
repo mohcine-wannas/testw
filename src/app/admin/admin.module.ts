@@ -9,9 +9,9 @@ import { ContactFormComponent } from 'app/admin/contact-form/contact-form.compon
 import { ContactListComponent } from 'app/admin/contact-list/contact-list.component';
 import { ContactService } from 'app/admin/contact.service';
 import { PasswordChangeComponent } from 'app/admin/profile/password-change/password-change.component';
-import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
 import { ProfileMainComponent } from 'app/admin/profile/profile-main/profile-main.component';
 import { SchoolInfoComponent } from 'app/admin/profile/school-info/school-info.component';
+import { ProfileLayoutComponent } from 'app/admin/profile/Profile-layout/profile-layout.component';
 import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
 import { ClasseService } from 'app/admin/services/classe.service';
 import { CycleService } from 'app/admin/services/cycle.service';
@@ -21,7 +21,6 @@ import { UserService } from 'app/admin/services/user.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { NgxEditorModule } from 'ngx-editor';
 import { TreeviewModule } from 'ngx-treeview';
-import { ProfesseurService } from '../prof/shared/services/professeur.service';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
 import { LazLoadedElevesComponent } from './administration/message-parent-form/laz-loaded-eleves.component';
@@ -34,6 +33,7 @@ import { MainService } from './main.service';
 import { AffectationUniteService } from './services/affectation-unite.service';
 import { CommunicationAdministrationService } from './services/communication-administration.service';
 import { NotificationService } from './services/notification.service';
+import { ProfesseurService } from './services/professeur.service';
 import { UniteService } from './services/unite.service';
 
 @NgModule({

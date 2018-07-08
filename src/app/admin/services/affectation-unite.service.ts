@@ -25,12 +25,4 @@ export class AffectationUniteService extends RestService<AffectationUnite> {
       .catch(super.handleError);
   }
 
-  getAffectationsUniteBySchoolCodeAndByCycleId(schoolCode: string, cycleId: number): Observable<AffectationUnite[]> {
-    return this.http.get(this.getFullUrl('/' + schoolCode + '/school/' + cycleId + '/cycle'))
-      .map((res: AffectationUnite[]) => {
-        return res;
-      })
-      .catch(this.handleError);
-  }
-
 }

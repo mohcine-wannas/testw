@@ -3,8 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { RestService } from 'app/shared/services/rest.service';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../../../admin/models/User.model';
-import { Professeur } from '../models/Professeur.model';
+import { Professeur } from '../../prof/shared/models/Professeur.model';
+import { User } from '../models/User.model';
 
 
 @Injectable()
@@ -47,12 +47,6 @@ export class ProfesseurService extends RestService<User> {
       })
       .catch(this.handleError);
   }
-
-  validateCodeSchool(codeSchool: string): Observable<Boolean> {
-    return this.http.get(this.getFullUrl('/' + codeSchool + '/register-validate'))
-      .catch(super.handleError);
-  }
-
   enableAll(enabled: boolean): Observable<void> {
     return this.http.put(this.getFullUrl('/enable-all'), enabled)
       .map((res) => {
