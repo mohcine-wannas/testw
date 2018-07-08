@@ -22,13 +22,4 @@ export class CycleService extends RestService<Cycle> {
       })
       .catch(this.handleError);
   }
-
-  getCyclesBySchoolCode(schoolCode: string): Observable<Cycle[]> {
-    return this.http.get(this.getFullUrl('/' + schoolCode + '/school'))
-      .map((res: Cycle[]) => {
-        return res;
-      })
-      .catch(this.handleError);
-  }
-
 }

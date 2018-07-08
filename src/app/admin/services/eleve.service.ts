@@ -21,4 +21,20 @@ export class EleveService extends RestService<Eleve> {
       })
       .catch(super.handleError);
   }
+
+  enableEleve(id: number, enabled: boolean): Observable<void> {
+    return this.http.put(this.getFullUrl('/' + id + '/enable-eleve'), enabled)
+      .map((res) => {
+        return;
+      })
+      .catch(super.handleError);
+  }
+
+  enableAll(enabled: boolean): Observable<void> {
+    return this.http.put(this.getFullUrl('/enable-all'), enabled)
+      .map((res) => {
+        return;
+      })
+      .catch(super.handleError);
+  }
 }
