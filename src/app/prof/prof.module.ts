@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { SharedModule } from 'app/shared/shared.module';
+import { MessageModelModule } from '../message-model/message-model.module';
 import { RegisterProfComponent } from './inscription/register-prof.component';
 import { ProfHistoriqueComponent } from './prof-historique/prof-historique.component';
 import { ProfLayoutComponent } from './prof-layout/prof-layout.component';
@@ -21,7 +22,8 @@ import { TransferService } from './shared/services/transfer.service';
     FormsModule,
     ProfRoutingModule,
     SharedModule,
-    ClarityModule
+    ClarityModule,
+    MessageModelModule
   ],
   declarations: [
     RegisterProfComponent,

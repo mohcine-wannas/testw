@@ -1,22 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AffectationCycle} from 'app/admin/models/affectation-cycle.model';
-import {AffectationNiveau} from 'app/admin/models/affectation-niveau.model';
-import {Eleve} from 'app/admin/models/eleve.model';
-import {GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
-import {Classe} from 'app/admin/models/groupe-appellation.model.1';
-import {AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
-import {ClasseService} from 'app/admin/services/classe.service';
-import {EleveService} from 'app/admin/services/eleve.service';
-import {AlertService} from 'app/shared/services/alert.service';
-import {FormComponent} from '../../../shared/components/form.component';
-import {Message} from '../../models/message.model';
-import {Niveau} from '../../models/niveau.model';
-import {CommunicationAdministrationService} from '../../services/communication-administration.service';
-import {AffectationMessageClasse} from '../../models/affectation-message-classe.model';
-import {AffectationMessageUser} from '../../models/affectation-message-user.model';
-import {AffectationMessageNiveau} from '../../models/affectation-message-niveau.model';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
+import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
+import { Eleve } from 'app/admin/models/eleve.model';
+import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
+import { Classe } from 'app/admin/models/groupe-appellation.model.1';
+import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
+import { ClasseService } from 'app/admin/services/classe.service';
+import { EleveService } from 'app/admin/services/eleve.service';
+import { AlertService } from 'app/shared/services/alert.service';
+import { MessageModel } from '../../../message-model/shared/models/message-model.model';
+import { CategorieService } from '../../../message-model/shared/services/categorie.service';
+import { FormComponent } from '../../../shared/components/form.component';
+import { AffectationMessageClasse } from '../../models/affectation-message-classe.model';
+import { AffectationMessageNiveau } from '../../models/affectation-message-niveau.model';
+import { AffectationMessageUser } from '../../models/affectation-message-user.model';
+import { Message } from '../../models/message.model';
+import { Niveau } from '../../models/niveau.model';
+import { CommunicationAdministrationService } from '../../services/communication-administration.service';
 
 @Component({
   selector: 'app-eleve-list',
@@ -42,18 +44,6 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
   destinationsTouched = false;
 
 
-  public editorConfig = {
-    'minHeight': '300',
-    'toolbar': [
-      ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript'],
-      ['fontName', 'fontSize', 'color'],
-      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
-      ['cut', 'copy', 'delete', 'removeFormat', 'undo', 'redo'],
-      ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
-      ['link', 'unlink']
-    ]
-  }
-
   cycleSelected = false;
   public items = [];
 
@@ -69,7 +59,8 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
               private alert: AlertService,
               private router: Router,
               private affectationCycleService: AffectationCycleService,
-              private communicationService: CommunicationAdministrationService) {
+              private communicationService: CommunicationAdministrationService,
+              private categorieService: CategorieService) {
     super();
   }
 
@@ -201,13 +192,13 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
         if (!message.classes) {
           message.classes = [];
         }
-        message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
+        message.classes.push({ classe: item.value as Classe } as AffectationMessageClasse);
       } else if (item.type === TreeViewItemType.ELEVE) {
         if (!message.recipients) {
           message.recipients = [];
         }
         const obj = new AffectationMessageUser();
-        obj.user = {id: item.value.id} as any;
+        obj.user = { id: item.value.id } as any;
         message.recipients.push(obj);
       }
     });
@@ -252,7 +243,12 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
       }
     });
   }
+
+  updateMessage(msgModel: MessageModel) {
+    this.entityForm.get('message').setValue(msgModel.message);
+  }
 }
+
 export class TreeViewItem {
 
   text: string;
@@ -261,7 +257,7 @@ export class TreeViewItem {
   children: TreeViewItem[];
   type: TreeViewItemType;
 
-  constructor (text, value, type) {
+  constructor(text, value, type) {
     this.text = text;
     this.value = value;
     this.type = type;

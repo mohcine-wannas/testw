@@ -21,8 +21,10 @@ import { ClasseService } from 'app/admin/services/classe.service';
 import { EleveService } from 'app/admin/services/eleve.service';
 import { AlertService } from 'app/shared/services/alert.service';
 import { ToastyService } from 'ng2-toasty';
+import { Categorie } from '../../../message-model/shared/models/categorie.model';
 import { Professeur } from '../../../prof/shared/models/Professeur.model';
 import { FormComponent } from '../../../shared/components/form.component';
+import { Niveau } from '../../models/niveau.model';
 
 @Component({
   selector: 'app-eleve-list',
@@ -195,6 +197,13 @@ export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
       this.id = model.id;
       this.eleve.niveau = this.selectedAffectationNiveau.niveau;
       this.eleve.classe = this.selectedClasse;
+      this.classesList = [];
+      for (const item of this.affectationNiveaux) {
+        if (item.niveau.id === this.eleve.niveau.id) {
+          this.classesList = item.classes;
+          break;
+        }
+      }
     } else {
       this.modeEdit = false;
       this.eleve = new Eleve();
@@ -327,6 +336,14 @@ export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
       },
       error => this.alert.error()
     );
+  }
+
+  customCompareNiveau(n1: Niveau, n2: Niveau) {
+    return n1.id === n2.id;
+  }
+
+  customCompareClasse(n1: Classe, n2: Classe) {
+    return n1.id === n2.id;
   }
 
 }

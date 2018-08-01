@@ -17,6 +17,8 @@ import { EleveService } from 'app/admin/services/eleve.service';
 import { SchoolService } from 'app/admin/services/school.service';
 import { UserService } from 'app/admin/services/user.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { CategoriesMessageNavComponent } from '../message-model/categories-message-nav/categories-message-nav.component';
+import { MessageModelModule } from '../message-model/message-model.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AffectationUniteComponent } from './administration/affectation-unite/affectation-unite.component';
 import { MessageParentFormComponent } from './administration/message-parent-form/message-parent-form.component';
@@ -39,6 +41,7 @@ import { UniteService } from './services/unite.service';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
+    MessageModelModule
   ],
   declarations: [
     MainPageComponent,

@@ -3,16 +3,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ClarityModule } from '@clr/angular';
 import { CoreModule } from 'app/core/core.module';
 import { AlertService } from 'app/shared/services/alert.service';
 import { RestService } from 'app/shared/services/rest.service';
 import { ToastService } from 'app/shared/services/toast.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
 import { ToastyModule } from 'ng2-toasty';
-import { LazyLoadedElevesComponent} from './components/lazy-loaded-eleves.component';
-import { ClarityModule} from '@clr/angular';
-import { NgxEditorModule} from 'ngx-editor';
-import { TreeviewModule} from 'ngx-treeview';
+import { NgxEditorModule } from 'ngx-editor';
+import { TreeviewModule } from 'ngx-treeview';
+import { LazyLoadedElevesComponent } from './components/lazy-loaded-eleves.component';
+import { CapitalizefirstPipe } from './pipes/capitalizefirst.pipe';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { TreeviewModule} from 'ngx-treeview';
   ],
   declarations: [
     LazyLoadedElevesComponent,
+    CapitalizefirstPipe
   ],
   providers: [
     AlertService,
@@ -46,6 +48,7 @@ import { TreeviewModule} from 'ngx-treeview';
     NgxEditorModule,
     ClarityModule,
     LazyLoadedElevesComponent,
+    CapitalizefirstPipe
   ]
 })
 export class SharedModule {

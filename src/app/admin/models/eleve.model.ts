@@ -94,7 +94,7 @@ export class CodeMassarEleveFilter implements ClrDatagridStringFilterInterface<E
 
 export class ActiveEleveComparator implements ClrDatagridComparatorInterface<Eleve> {
   compare(a: Eleve, b: Eleve): number {
-    if (a.enabledAffectations) {
+    if (a.enabled) {
       return 1;
     } else {
       return -1;

@@ -1,29 +1,30 @@
-import { Component, OnInit} from '@angular/core';
-import { FormBuilder, Validators} from '@angular/forms';
-import { Router} from '@angular/router';
-import { AffectationCycle} from 'app/admin/models/affectation-cycle.model';
-import { AffectationNiveau} from 'app/admin/models/affectation-niveau.model';
-import { GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
-import { Classe} from 'app/admin/models/groupe-appellation.model.1';
-import { AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
-import { AlertService} from 'app/shared/services/alert.service';
-import { FormComponent} from '../../../shared/components/form.component';
-import { Message} from '../../models/message.model';
-import { Niveau} from '../../models/niveau.model';
-import { CommunicationAdministrationService} from '../../services/communication-administration.service';
-import { AffectationMessageClasse} from '../../models/affectation-message-classe.model';
-import { AffectationMessageUser} from '../../models/affectation-message-user.model';
-import { AffectationMessageNiveau} from '../../models/affectation-message-niveau.model';
-import { Professeur} from '../../../prof/shared/models/Professeur.model';
-import {AffectationUnite} from "../../models/affectation-unite.model";
-import {AffectationUniteService} from "../../services/affectation-unite.service";
-import {SessionDataService} from "../../../core/session/session-data.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AffectationCycle } from 'app/admin/models/affectation-cycle.model';
+import { AffectationNiveau } from 'app/admin/models/affectation-niveau.model';
+import { GroupeAppellation } from 'app/admin/models/groupe-appellation.model';
+import { Classe } from 'app/admin/models/groupe-appellation.model.1';
+import { AffectationCycleService } from 'app/admin/services/affectation-cycle.service';
+import { AlertService } from 'app/shared/services/alert.service';
+import { MessageModel } from '../../../message-model/shared/models/message-model.model';
+import { FormComponent } from '../../../shared/components/form.component';
+import { Message } from '../../models/message.model';
+import { Niveau } from '../../models/niveau.model';
+import { CommunicationAdministrationService } from '../../services/communication-administration.service';
+import { AffectationMessageClasse } from '../../models/affectation-message-classe.model';
+import { AffectationMessageUser } from '../../models/affectation-message-user.model';
+import { AffectationMessageNiveau } from '../../models/affectation-message-niveau.model';
+import { Professeur } from '../../../prof/shared/models/Professeur.model';
+import { AffectationUnite } from '../../models/affectation-unite.model';
+import { AffectationUniteService } from '../../services/affectation-unite.service';
+import { SessionDataService } from '../../../core/session/session-data.service';
 import {
   TreeViewItem,
   TreeViewItemType
-} from "../../../prof/prof-message-parent-form/prof-message-parent-form.component";
-import {AffectationMessageUnite} from "../../models/affectation-message-unite.model";
-import {Unite} from "../../models/unite.model";
+} from '../../../prof/prof-message-parent-form/prof-message-parent-form.component';
+import { AffectationMessageUnite } from '../../models/affectation-message-unite.model';
+import { Unite } from '../../models/unite.model';
 
 @Component({
   selector: 'app-message-prof-form',
@@ -48,22 +49,9 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
   destinationsTouched = false;
 
 
-  public editorConfig = {
-    'minHeight': '300',
-    'toolbar': [
-      ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript'],
-      ['fontName', 'fontSize', 'color'],
-      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
-      ['cut', 'copy', 'delete', 'removeFormat', 'undo', 'redo'],
-      ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
-      ['link', 'unlink']
-    ]
-  };
-
   cycleSelected = false;
   public items = [];
   uniteItems = [];
-
 
   constructor(private fb: FormBuilder,
               private alert: AlertService,
@@ -126,7 +114,7 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
         }
       },
       error => this.showError(error)
-    );;
+    );
 
     this.createForm();
   }
@@ -225,18 +213,18 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
         if (!message.classes) {
           message.classes = [];
         }
-        message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
+        message.classes.push({ classe: item.value as Classe } as AffectationMessageClasse);
       } else if (item.type === TreeViewItemType.UNITE) {
         if (!message.unites) {
           message.unites = [];
         }
-        message.unites.push({unite: item.value as Unite} as AffectationMessageUnite);
+        message.unites.push({ unite: item.value as Unite } as AffectationMessageUnite);
       } else if (item.type === TreeViewItemType.PROFESSEUR) {
         if (!message.recipients) {
           message.recipients = [];
         }
         const obj = new AffectationMessageUser();
-        obj.user = {id: item.value.id} as any;
+        obj.user = { id: item.value.id } as any;
         message.recipients.push(obj);
       }
     });
@@ -271,6 +259,10 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
 
   isInvalidDestinationControl(): boolean {
     return this.emptyDestination && this.destinationsTouched;
+  }
+
+  updateMessage(msgModel: MessageModel) {
+    this.entityForm.get('message').setValue(msgModel.message);
   }
 
 }

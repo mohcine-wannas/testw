@@ -114,6 +114,11 @@
                   </div>
                 </clr-dg-cell>
                 <clr-dg-cell>
+                  <button [disabled]="!eleve.hasAffectations" class="btn btn-sm btn-icon btn-link"
+                          (click)="openParentDialog(eleve)">
+                    <clr-icon shape="check" class="is-solid"></clr-icon>
+                    Parents
+                  </button>
                   <button class="btn btn-sm btn-icon btn-link" (click)="updateStudent(eleve)">
                     <clr-icon shape="pencil" class="is-solid"></clr-icon>
                     Editer
@@ -221,7 +226,7 @@
 
 <clr-modal [(clrModalOpen)]="openedForm" [clrModalSize]="'lg'">
   <h3 class="modal-title" *ngIf="!modeEdit;else editeEleve">Nouveau élève</h3>
-  <ng-template #editeEleve>Modification élève</ng-template>
+  <ng-template #editeEleve><h3 class="modal-title">Modification élève</h3></ng-template>
   <div class="modal-body">
     <form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form"
           name="entityForm"
@@ -287,7 +292,7 @@
                    [class.invalid]="isNotValid('niveau')">
               <div class="select form-control">
                 <select id="niveau" name="niveau" formControlName="niveau"
-                        (change)="niveauChanged()" required>
+                        (change)="niveauChanged()" required  [compareWith]='customCompareNiveau'>
                   <option *ngFor="let element of affectationNiveaux" [ngValue]="element.niveau">
                     {{niveauAppellation[element.niveau.id]}}
                   </option>

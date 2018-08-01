@@ -166,4 +166,16 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
     throw this.toastService.error();
   }
 
+  public editorConfig = {
+    'minHeight': '300',
+    'toolbar': [
+      ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript'],
+      ['fontName', 'fontSize', 'color'],
+      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
+      ['cut', 'copy', 'delete', 'removeFormat', 'undo', 'redo'],
+      ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
+      ['link', 'unlink']
+    ]
+  };
+
 }
