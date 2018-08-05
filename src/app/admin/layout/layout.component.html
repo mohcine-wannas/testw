@@ -10,7 +10,7 @@
         <clr-icon shape="home"></clr-icon>
       </a>
 
-      <div class="icon-wrapper" >
+      <div class="icon-wrapper">
         <a class=" nav-link nav-icon" routerLink='/admin/notifications' routerLinkActive='active'>
           <clr-icon shape="bell"></clr-icon>
           <span class="badge" *ngIf="notifNumber>0">{{notifNumber}}</span>
@@ -89,6 +89,7 @@
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
+      <app-categories-message-nav [profil]="'admin'"></app-categories-message-nav>
     </clr-vertical-nav>
   </div>
 

@@ -6,15 +6,12 @@ import { AffectationNiveau } from '../../admin/models/affectation-niveau.model';
 import { AffectationUnite } from '../../admin/models/affectation-unite.model';
 import { Cycle } from '../../admin/models/cycle.model';
 import { GroupeAppellation } from '../../admin/models/groupe-appellation.model';
-import { AffectationCycleService } from '../../admin/services/affectation-cycle.service';
-import { AffectationUniteService } from '../../admin/services/affectation-unite.service';
-import { CycleService } from '../../admin/services/cycle.service';
 import { FormComponent } from '../../shared/components/form.component';
 import { AlertService } from '../../shared/services/alert.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { AffectationProf } from '../shared/models/affectation-prof.model';
 import { Professeur } from '../shared/models/Professeur.model';
-import { ProfesseurService } from '../shared/services/professeur.service';
+import { RegisterService } from '../shared/services/register.service';
 
 @Component({
   selector: 'app-register-prof',
@@ -40,30 +37,54 @@ export class RegisterProfComponent extends FormComponent<Professeur> implements 
 
   constructor(private router: Router,
               private formGroup: FormBuilder,
-              private professeurService: ProfesseurService,
-              private affectationCycleService: AffectationCycleService,
-              private affectationUniteService: AffectationUniteService,
-              private cycleService: CycleService,
+              private registerService: RegisterService,
               public toastyService: ToastService,
               private alert: AlertService) {
     super();
-    this.restService = professeurService;
+    this.restService = registerService;
   }
 
   ngOnInit() {
   }
 
-  private goToModal() {
-    this.opened = true;
+
+  validateSchoolCode() {
+    this.isLogging = true;
+    this.registerService.validateCodeSchool(this.schoolCode).subscribe(
+      resp => this.checkResponse(resp as boolean),
+      error => {
+        this.isValid = false;
+        this.isLogging = false;
+        this.showErrorRest(error);
+      }
+    );
+  }
+
+
+  checkResponse(response: boolean) {
+    this.isLogging = false;
+    if (response) {
+      this.isValid = true;
+      this.createForm();
+      this.getCyclesBySchoolCode();
+      this.alert.checkedSuccess();
+    } else {
+      this.isValid = false;
+      this.alert.error('Code incorrect', 'Oops !');
+    }
   }
 
   getCyclesBySchoolCode() {
-    this.cycleService.getCyclesBySchoolCode(this.schoolCode).subscribe(
+    this.registerService.getCyclesBySchoolCode(this.schoolCode).subscribe(
       resp => this.cycles = resp,
       error => {
         this.showErrorRest(error);
       }
     );
+  }
+
+  private goToModal() {
+    this.opened = true;
   }
 
   cycleChanged() {
@@ -83,7 +104,7 @@ export class RegisterProfComponent extends FormComponent<Professeur> implements 
   }
 
   private loadAffectationsUnite() {
-    this.affectationUniteService.getAffectationsUniteBySchoolCodeAndByCycleId(this.schoolCode, this.entityForm.get('cycle').value.id)
+    this.registerService.getAffectationsUniteBySchoolCodeAndByCycleId(this.schoolCode, this.entityForm.get('cycle').value.id)
       .subscribe(
         (resp: AffectationUnite[]) => {
           this.professeur.affectationsUniteProf = resp;
@@ -100,7 +121,7 @@ export class RegisterProfComponent extends FormComponent<Professeur> implements 
   }
 
   private loadAffectationsNiveaux() {
-    this.affectationCycleService.getAffectationCycleBySchoolCodeAndByCycleId(this.schoolCode, this.entityForm.get('cycle').value.id)
+    this.registerService.getAffectationCycleBySchoolCodeAndByCycleId(this.schoolCode, this.entityForm.get('cycle').value.id)
       .subscribe(
         (resp: AffectationCycle) => {
           this.affectationNiveaux = resp.affectationNiveaux;
@@ -139,32 +160,6 @@ export class RegisterProfComponent extends FormComponent<Professeur> implements 
     this.schoolCode = this.entityForm.get('schoolCode').value;
   }
 
-  validateSchoolCode() {
-    this.isLogging = true;
-    this.professeurService.validateCodeSchool(this.schoolCode).subscribe(
-      resp => this.checkResponse(resp as boolean),
-      error => {
-        this.isValid = false;
-        this.isLogging = false;
-        this.showErrorRest(error);
-      }
-    );
-  }
-
-
-  checkResponse(response: boolean) {
-    this.isLogging = false;
-    if (response) {
-      this.isValid = true;
-      this.createForm();
-      this.getCyclesBySchoolCode();
-      this.alert.checkedSuccess();
-    } else {
-      this.isValid = false;
-      this.alert.error('Code incorrect', 'Oops !');
-    }
-  }
-
   validatePassword(): boolean {
     if (this.entityForm.get('passwordConfirm').value && this.entityForm.get('password').value
       && this.entityForm.get('password').value !== this.entityForm.get('passwordConfirm').value) {
@@ -173,17 +168,55 @@ export class RegisterProfComponent extends FormComponent<Professeur> implements 
     return true;
   }
 
+  private validateAffectationNiveauClasse(prof: Professeur): boolean {
+    if (prof.affectationsNiveauClasseProf.length === 0) {
+      this.toastyService.error('Merci de choisir au minimum un niveau et une classe');
+      return false;
+    }
+
+    if (!this.validateAffectationNiveauClasseRequiredValue(prof)) {
+      this.toastyService.error('Un ou plusieurs champs obligatoires sont manquants');
+      return false;
+    }
+    let count;
+    for (const affectation of prof.affectationsNiveauClasseProf) {
+      count = 0;
+      for (const affectation2 of prof.affectationsNiveauClasseProf) {
+        if (affectation.niveau && affectation.niveau.id === affectation2.niveau.id && affectation.classe.id === affectation2.classe.id) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        this.toastyService.error('Un où plusieurs affactations sont dupliquée');
+        return false;
+      }
+    }
+    return true;
+  }
+  private validateAffectationNiveauClasseRequiredValue(prof: Professeur): boolean {
+    for (const affectation of prof.affectationsNiveauClasseProf) {
+      if (!affectation.niveau || !affectation.niveau.id || !affectation.classe || !affectation.classe.id) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public submitForm($ev, model: any) {
+
+    const prof = model as Professeur;
+    if (!this.validateAffectationNiveauClasse(prof)) {
+      return;
+    }
     this.markAllInputAsTouched();
     if (!this.entityForm.valid) {
       return;
     }
 
-    const prof = model as Professeur;
     if (prof.password === prof.passwordConfirm) {
       if (prof.affectationsNiveauClasseProf.length !== 0 && prof.affectationsUniteProf.length !== 0) {
         this.submitting = true;
-        this.professeurService.create(prof).subscribe(
+        this.registerService.create(prof).subscribe(
           resp => {
             this.submitting = false;
             this.toastyService.success('Enregistrement effectué avec succès');

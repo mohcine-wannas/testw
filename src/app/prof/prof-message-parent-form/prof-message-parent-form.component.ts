@@ -9,6 +9,7 @@ import {Classe} from 'app/admin/models/groupe-appellation.model.1';
 import {AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
 import {ClasseService} from 'app/admin/services/classe.service';
 import {AlertService} from 'app/shared/services/alert.service';
+import { MessageModel } from '../../message-model/shared/models/message-model.model';
 import {FormComponent} from '../../shared/components/form.component';
 import {Message} from '../../admin/models/message.model';
 import {AffectationMessageClasse} from '../../admin/models/affectation-message-classe.model';
@@ -43,18 +44,6 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
 
   emptyDestination = true;
   destinationsTouched = false;
-
-  public editorConfig = {
-    'minHeight': '300',
-    'toolbar': [
-      ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript'],
-      ['fontName', 'fontSize', 'color'],
-      ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
-      ['cut', 'copy', 'delete', 'removeFormat', 'undo', 'redo'],
-      ['paragraph', 'blockquote', 'removeBlockquote', 'horizontalLine', 'orderedList', 'unorderedList'],
-      ['link', 'unlink']
-    ]
-  }
 
   cycleSelected = false;
   public items = [];
@@ -296,6 +285,11 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       }
     });
   }
+
+  updateMessage(msgModel: MessageModel) {
+    this.entityForm.get('message').setValue(msgModel.message);
+  }
+
 }
 
 export class TreeViewItem {

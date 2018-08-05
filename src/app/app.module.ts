@@ -19,6 +19,7 @@ import { AuthGuard } from './auth-guard.service';
 import { HomeModule } from './home/home.module';
 
 import { LoginModule } from './login/login.module';
+import { MessageModelModule } from './message-model/message-model.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfModule } from './prof/prof.module';
 

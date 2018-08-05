@@ -11,7 +11,7 @@ export class Professeur extends User {
   passwordConfirm: string;
   fullname: string;
   enabled: boolean;
-  autoSend: boolean;
+  autoSendMessage: boolean;
 
 
   affectationsNiveauClasseProf: AffectationProf[];

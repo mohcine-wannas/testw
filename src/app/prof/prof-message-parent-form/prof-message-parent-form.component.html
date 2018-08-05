@@ -96,6 +96,8 @@
                   </div>
                 </div>
 
+                <app-upload-model-message [profil]="'prof'" (msgModel)="updateMessage($event)"></app-upload-model-message>
+
                 <div class="form-group"  [class.invalid]="isNotValid('message')">
                   <label for="message">Message</label>
                   <app-ngx-editor id="message" [config]="editorConfig" [placeholder]="'Entez votre message ici ...'" [spellcheck]="true" formControlName="message"></app-ngx-editor>
@@ -108,6 +110,8 @@
                     </div>
                   </div>
                 </div>
+                <app-create-from-send-message [profil]="'prof'"
+                                              [message]="entityForm.get('message').value"></app-create-from-send-message>
 
                 <button class="btn btn-primary" type="submit" [disabled]="submitting">Envoyer</button>
               </section>

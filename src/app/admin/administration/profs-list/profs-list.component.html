@@ -90,7 +90,7 @@
                 </clr-dg-cell>
                 <clr-dg-cell>
                   <div class="toggle-switch">
-                    <input type="checkbox" id="toggle_auto_send_{{prof.id}}" [(ngModel)]="prof.autoSend"
+                    <input type="checkbox" id="toggle_auto_send_{{prof.id}}" [(ngModel)]="prof.autoSendMessage"
                            (ngModelChange)="autoSendProf(prof)">
                     <label for="toggle_auto_send_{{prof.id}}"></label>
                   </div>
@@ -183,7 +183,7 @@
                      [class.invalid]="isNotValidRequired(affectation.get('niveau'))">
                 <div class="select form-control">
                   <select id="affectation-niveau" (change)="refreshClasses(ind)"
-                          name="niveau" formControlName="niveau" required>
+                          name="niveau" formControlName="niveau" required [compareWith]='customCompareNiveau'>
                     <option *ngFor="let element of affectationNiveaux" [ngValue]="element.niveau">
                       {{niveauAppellation[element.niveau.id]}}
                     </option>
@@ -200,7 +200,7 @@
                      [class.invalid]="isNotValidRequired(affectation.get('classe'))">
                 <div class="select form-control">
                   <select id="affectation-classe"
-                          name="classe" formControlName="classe" required>
+                          name="classe" formControlName="classe" required [compareWith]='customCompareClasse'>
                     <option [ngValue]="" *ngIf="affectation.get('classes').value">
                     </option>
                     <option *ngFor="let element of affectation.get('classes').value" [ngValue]="element">

@@ -1,0 +1,38 @@
+<div class="form-group">
+  <label for="categorie">Catégorie</label>
+  <div class="select form-control">
+    <select id="categorie" name="categorie" [(ngModel)]="category" (change)="categoryChanged()"
+            [ngModelOptions]="{standalone: true}">
+      <option *ngFor="let categorie of categories" [ngValue]="categorie">
+        {{categorie.libelle}}
+      </option>
+    </select>
+  </div>
+</div>
+<clr-modal [(clrModalOpen)]="openeModal" [clrModalSize]="'lg'">
+  <h3 class="modal-title">Modèles de messages de la catégorie : {{category?.libelle | capitalizefirst}}</h3>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let msgModel of msgModels">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{msgModel.titre}}</h3>
+          </div>
+          <div class="card-block">
+            <div class="card-text" [innerHTML]="msgModel.message"></div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-sm btn-link  btn-icon" (click)="setMessageModel(msgModel)">
+              <clr-icon shape="inbox"></clr-icon>
+              Envoyer
+            </button>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="msgModels.length === 0">AAucun modèle de message n'est disponible pour cette catégorie</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="openeModal = false">Annuler</button>
+  </div>
+</clr-modal>

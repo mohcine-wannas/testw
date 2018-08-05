@@ -3,16 +3,17 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { SharedModule } from 'app/shared/shared.module';
+import { MessageModelModule } from '../message-model/message-model.module';
 import { RegisterProfComponent } from './inscription/register-prof.component';
+import { ProfHistoriqueComponent } from './prof-historique/prof-historique.component';
+import { ProfLayoutComponent } from './prof-layout/prof-layout.component';
+import { ProfMessageParentFormComponent } from './prof-message-parent-form/prof-message-parent-form.component';
+import { ProfMessagesComponent } from './prof-messages/prof-messages.component';
 
 import { ProfRoutingModule } from './prof-routing.module';
-import { ProfLayoutComponent} from './prof-layout/prof-layout.component';
-import { ProfesseurService } from './shared/services/professeur.service';
-import {ProfMessageParentFormComponent} from './prof-message-parent-form/prof-message-parent-form.component';
-import {CommunicationProfesseurService} from './shared/services/communication-professeur.service';
-import {ProfHistoriqueComponent} from "./prof-historique/prof-historique.component";
-import {TransferService} from "./shared/services/transfer.service";
-import {ProfMessagesComponent} from "./prof-messages/prof-messages.component";
+import { CommunicationProfesseurService } from './shared/services/communication-professeur.service';
+import { RegisterService } from './shared/services/register.service';
+import { TransferService } from './shared/services/transfer.service';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {ProfMessagesComponent} from "./prof-messages/prof-messages.component";
     FormsModule,
     ProfRoutingModule,
     SharedModule,
-    ClarityModule
+    ClarityModule,
+    MessageModelModule
   ],
   declarations: [
     RegisterProfComponent,
@@ -31,7 +33,7 @@ import {ProfMessagesComponent} from "./prof-messages/prof-messages.component";
     ProfMessagesComponent
   ],
   providers: [
-    ProfesseurService,
+    RegisterService,
     CommunicationProfesseurService,
     TransferService
   ]

@@ -11,14 +11,16 @@ import {
   PhoneNumberProfFilter,
   Professeur
 } from '../../../prof/shared/models/Professeur.model';
-import { ProfesseurService } from '../../../prof/shared/services/professeur.service';
 import { FormComponent } from '../../../shared/components/form.component';
 import { AlertService } from '../../../shared/services/alert.service';
 import { AffectationCycle } from '../../models/affectation-cycle.model';
 import { AffectationNiveau } from '../../models/affectation-niveau.model';
 import { AffectationUnite } from '../../models/affectation-unite.model';
 import { GroupeAppellation } from '../../models/groupe-appellation.model';
+import { Classe } from '../../models/groupe-appellation.model.1';
+import { Niveau } from '../../models/niveau.model';
 import { AffectationCycleService } from '../../services/affectation-cycle.service';
+import { ProfesseurService } from '../../services/professeur.service';
 
 @Component({
   selector: 'app-profs-list',
@@ -102,6 +104,7 @@ export class ProfsListComponent extends FormComponent<Professeur> implements OnI
       for (const item of this.affectationNiveaux) {
         if (item.niveau.id === niveau.id) {
           this.selectedAffectationNiveau = item;
+          break;
         }
       }
       this.formArrayAffectation.controls[index].get('classes').setValue(this.selectedAffectationNiveau.classes);
@@ -296,7 +299,7 @@ export class ProfsListComponent extends FormComponent<Professeur> implements OnI
   }
 
   autoSendProf(prof: Professeur) {
-    this.profService.autoSendProf(prof.id, prof.autoSend).subscribe(
+    this.profService.autoSendProf(prof.id, prof.autoSendMessage).subscribe(
       resp => {
         this.toastyService.success('Operation effectuée avec succès');
       },
@@ -384,6 +387,14 @@ export class ProfsListComponent extends FormComponent<Professeur> implements OnI
 
   showError(error: any): any {
     this.alert.error(error);
+  }
+
+  customCompareNiveau(n1: Niveau, n2: Niveau) {
+    return n1.id === n2.id;
+  }
+
+  customCompareClasse(n1: Classe, n2: Classe) {
+    return n1.id === n2.id;
   }
 
 }

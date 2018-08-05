@@ -1,0 +1,168 @@
+<div class="dox-wrapper">
+  <div class="dox-wrapper dox-header">
+    <section>
+      <h1>Gestion modèles de messages</h1>
+
+    </section>
+  </div>
+
+  <section class="dox-content" hash-listener="" style="position:relative;">
+    <div class="dox-content-wrapper">
+      <div class="row">
+        <div class="col-lg-4 so-icon.pngcol-md-6 col-sm-12">
+          <a (click)="newMsgModel()">
+            <div class="card clickable">
+              <div class="card-block">
+                <div class="main-icon-wrapper">
+                  <clr-icon shape="plus" class="main-icon"></clr-icon>
+                </div>
+                <p class="card-text">Ajouter un nouveau modèle de message</p>
+              </div>
+            </div>
+          </a>
+
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let msgModel of msgModels">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">{{msgModel.titre}}</h3>
+            </div>
+            <div class="card-block">
+              <div class="card-text" [innerHTML]="msgModel.message"></div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-link  btn-icon" (click)="openForm(msgModel, false)">
+                <clr-icon shape="copy"></clr-icon>
+                Dupliquer
+              </button>
+              <button class="btn btn-sm btn-link btn-icon" (click)="openForm(msgModel, true)"
+                      *ngIf="!msgModel.fige">
+                <clr-icon shape="pencil"></clr-icon>
+                Editer
+              </button>
+              <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessageModel(msgModel.id)"
+                      *ngIf="!msgModel.fige">
+                <clr-icon shape="trash"></clr-icon>
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<clr-modal [(clrModalOpen)]="openedForm" [clrModalSize]="'lg'">
+  <h3 class="modal-title" *ngIf="!modeEdit;else modeEditMsg">Nouveau modèle de message</h3>
+  <ng-template #modeEditMsg><h3 class="modal-title">Modification modèle de message</h3></ng-template>
+  <div class="modal-body">
+    <form *ngIf="entityForm" [formGroup]="entityForm" class="form-validate form-horizontal mb-lg" role="form"
+          name="entityForm"
+          id="entityForm" novalidate="">
+
+      <section class="form-block">
+
+        <div class="form-group row">
+          <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+            <label for="titre">Titre</label>
+          </div>
+          <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            <label for="titre" aria-haspopup="true" role="tooltip"
+                   class="tooltip tooltip-validation tooltip-md"
+                   [class.invalid]="isNotValid('titre')">
+              <input type="text" id="titre" required class="form-control"
+                     name="titre" formControlName="titre" size="250">
+              <span class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+            </label>
+            <div *ngIf="isNotValid('titre')" class="alert alert-danger alert-sm" style="margin-bottom: 30px">
+              <div class="alert-items">
+                <div class="alert-item static">
+                  <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                  </div>
+                  <span class="alert-text">Ce champs est obligatoire</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+            <label for="categorie">Catégorie</label>
+          </div>
+          <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <label for="categorie" aria-haspopup="true" role="tooltip"
+                   class="tooltip tooltip-validation tooltip-md"
+                   [class.invalid]="isNotValid('categorie')">
+              <div class="select form-control">
+                <select id="categorie" name="categorie" formControlName="categorie"
+                        [compareWith]='customCompareCategory' required>
+                  <option *ngFor="let categorie of categories" [ngValue]="categorie">
+                    {{categorie.libelle}}
+                  </option>
+                </select>
+              </div>
+              <span class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+            </label>
+            <div *ngIf="isNotValid('categorie')" class="alert alert-danger alert-sm" style="margin-bottom: 30px">
+              <div class="alert-items">
+                <div class="alert-item static">
+                  <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                  </div>
+                  <span class="alert-text">Ce champs est obligatoire</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+            <label for="categorie">Message</label>
+          </div>
+          <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            <label for="message" aria-haspopup="true" role="tooltip"
+                   class="tooltip tooltip-validation tooltip-md"
+                   [class.invalid]="isNotValid('message')">
+              <app-ngx-editor id="message" [config]="editorConfig" [placeholder]="'Entez votre message ici ...'"
+                              [spellcheck]="true" formControlName="message"></app-ngx-editor>
+              <span class="tooltip-content">
+                Ce champs est obligatoire
+            </span>
+            </label>
+            <div *ngIf="isNotValid('message')" class="alert alert-danger alert-sm" style="margin-bottom: 30px">
+              <div class="alert-items">
+                <div class="alert-item static">
+                  <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                  </div>
+                  <span class="alert-text">Ce champs est obligatoire</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div style="text-align: center" *ngIf="submitting">
+        <span class="spinner spinner-inline">
+            Chargement...
+        </span>
+      <span>
+            Connexion en cours...
+        </span>
+    </div>
+    <button type="button" class="btn btn-outline" (click)="openedForm = false">Annuler</button>
+    <button type="button" class="btn btn-primary" (click)="submitMsgModel($event)" [clrLoading]="submitting">
+      Enregistrer
+    </button>
+  </div>
+</clr-modal>

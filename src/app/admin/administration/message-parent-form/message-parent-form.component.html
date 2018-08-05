@@ -36,7 +36,7 @@
                 <label>Communiquer avec les parents</label>
                 <div class="form-group">
                   <label for="recipients">Destination</label>
-                  <clr-tree-node   id="recipients" [(clrSelected)]="cycleSelected">
+                  <clr-tree-node id="recipients" [(clrSelected)]="cycleSelected">
                     Tout le cycle
                     <ng-template [clrIfExpanded]="true">
                       <clr-tree-node
@@ -47,7 +47,8 @@
                           <clr-tree-node *ngFor="let child of item.children" [(clrSelected)]="child.checked">
                             {{child.text}}
                             <ng-template [clrIfExpanded]="false">
-                              <app-lazy-loaded-students [classe]="child.value" [childrenReference]="child.children"></app-lazy-loaded-students>
+                              <app-lazy-loaded-students [classe]="child.value"
+                                                        [childrenReference]="child.children"></app-lazy-loaded-students>
                             </ng-template>
                           </clr-tree-node>
                         </ng-template>
@@ -55,43 +56,56 @@
                     </ng-template>
                   </clr-tree-node>
                 </div>
-                <div *ngIf="isInvalidDestinationControl()" class="alert alert-danger alert-sm"  style="margin-bottom: 30px">
+                <div *ngIf="isInvalidDestinationControl()" class="alert alert-danger alert-sm"
+                     style="margin-bottom: 30px">
                   <div class="alert-items">
                     <div class="alert-item static">
-                      <div class="alert-icon-wrapper"><clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon></div>
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                      </div>
                       <span class="alert-text">Ce champs est obligatoire</span>
                     </div>
                   </div>
                   <div style="margin-bottom: 10px"></div>
                 </div>
 
-                <div class="form-group"><label></label> <span *ngFor="let item of getSelected()" class="label label-info">{{item.text}}</span></div>
+                <div class="form-group"><label></label> <span *ngFor="let item of getSelected()"
+                                                              class="label label-info">{{item.text}}</span></div>
 
                 <div class="form-group" [class.invalid]="isNotValid('forDate')">
                   <label for="forDate">Pour le</label>
-                    <input clrDate type="date" id="forDate" name="forDate" formControlName="forDate" size=35>
+                  <input clrDate type="date" id="forDate" name="forDate" formControlName="forDate" size=35>
                 </div>
                 <div *ngIf="isNotValid('forDate')" class="alert alert-danger alert-sm" style="margin-bottom: 30px">
                   <div class="alert-items">
                     <div class="alert-item static">
-                      <div class="alert-icon-wrapper"><clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon></div>
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                      </div>
                       <span class="alert-text">Ce champs est obligatoire</span>
                     </div>
                   </div>
                 </div>
 
-                <div class="form-group"  [class.invalid]="isNotValid('message')">
+                <app-upload-model-message [profil]="'admin'" (msgModel)="updateMessage($event)"></app-upload-model-message>
+
+                <div class="form-group" [class.invalid]="isNotValid('message')">
                   <label for="message">Message</label>
-                  <app-ngx-editor id="message" [config]="editorConfig" [placeholder]="'Entez votre message ici ...'" [spellcheck]="true" formControlName="message"></app-ngx-editor>
+                  <app-ngx-editor id="message" [config]="editorConfig" [placeholder]="'Entez votre message ici ...'"
+                                  [spellcheck]="true" formControlName="message"></app-ngx-editor>
                 </div>
-                <div *ngIf="isNotValid('message')" class="alert alert-danger alert-sm"  style="margin-bottom: 30px">
+                <div *ngIf="isNotValid('message')" class="alert alert-danger alert-sm" style="margin-bottom: 30px">
                   <div class="alert-items">
                     <div class="alert-item static">
-                      <div class="alert-icon-wrapper"><clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon></div>
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                      </div>
                       <span class="alert-text">Ce champs est obligatoire</span>
                     </div>
                   </div>
                 </div>
+                <app-create-from-send-message [profil]="'admin'"
+                                              [message]="entityForm.get('message').value"></app-create-from-send-message>
 
                 <button class="btn btn-primary" type="submit" [disabled]="submitting">Envoyer</button>
               </section>

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Cycle } from 'app/admin/models/cycle.model';
 import { SessionDataService } from 'app/core/session/session-data.service';
 import { SessionService } from 'app/core/session/session.service';
-import {NotificationService} from "../../admin/services/notification.service";
+import { NotificationService } from '../../admin/services/notification.service';
 
 @Component({
   selector: 'app-layout',

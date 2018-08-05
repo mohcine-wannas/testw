@@ -1,0 +1,13 @@
+<clr-vertical-nav-group>
+  <clr-icon shape="view-cards" clrVerticalNavIcon></clr-icon>
+  Modèles de messages
+  <clr-vertical-nav-group-children>
+    <span *ngFor="let categorie of categories">
+      <a clrVerticalNavLink
+         [routerLink]="['message-models', 'list','category',profil, categorie.id]"
+         routerLinkActive="active">
+      {{categorie.libelle | capitalizefirst}}
+    </a>
+    </span>
+  </clr-vertical-nav-group-children>
+</clr-vertical-nav-group>
