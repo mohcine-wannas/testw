@@ -71,7 +71,7 @@ export class AlertService {
       text: text,
       type: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#62a420',
+      confirmButtonColor: '#1570a4',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Oui, Je suis sûr !',
       cancelButtonText: 'Annulé'

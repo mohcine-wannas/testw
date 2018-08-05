@@ -24,6 +24,11 @@ export class AffectationUniteService extends RestService<AffectationUnite> {
       .catch(super.handleError);
   }
 
+  getAffectationsUniteOfCurrentProf(): Observable<AffectationUnite[]> {
+    return this.http.get(this.getFullUrl('/by-current-prof'))
+      .catch(super.handleError);
+  }
+
   updateAffectationsUnite(affectations: AffectationUnite[]): Observable<AffectationUnite[]> {
     return this.http.post(this.getFullUrl('/'), affectations)
       .catch(super.handleError);

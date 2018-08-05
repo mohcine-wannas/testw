@@ -152,7 +152,9 @@
 .ngxePopover form label {
   font-size: 0.6rem !important;
 }
-
+.datagrid-host  .datagrid-host  .datagrid .datagrid-cell {
+  padding: .45833rem .5rem .45833rem !important;
+}
 .form-group.invalid label {
   color: #c92100 !important;
   font-weight: bold;

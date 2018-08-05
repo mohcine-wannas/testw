@@ -19,6 +19,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import {SendingValidationComponent} from "./administration/sending-validation/sending-validation.component";
 import {MessageProfesseurFormComponent} from "./administration/message-prof-form/message-prof-form.component";
+import {AdminHistoriqueComponent} from "./administration/admin-historique/admin-historique.component";
 
 const routes: Routes = [
   {
@@ -56,6 +57,7 @@ const routes: Routes = [
           { path: 'send-to-parent', component: MessageParentFormComponent },
           { path: 'send-to-prof', component: MessageProfesseurFormComponent },
           { path: 'validation-envois', component: SendingValidationComponent },
+          { path: 'history', component: AdminHistoriqueComponent },
           { path: '**', component: PageNotFoundComponent },
         ]
       },

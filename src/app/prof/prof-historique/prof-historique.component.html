@@ -29,7 +29,7 @@
                       <div class="card-text">
 
                       </div>
-                      <div class="card-text" [innerHTML]="message.message"></div>
+                      <div class="card-text" [innerHTML]="transform(message.message)"></div>
                     </div>
                     <div class="card-footer">
                       <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessageNotValid(message.id)"><clr-icon shape="redo"></clr-icon> Transférer</button>
@@ -62,10 +62,43 @@
                       <div class="card-text">
 
                       </div>
-                      <div class="card-text" [innerHTML]="message.message"></div>
+                      <div class="card-text" [innerHTML]="transform(message.message)"></div>
                     </div>
                     <div class="card-footer">
                       <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessageValid(message.id)"><clr-icon shape="redo"></clr-icon> Transférer</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </clr-tab-content>
+        </clr-tab>
+        <clr-tab>
+          <button clrTabLink>Messages rejetés</button>
+          <clr-tab-content *clrIfActive>
+            <article>
+              <div class="row" *ngFor="let message of messagesRejected">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <small><clr-icon shape="calendar"></clr-icon> Le :{{message.createdOn | date: mediumDate}}</small> |
+                      <small><clr-icon shape="calendar"></clr-icon> Pour :{{message.forDate | date: mediumDate}}</small> |
+                      <small *ngIf="message.unite"><clr-icon shape="book"></clr-icon> {{message.unite.libelle }}</small><br>
+                      <small><strong><clr-icon shape="users"></clr-icon> Destinataires :
+                        <span *ngFor="let item of message.niveaux" class="label label-info">{{getNiveauName(item)}}</span>
+                        <span *ngFor="let item of message.classes" class="label label-info">{{item.classe.libelle}}</span>
+                        <span *ngFor="let item of message.recipients" class="label label-info">{{item.user.firstname + ' ' + item.user.lastname}}</span>
+                      </strong></small>
+                    </div>
+                    <div class="card-block">
+                      <div class="card-text">
+
+                      </div>
+                      <div class="card-text" [innerHTML]="transform(message.message)"></div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessageValid(message.id)"><clr-icon shape="redo"></clr-icon> Transférer</button>
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessage(message.id)"><clr-icon shape="trash"></clr-icon> Supprimer</button>
                     </div>
                   </div>
                 </div>

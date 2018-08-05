@@ -1,27 +1,15 @@
-import { Component, OnInit} from '@angular/core';
-import { FormBuilder, Validators} from '@angular/forms';
-import { Router} from '@angular/router';
-import { AffectationCycle} from 'app/admin/models/affectation-cycle.model';
-import { AffectationNiveau} from 'app/admin/models/affectation-niveau.model';
-import { Eleve} from 'app/admin/models/eleve.model';
-import { GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
-import { Classe} from 'app/admin/models/groupe-appellation.model.1';
-import { AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
-import { ClasseService} from 'app/admin/services/classe.service';
-import { EleveService} from 'app/admin/services/eleve.service';
-import { AlertService} from 'app/shared/services/alert.service';
-import { FormComponent} from "../../shared/components/form.component";
-import { Message} from "../../admin/models/message.model";
-import { CommunicationAdministrationService} from "../../admin/services/communication-administration.service";
-import { AffectationMessageClasse} from "../../admin/models/affectation-message-classe.model";
-import { Niveau} from "../../admin/models/niveau.model";
-import { AffectationMessageNiveau} from "../../admin/models/affectation-message-niveau.model";
-import { AffectationMessageUser} from "../../admin/models/affectation-message-user.model";
-import {AffectationUniteService} from "../../admin/services/affectation-unite.service";
-import {Unite} from "../../admin/models/unite.model";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AffectationCycle} from 'app/admin/models/affectation-cycle.model';
+import {GroupeAppellation} from 'app/admin/models/groupe-appellation.model';
+import {AffectationCycleService} from 'app/admin/services/affectation-cycle.service';
+import {AlertService} from 'app/shared/services/alert.service';
+import {Message} from "../../admin/models/message.model";
+import {AffectationMessageNiveau} from "../../admin/models/affectation-message-niveau.model";
 import {CommunicationProfesseurService} from "../shared/services/communication-professeur.service";
 import {ToastyService} from "ng2-toasty";
 import {TransferService} from "../shared/services/transfer.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-prof-message-parent-form',
@@ -37,6 +25,7 @@ export class ProfHistoriqueComponent implements OnInit {
 
   messagesNotValid: Message[];
   messagesValid: Message[];
+  messagesRejected: Message[];
 
   niveauAppellation: any[];
 
@@ -44,7 +33,9 @@ export class ProfHistoriqueComponent implements OnInit {
               private affectationCycleService: AffectationCycleService,
               private toastyService: ToastyService,
               private transferService: TransferService,
-              private router: Router) {
+              private alert: AlertService,
+              private router: Router,
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
@@ -56,6 +47,11 @@ export class ProfHistoriqueComponent implements OnInit {
     );
     this.messageService.getAllValidMessages().subscribe(
       resp => this.messagesValid = resp,
+      //error => this.showError(error)
+      error => console.log(error) //TODO
+    );
+    this.messageService.getAllRejectedMessages().subscribe(
+      resp => this.messagesRejected = resp,
       //error => this.showError(error)
       error => console.log(error) //TODO
     );
@@ -81,13 +77,24 @@ export class ProfHistoriqueComponent implements OnInit {
   }
 
   deleteMessage(id) {
-    return this.messageService.delete(id).subscribe(
-      () => {
-        this.toastyService.success('Operation effectuée avec succès');
-        this.messagesNotValid.splice(this.messagesNotValid.findIndex(item => item.id === id), 1);
-      },
-      (error) => console.log(error)
-    );
+      if (id) {
+        this.alert.confirm('Êtes vous sûr de vouloir supprimer ce message ?').then((res) => {
+            if (res.value) {
+              return this.messageService.delete(id).subscribe(
+                () => {
+                  this.toastyService.success('Operation effectuée avec succès');
+                  this.messagesNotValid.splice(this.messagesNotValid.findIndex(item => item.id === id), 1);
+                },
+                (error) => console.log(error)
+              );
+            } else if (res.dismiss.toString() === 'cancel') {
+            }
+          },
+          error => this.alert.error()
+        );
+      }
+
+
   }
 
   transferMessageValid(id) {
@@ -98,5 +105,13 @@ export class ProfHistoriqueComponent implements OnInit {
   transferMessageNotValid(id) {
     this.transferService.message = this.messagesNotValid.filter(e => e.id === id)[0];
     this.router.navigate(['/prof/communication/send-to-parent']);
+  }
+
+  transform(html) {
+    //return this.sanitizer.bypassSecurityTrustStyle(html);
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+    // return this.sanitizer.bypassSecurityTrustScript(html);
+    // return this.sanitizer.bypassSecurityTrustUrl(html);
+    // return this.sanitizer.bypassSecurityTrustResourceUrl(html);
   }
 }

@@ -72,7 +72,8 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
               private affectationCycleService: AffectationCycleService,
               private communicationService: CommunicationProfesseurService,
               private affectationUniteService: AffectationUniteService,
-              private transferService: TransferService) {
+              private transferService: TransferService
+  ) {
     super();
   }
 
@@ -119,12 +120,12 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     }
 
 
-    this.affectationUniteService.getAffectationsUnite().subscribe(
+    this.affectationUniteService.getAffectationsUniteOfCurrentProf().subscribe(
       resp => {
-          resp.forEach(affectationUnite => {
-            this.unites.push(affectationUnite.unite);
-          });
-        if (this.message.unite) {
+        resp.forEach(affectationUnite => {
+          this.unites.push(affectationUnite.unite);
+        });
+        if (this.message && this.message.unite) {
           this.getSelectedObjectFromList(this.unites, this.message.unite.id, 'unite');
         }
       },
@@ -201,9 +202,8 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       'niveaux': [message.niveaux],
       'classes': [message.classes],
       'message': [message.message, Validators.required],
-      'forDate': [message.message, Validators.required],
+      'forDate': [message.forDate, Validators.required],
     });
-
 
 
   }
@@ -218,36 +218,46 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
       return;
     }
 
-    const message = new Message(model);
 
-    message.forDate = new Date(message.forDate);
+    this.alert.confirm('Êtes vous sûr de vouloir envoyer ce message ?').then((res) => {
+        if (res.value) {
 
-    const selected = this.getSelected();
+          const message = new Message(model);
 
-    selected.forEach(item => {
-      if (item.type === TreeViewItemType.NIVEAU) {
-        if (!message.niveaux) {
-          message.niveaux = [];
+          message.forDate = new Date(message.forDate);
+
+          const selected = this.getSelected();
+
+          selected.forEach(item => {
+            if (item.type === TreeViewItemType.NIVEAU) {
+              if (!message.niveaux) {
+                message.niveaux = [];
+              }
+              const obj = new AffectationMessageNiveau();
+              obj.niveau = item.value as Niveau;
+              message.niveaux.push(obj);
+            } else if (item.type === TreeViewItemType.CLASS) {
+              if (!message.classes) {
+                message.classes = [];
+              }
+              message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
+            } else if (item.type === TreeViewItemType.ELEVE) {
+              if (!message.recipients) {
+                message.recipients = [];
+              }
+              const obj = new AffectationMessageUser();
+              obj.user = {id: item.value.id} as any;
+              message.recipients.push(obj);
+            }
+          });
+
+          this.submit($ev, message);
+
+        } else if (res.dismiss.toString() === 'cancel') {
         }
-        const obj = new AffectationMessageNiveau();
-        obj.niveau = item.value as Niveau;
-        message.niveaux.push(obj);
-      } else if (item.type === TreeViewItemType.CLASS) {
-        if (!message.classes) {
-          message.classes = [];
-        }
-        message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
-      } else if (item.type === TreeViewItemType.ELEVE) {
-        if (!message.recipients) {
-          message.recipients = [];
-        }
-        const obj = new AffectationMessageUser();
-        obj.user = {id: item.value.id} as any;
-        message.recipients.push(obj);
-      }
-    });
-
-    this.submit($ev, message);
+      },
+      error => this.alert.error()
+    );
   }
 
   public submit($ev, model: Message) {
@@ -287,6 +297,7 @@ export class ProfMessageParentFormComponent extends FormComponent<Message> imple
     });
   }
 }
+
 export class TreeViewItem {
 
   text: string;
@@ -295,7 +306,7 @@ export class TreeViewItem {
   children: TreeViewItem[];
   type: TreeViewItemType;
 
-  constructor (text, value, type) {
+  constructor(text, value, type) {
     this.text = text;
     this.value = value;
     this.type = type;

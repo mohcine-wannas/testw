@@ -24,6 +24,7 @@ import {
 } from "../../../prof/prof-message-parent-form/prof-message-parent-form.component";
 import {AffectationMessageUnite} from "../../models/affectation-message-unite.model";
 import {Unite} from "../../models/unite.model";
+import {TransferService} from "../../../prof/shared/services/transfer.service";
 
 @Component({
   selector: 'app-message-prof-form',
@@ -36,6 +37,7 @@ import {Unite} from "../../models/unite.model";
 })
 export class MessageProfesseurFormComponent extends FormComponent<Message> implements OnInit {
 
+  message: Message;
   classes: Classe[];
   error: string;
 
@@ -71,7 +73,8 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
               private affectationCycleService: AffectationCycleService,
               private affectationUniteServices: AffectationUniteService,
               private communicationService: CommunicationAdministrationService,
-              private sessionDataService: SessionDataService) {
+              private sessionDataService: SessionDataService,
+              private transferService: TransferService) {
     super();
   }
 
@@ -126,7 +129,13 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
         }
       },
       error => this.showError(error)
-    );;
+    );
+
+    if (this.transferService.message) {
+      this.message = new Message();
+      this.message.message = this.transferService.message.message;
+      this.transferService.message = null;
+    }
 
     this.createForm();
   }

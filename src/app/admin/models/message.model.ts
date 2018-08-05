@@ -18,6 +18,9 @@ export class Message extends BaseModel {
   recipientMessageId: number;
   seen: boolean;
 
+  totalRecipients: number;
+  totalOfViews: number;
+
   constructor(values: Object = {}) {
     super(values);
     Object.assign(this, values);

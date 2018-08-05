@@ -6,6 +6,7 @@ import {AffectationCycleService} from "../../services/affectation-cycle.service"
 import {GroupeAppellation} from "../../models/groupe-appellation.model";
 import {AffectationMessageNiveau} from "../../models/affectation-message-niveau.model";
 import {ToastyService} from "ng2-toasty";
+import {AlertService} from "../../../shared/services/alert.service";
 
 @Component({
   selector: 'app-message-list',
@@ -21,7 +22,8 @@ export class SendingValidationComponent implements OnInit {
 
   constructor(private messageService: CommunicationAdministrationService,
               private affectationCycleService: AffectationCycleService,
-              private toastyService: ToastyService) {
+              private toastyService: ToastyService,
+              private alert: AlertService) {
   }
 
   messages: Message[];
@@ -54,14 +56,24 @@ export class SendingValidationComponent implements OnInit {
     return this.niveauAppellation[affectationNiveau.niveau.id];
   }
 
-  deleteMessage(id) {
-    return this.messageService.delete(id).subscribe(
-    () => {
-      this.toastyService.success('Operation effectuée avec succès');
-      this.messages.splice(this.messages.findIndex(item => item.id === id), 1);
-      },
-        (error) => console.log(error)
-    );
+  rejectMessage(id) {
+    if (id) {
+      this.alert.confirm('Êtes vous sûr de vouloir rejeter ce message ?').then((res) => {
+          if (res.value) {
+            return this.messageService.reject(id).subscribe(
+              () => {
+                this.toastyService.success('Operation effectuée avec succès');
+                this.messages.splice(this.messages.findIndex(item => item.id === id), 1);
+              },
+              (error) => console.log(error)
+            );
+          } else if (res.dismiss.toString() === 'cancel') {
+          }
+        },
+        error => this.alert.error()
+      );
+    }
+
   }
 
   enableMessage(id) {

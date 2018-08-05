@@ -17,6 +17,7 @@ import {CommunicationAdministrationService} from '../../services/communication-a
 import {AffectationMessageClasse} from '../../models/affectation-message-classe.model';
 import {AffectationMessageUser} from '../../models/affectation-message-user.model';
 import {AffectationMessageNiveau} from '../../models/affectation-message-niveau.model';
+import {TransferService} from "../../../prof/shared/services/transfer.service";
 
 @Component({
   selector: 'app-eleve-list',
@@ -29,6 +30,7 @@ import {AffectationMessageNiveau} from '../../models/affectation-message-niveau.
 })
 export class MessageParentFormComponent extends FormComponent<Message> implements OnInit {
 
+  message: Message;
   classes: Classe[];
   error: string;
 
@@ -64,7 +66,7 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
   };
 
   constructor(private fb: FormBuilder,
-              public eleveService: EleveService,
+              public transferService: TransferService,
               public classeService: ClasseService,
               private alert: AlertService,
               private router: Router,
@@ -108,7 +110,14 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
       error => this.showError(error)
     );
 
-    this.createForm();
+    if (this.transferService.message) {
+      this.message = new Message();
+      this.message.message = this.transferService.message.message;
+      this.message.unite = this.transferService.message.unite;
+      this.transferService.message = null;
+    }
+
+    this.createForm(this.message);
   }
 
   getNiveauAppellationMap(groupeAppellation: GroupeAppellation) {
@@ -177,42 +186,50 @@ export class MessageParentFormComponent extends FormComponent<Message> implement
       'niveaux': [message.niveaux],
       'classes': [message.classes],
       'message': [message.message, Validators.required],
-      'forDate': [message.message, Validators.required],
+      'forDate': [message.forDate, Validators.required],
     });
   }
 
   public submitForm($ev, model: any) {
     $ev.preventDefault();
-    const message = new Message(model);
 
-    message.forDate = new Date(message.forDate);
+    this.alert.confirm('Êtes vous sûr de vouloir envoyer ce message ?').then((res) => {
+      if (res.value) {
+            const message = new Message(model);
 
-    const selected = this.getSelected();
+            message.forDate = new Date(message.forDate);
 
-    selected.forEach(item => {
-      if (item.type === TreeViewItemType.NIVEAU) {
-        if (!message.niveaux) {
-          message.niveaux = [];
+            const selected = this.getSelected();
+
+            selected.forEach(item => {
+              if (item.type === TreeViewItemType.NIVEAU) {
+                if (!message.niveaux) {
+                  message.niveaux = [];
+                }
+                const obj = new AffectationMessageNiveau();
+                obj.niveau = item.value as Niveau;
+                message.niveaux.push(obj);
+              } else if (item.type === TreeViewItemType.CLASS) {
+                if (!message.classes) {
+                  message.classes = [];
+                }
+                message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
+              } else if (item.type === TreeViewItemType.ELEVE) {
+                if (!message.recipients) {
+                  message.recipients = [];
+                }
+                const obj = new AffectationMessageUser();
+                obj.user = {id: item.value.id} as any;
+                message.recipients.push(obj);
+              }
+            });
+
+            this.submit($ev, message);
+        } else if (res.dismiss.toString() === 'cancel') {
         }
-        const obj = new AffectationMessageNiveau();
-        obj.niveau = item.value as Niveau;
-        message.niveaux.push(obj);
-      } else if (item.type === TreeViewItemType.CLASS) {
-        if (!message.classes) {
-          message.classes = [];
-        }
-        message.classes.push({classe: item.value as Classe} as AffectationMessageClasse);
-      } else if (item.type === TreeViewItemType.ELEVE) {
-        if (!message.recipients) {
-          message.recipients = [];
-        }
-        const obj = new AffectationMessageUser();
-        obj.user = {id: item.value.id} as any;
-        message.recipients.push(obj);
-      }
-    });
-
-    this.submit($ev, message);
+      },
+      error => this.alert.error()
+    );
   }
 
   public submit($ev, model: Message) {

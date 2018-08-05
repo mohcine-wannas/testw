@@ -33,6 +33,7 @@ import { UniteService} from './services/unite.service';
 import {SendingValidationComponent} from './administration/sending-validation/sending-validation.component';
 import {MessageProfesseurFormComponent} from "./administration/message-prof-form/message-prof-form.component";
 import {LazyLoadedProfesseursComponent} from "./administration/message-prof-form/lazy-loaded-profs.component";
+import {AdminHistoriqueComponent} from "./administration/admin-historique/admin-historique.component";
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import {LazyLoadedProfesseursComponent} from "./administration/message-prof-form
     ProfsListComponent,
     SendingValidationComponent,
     MessageProfesseurFormComponent,
-    LazyLoadedProfesseursComponent
+    LazyLoadedProfesseursComponent,
+    AdminHistoriqueComponent
   ],
   providers: [
     MainService,

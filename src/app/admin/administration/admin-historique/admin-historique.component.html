@@ -1,0 +1,239 @@
+<div class="dox-wrapper">
+  <div class="dox-wrapper dox-header">
+    <section>
+      <h1>Historique des envois</h1>
+    </section>
+  </div>
+
+  <section class="dox-content" hash-listener="" style="position:relative;">
+    <div class="dox-content-wrapper">
+      <clr-tabs>
+        <clr-tab>
+        <button clrTabLink id="link1">Professeurs => Parents</button>
+        <clr-tab-content id="content1" *clrIfActive>
+          <article>
+            <div class="row" *ngFor="let message of messagesProfToParent">
+              <div class="col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="card-header">
+                    <small><clr-icon shape="calendar"></clr-icon> Le :{{message.createdOn | date: mediumDate}}</small> |
+                    <small><clr-icon shape="calendar"></clr-icon> Pour :{{message.forDate | date: mediumDate}}</small> |
+                    <small *ngIf="message.unite"><clr-icon shape="book"></clr-icon> {{message.unite.libelle }}</small><br>
+                    <small><strong><clr-icon shape="users"></clr-icon> Destinataires :
+                      <span *ngFor="let item of message.niveaux" class="label label-info">{{getNiveauName(item)}}</span>
+                      <span *ngFor="let item of message.classes" class="label label-info">{{item.classe.libelle}}</span>
+                      <span *ngFor="let item of message.recipients" class="label label-info">{{item.user.firstname + ' ' + item.user.lastname}}</span>
+                    </strong></small>
+                  </div>
+                  <div class="card-block">
+                    <div class="card-text">
+
+                    </div>
+                    <div class="card-text" [innerHTML]="transform(message.message)"></div>
+                  </div>
+                  <div class="card-footer">
+                    <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessage(message.id,1)"><clr-icon shape="trash"></clr-icon> Supprimer</button>
+                    <button class="btn btn-sm btn-link  btn-icon" (click)="showParentViewsDetails(message.id)"><clr-icon shape="eye"></clr-icon> {{message.totalOfViews}}/{{message.totalRecipients}} personne{{ message.totalRecipients > 1 ? 's' : '' }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </clr-tab-content>
+      </clr-tab>
+        <clr-tab>
+          <button clrTabLink id="link2">Administration => Parents</button>
+          <clr-tab-content id="content2" *clrIfActive>
+            <article>
+              <div class="row" *ngFor="let message of messagesAdminToParent">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <small><clr-icon shape="calendar"></clr-icon> Le :{{message.createdOn | date: mediumDate}}</small> |
+                      <small><clr-icon shape="calendar"></clr-icon> Pour :{{message.forDate | date: mediumDate}}</small><br>
+                      <small><strong><clr-icon shape="users"></clr-icon> Destinataires :
+                        <span *ngFor="let item of message.niveaux" class="label label-info">{{getNiveauName(item)}}</span>
+                        <span *ngFor="let item of message.classes" class="label label-info">{{item.classe.libelle}}</span>
+                        <span *ngFor="let item of message.recipients" class="label label-info">{{item.user.firstname + ' ' + item.user.lastname}}</span>
+                      </strong></small>
+                    </div>
+                    <div class="card-block">
+                      <div class="card-text">
+
+                      </div>
+                      <div class="card-text" [innerHTML]="transform(message.message)"></div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessageToParent(message.id)"><clr-icon shape="redo"></clr-icon> Transférer</button>
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessage(message.id,2)"><clr-icon shape="trash"></clr-icon> Supprimer</button>
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="showParentViewsDetails(message.id)"><clr-icon shape="eye"></clr-icon> {{message.totalOfViews}}/{{message.totalRecipients}} personne{{ message.totalRecipients > 1 ? 's' : '' }}</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </clr-tab-content>
+        </clr-tab>
+        <clr-tab>
+          <button clrTabLink id="link3">Administration => Professeurs</button>
+          <clr-tab-content id="content3" *clrIfActive>
+            <article>
+              <div class="row" *ngFor="let message of messagesAdminToProf">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <small><clr-icon shape="calendar"></clr-icon> Le :{{message.createdOn | date: mediumDate}}</small> |
+                      <small><clr-icon shape="calendar"></clr-icon> Pour :{{message.forDate | date: mediumDate}}</small><br>
+                      <small><strong><clr-icon shape="users"></clr-icon> Destinataires :
+                        <span *ngFor="let item of message.unites" class="label label-info">{{item.unite.libelle}}</span>
+                        <span *ngFor="let item of message.niveaux" class="label label-info">{{getNiveauName(item)}}</span>
+                        <span *ngFor="let item of message.classes" class="label label-info">{{item.classe.libelle}}</span>
+                        <span *ngFor="let item of message.recipients" class="label label-info">{{item.user.firstname + ' ' + item.user.lastname}}</span>
+                      </strong></small>
+                    </div>
+                    <div class="card-block">
+                      <div class="card-text">
+
+                      </div>
+                      <div class="card-text" [innerHTML]="transform(message.message)"></div>
+                    </div>
+                    <div class="card-footer">
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessageToProf(message.id)"><clr-icon shape="redo"></clr-icon> Transférer</button>
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessage(message.id,3)"><clr-icon shape="trash"></clr-icon> Supprimer</button>
+                      <button class="btn btn-sm btn-link  btn-icon" (click)="showProfViewsDetails(message.id)"><clr-icon shape="eye"></clr-icon> {{message.totalOfViews}}/{{message.totalRecipients}} personne{{ message.totalRecipients > 1 ? 's' : '' }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </clr-tab-content>
+        </clr-tab>
+      </clr-tabs>
+
+
+    </div>
+  </section>
+</div>
+<clr-modal [(clrModalOpen)]="profViewDetails">
+  <h3 class="modal-title">Lecture détails</h3>
+  <div class="modal-body">
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink id="linkProfLu">Lu</button>
+        <clr-tab-content id="contentProfLu" *clrIfActive>
+          <clr-datagrid>
+            <clr-dg-column>Prénom</clr-dg-column>
+            <clr-dg-column>Nom</clr-dg-column>
+            <clr-dg-column>Date de Lecture</clr-dg-column>
+
+            <clr-dg-row *ngFor="let view of viewers">
+              <clr-dg-cell>{{view.userSeen.firstname}}</clr-dg-cell>
+              <clr-dg-cell>{{view.userSeen.lastname}}</clr-dg-cell>
+              <clr-dg-cell>{{toDate(view.dateSeen) | date:'short'}}</clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>{{viewers.length}}  professeur(s)</clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="linkProLu">Non Lu</button>
+        <clr-tab-content id="contentProfNonLu" *clrIfActive>
+          <clr-datagrid>
+            <clr-dg-column>Prénom</clr-dg-column>
+            <clr-dg-column>Nom</clr-dg-column>
+            <clr-dg-column>Date de Lecture</clr-dg-column>
+
+            <clr-dg-row *ngFor="let view of notYetViewers">
+              <clr-dg-cell>{{view.userNotSeen.firstname}}</clr-dg-cell>
+              <clr-dg-cell>{{view.userNotSeen.lastname}}</clr-dg-cell>
+              <clr-dg-cell> - </clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>{{notYetViewers.length}} professeur(s)</clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="profViewDetails = false">Ok</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="parentViewDetails">
+  <h3 class="modal-title">Lecture détails</h3>
+  <div class="modal-body">
+    <clr-tabs>
+      <clr-tab>
+        <button clrTabLink id="linkParentLu">Lu</button>
+        <clr-tab-content id="contentParentLu" *clrIfActive>
+          <clr-datagrid>
+            <clr-dg-column>Prénom</clr-dg-column>
+            <clr-dg-column>Nom</clr-dg-column>
+            <clr-dg-column>Date de Lecture</clr-dg-column>
+
+            <clr-dg-row *ngFor="let view of viewers">
+              <clr-dg-cell>{{view.userSeen.firstname}}</clr-dg-cell>
+              <clr-dg-cell>{{view.userSeen.lastname}}</clr-dg-cell>
+              <clr-dg-cell>{{toDate(view.dateSeen) | date: 'short' }}</clr-dg-cell>
+
+              <clr-dg-row-detail *clrIfExpanded>
+                <clr-datagrid>
+                  <clr-dg-column>Prénom du parent</clr-dg-column>
+                  <clr-dg-column>Nom du parent</clr-dg-column>
+                  <clr-dg-column>Date de Lecture</clr-dg-column>
+
+                  <clr-dg-row *ngFor="let parentSeen of view.parentsSeen">
+                    <clr-dg-cell>{{parentSeen.parent.firstname}}</clr-dg-cell>
+                    <clr-dg-cell>{{parentSeen.parent.lastname}}</clr-dg-cell>
+                    <clr-dg-cell>{{parentSeen.seen ? (toDate(parentSeen.dateSeen) |  date:'short') : 'Pas encore'}}</clr-dg-cell>
+                  </clr-dg-row>
+                </clr-datagrid>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+
+            <clr-dg-footer>{{viewers.length}}  eleve(s)</clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="linkParentNonLu">Non Lu</button>
+        <clr-tab-content id="contentParentNonLu" *clrIfActive>
+          <clr-datagrid>
+            <clr-dg-column>Prénom</clr-dg-column>
+            <clr-dg-column>Nom</clr-dg-column>
+            <clr-dg-column>Date de Lecture</clr-dg-column>
+
+            <clr-dg-row *ngFor="let view of notYetViewers">
+              <clr-dg-cell>{{view.userNotSeen.firstname}}</clr-dg-cell>
+              <clr-dg-cell>{{view.userNotSeen.lastname}}</clr-dg-cell>
+              <clr-dg-cell> - </clr-dg-cell>
+
+              <clr-dg-row-detail *clrIfExpanded>
+                <clr-datagrid>
+                  <clr-dg-column>Prénom du parent</clr-dg-column>
+                  <clr-dg-column>Nom du parent</clr-dg-column>
+                  <clr-dg-column>Date de Lecture</clr-dg-column>
+
+                  <clr-dg-row *ngFor="let parentNotSeen of view.parentsNotSeen">
+                    <clr-dg-cell>{{parentNotSeen.parent.firstname}}</clr-dg-cell>
+                    <clr-dg-cell>{{parentNotSeen.parent.lastname}}</clr-dg-cell>
+                    <clr-dg-cell> - </clr-dg-cell>
+                  </clr-dg-row>
+                </clr-datagrid>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+
+            <clr-dg-footer>{{notYetViewers.length}} eleve(s)</clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="parentViewDetails = false">Ok</button>
+  </div>
+</clr-modal>

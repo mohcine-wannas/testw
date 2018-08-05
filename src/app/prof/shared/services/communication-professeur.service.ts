@@ -36,6 +36,14 @@ export class CommunicationProfesseurService extends RestService<Message> {
       .catch(this.handleError);
   }
 
+  getAllRejectedMessages(): Observable<Message[]> {
+    return this.http.get(this.getFullUrl('/rejected/'))
+      .map((resp) => {
+        return resp;
+      })
+      .catch(this.handleError);
+  }
+
   getAllRecievedMessages(): Observable<Message[]> {
     return this.http.get(this.getFullUrl('/get-all/'))
       .map((resp) => {
