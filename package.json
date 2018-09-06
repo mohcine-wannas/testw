@@ -5,7 +5,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --locale fr",
-    "build": "ng build",
+    "build": "ng build --prod",
+    "postbuild": "npm run deploy",
+    "predeploy": "rimraf ../tawassol-back/tawassol-rest/src/main/resources/static && mkdirp ../tawassol-back/tawassol-rest/src/main/resources/static",
+    "deploy": "copyfiles --up 1 dist/**/*.* ../tawassol-back/tawassol-rest/src/main/resources/static",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -27,7 +30,7 @@
     "@webcomponents/custom-elements": "^1.0.0",
     "angular-font-awesome": "^3.1.2",
     "angular2-jwt": "^0.2.3",
-    "angularfire2": "^5.0.0-rc.6",
+    "angularfire2": "^5.0.0-rc.9",
     "classlist.js": "^1.1.20150312",
     "core-js": "2.5.3",
     "firebase": "^4.12.1",

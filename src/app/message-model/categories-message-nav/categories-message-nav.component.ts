@@ -12,7 +12,7 @@ export class CategoriesMessageNavComponent implements OnInit {
 
   @Input() profil: string;
 
-  private categories: Categorie[];
+  categories: Categorie[];
 
   constructor(private categorieService: CategorieService,
               private alert: AlertService) {

@@ -44,7 +44,7 @@ import { ProfModule } from './prof/prof.module';
   providers: [
     AuthGuard,
     { provide: 'API_URL', useValue: environment.apiUrl },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorImpl, multi: true },
     MessagingService
   ],

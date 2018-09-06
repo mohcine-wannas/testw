@@ -13,6 +13,7 @@ export class NotificationListComponent implements OnInit, OnDestroy {
 
   notifications: Notification[];
   isLoading = false;
+  error: string;
   @ViewChild('grid') public grid;
 
   constructor(public notificationService: NotificationService,

@@ -15,10 +15,10 @@ export class UploadModelMessageComponent implements OnInit {
   @Input() profil: string;
   @Output() msgModel = new EventEmitter<MessageModel>();
 
-  private categories: Categorie[];
-  private category: Categorie;
-  private openeModal = false;
-  private msgModels: MessageModel[] = [];
+  categories: Categorie[];
+  category: Categorie;
+  openeModal = false;
+  msgModels: MessageModel[] = [];
 
   constructor(private categorieService: CategorieService,
               private alert: AlertService,

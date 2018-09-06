@@ -10,13 +10,14 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
 
 
   private _opened = false;
-  protected modeEdit = false;
-  protected entityForm: FormGroup;
+  modeEdit = false;
+  entityForm: FormGroup;
   protected form: any = this;
   protected id: number;
   protected model: T;
   protected toastService: ToastService;
   protected restService: RestService<BaseModel>;
+  submitting = false;
 
   // protected restService: RestService<BaseModel>;
 
@@ -93,8 +94,6 @@ export abstract class FormComponent<T extends BaseModel> { //extends BaseCompone
       }
     }
   }
-
-  protected submitting = false;
 
   public submit($ev, model: T, callback?: (param: any) => void) {
     $ev.preventDefault();

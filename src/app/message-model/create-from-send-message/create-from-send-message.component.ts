@@ -17,10 +17,10 @@ export class CreateFromSendMessageComponent extends FormComponent<MessageModel> 
   @Input() profil: string;
   @Input() message: string;
 
-  private categories: Categorie[];
-  private enabled = false;
-  private openeModal = false;
-  private msgModel: MessageModel;
+  categories: Categorie[];
+  enabled = false;
+  openeModal = false;
+  msgModel: MessageModel;
 
   constructor(private categorieService: CategorieService,
               private alert: AlertService,

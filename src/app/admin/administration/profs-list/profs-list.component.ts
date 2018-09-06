@@ -31,17 +31,13 @@ export class ProfsListComponent extends FormComponent<Professeur> implements OnI
   private professeurs: Professeur[];
   private cycleId: number;
 
-  private modalUniteOpned = false;
-
-  private modalChangePasswordOpned = false;
-
-  private modalNiveauOpned = false;
-
-  private uniteEditForm: FormGroup;
-
-  private niveauEditForm: FormGroup;
-
+  modalUniteOpned = false;
+  modalChangePasswordOpned = false;
+  modalNiveauOpned = false;
+  uniteEditForm: FormGroup;
+  niveauEditForm: FormGroup;
   formArrayAffectation: FormArray;
+  error: string;
 
   private fullNameProfComparator = new FullNameProfComparator();
 
