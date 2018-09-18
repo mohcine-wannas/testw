@@ -13,7 +13,10 @@ import { MessageModelService } from '../shared/services/message-model.service';
 @Component({
   selector: 'app-modeles-message-list',
   templateUrl: './modeles-message-list.component.html',
-  styleUrls: ['./modeles-message-list.component.css']
+  styleUrls: ['./modeles-message-list.component.css'],
+  host: {
+    class: 'dox-content-panel',
+  }
 })
 export class ModelesMessageListComponent extends FormComponent<MessageModel> implements OnInit {
 
@@ -69,6 +72,9 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
   }
 
   customCompareCategory(c1: Categorie, c2: Categorie) {
+    if (!c1 || !c2) {
+      return false;
+    }
     return c1.id === c2.id;
   }
 
