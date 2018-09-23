@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
-import { Eleve } from '../../admin/models/eleve.model';
+import { Message } from '../../admin/models/message.model';
+import { TransferService } from '../../prof/shared/services/transfer.service';
 import { FormComponent } from '../../shared/components/form.component';
 import { AlertService } from '../../shared/services/alert.service';
 import { Categorie } from '../shared/models/categorie.model';
@@ -26,6 +27,7 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
   private categories: Categorie[];
   private profil: string;
   private idCategory: number;
+  private category: Categorie;
 
   constructor(private messageModelService: MessageModelService,
               private activatedRoute: ActivatedRoute,
@@ -33,7 +35,8 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
               private toastyService: ToastyService,
               private fb: FormBuilder,
               private categorieService: CategorieService,
-              private router: Router) {
+              private router: Router,
+              private transferService: TransferService) {
     super();
     this.restService = this.messageModelService;
   }
@@ -57,6 +60,12 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
     this.categorieService.getAllCategories(profil).subscribe(
       resp => {
         this.categories = resp;
+        for (const cat of this.categories) {
+          if (cat.id === this.idCategory) {
+            this.category = cat;
+            break;
+          }
+        }
       },
       error => this.alert.error(error)
     );
@@ -85,6 +94,7 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
     this.modeEdit = false;
     this.msgModel.id = null;
     this.id = null;
+    this.msgModel.categorie = this.category;
     this.createForm();
   }
 
@@ -176,14 +186,23 @@ export class ModelesMessageListComponent extends FormComponent<MessageModel> imp
     this.submitting = false;
     this.openedForm = false;
     this.modeEdit = false;
-    if (this.idCategory !== this.model.categorie.id) {
-      this.router.navigate([this.profil, 'message-models', 'list', 'category', this.profil, this.model.categorie.id]);
-    } else {
-      this.loadMessageModels(this.idCategory, this.profil);
-    }
+    this.loadMessageModels(this.idCategory, this.profil);
     this.msgModel = null;
     if (callback) {
       callback(resp);
+    }
+  }
+
+  transferMessage(msgModel: MessageModel) {
+    const message = new Message();
+    message.message = msgModel.message;
+    this.transferService.message = message;
+    if (this.profil === 'admin' && this.category.type === 'PARENT') {
+      this.router.navigate(['/admin/communication/send-to-parent']);
+    } else if (this.profil === 'admin' && this.category.type === 'PROFESSEUR') {
+      this.router.navigate(['/admin/communication/send-to-prof']);
+    } else if (this.profil === 'prof') {
+      this.router.navigate(['/prof/communication/send-to-parent']);
     }
   }
 }

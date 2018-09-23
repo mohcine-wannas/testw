@@ -17,7 +17,7 @@ export class UploadModelMessageComponent implements OnInit {
 
   private categories: Categorie[];
   private category: Categorie;
-  private openeModal = false;
+  private modalOpned = false;
   private msgModels: MessageModel[] = [];
 
   constructor(private categorieService: CategorieService,
@@ -47,13 +47,18 @@ export class UploadModelMessageComponent implements OnInit {
     );
   }
 
+  openModal() {
+    this.modalOpned = true;
+    this.category = undefined;
+    this.msgModels = [];
+  }
+
   categoryChanged() {
-    this.openeModal = true;
     this.loadMessageModels(this.category.id);
   }
 
   setMessageModel(msgModel: MessageModel) {
-    this.openeModal = false;
+    this.modalOpned = false;
     this.msgModel.emit(msgModel);
   }
 

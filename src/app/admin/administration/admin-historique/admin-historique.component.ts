@@ -117,7 +117,7 @@ export class AdminHistoriqueComponent implements OnInit {
 
   transferMessageToProf(id) {
     this.transferService.message = this.messagesAdminToProf.filter(e => e.id === id)[0];
-    this.router.navigate(['/admin/communication/send-to-parent']);
+    this.router.navigate(['/admin/communication/send-to-prof']);
   }
 
   transform(html) {

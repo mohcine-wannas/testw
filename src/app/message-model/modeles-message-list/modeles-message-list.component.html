@@ -30,20 +30,20 @@
             <div class="card-block">
               <div class="card-text" [innerHTML]="msgModel.message"></div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="category">
+              <button class="btn btn-sm btn-link  btn-icon" (click)="transferMessage(msgModel)">
+                <clr-icon shape="inbox"></clr-icon>
+              </button>
               <button class="btn btn-sm btn-link  btn-icon" (click)="openForm(msgModel, false)">
                 <clr-icon shape="copy"></clr-icon>
-                Dupliquer
               </button>
               <button class="btn btn-sm btn-link btn-icon" (click)="openForm(msgModel, true)"
                       *ngIf="!msgModel.fige">
                 <clr-icon shape="pencil"></clr-icon>
-                Editer
               </button>
               <button class="btn btn-sm btn-link  btn-icon" (click)="deleteMessageModel(msgModel.id)"
                       *ngIf="!msgModel.fige">
                 <clr-icon shape="trash"></clr-icon>
-                Supprimer
               </button>
             </div>
           </div>

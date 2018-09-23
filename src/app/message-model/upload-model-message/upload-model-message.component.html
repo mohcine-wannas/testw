@@ -1,20 +1,34 @@
 <div class="form-group">
-  <label for="categorie">Catégorie</label>
-  <div class="select form-control">
-    <select id="categorie" name="categorie" [(ngModel)]="category" (change)="categoryChanged()"
-            [ngModelOptions]="{standalone: true}">
-      <option *ngFor="let categorie of categories" [ngValue]="categorie">
-        {{categorie.libelle}}
-      </option>
-    </select>
-  </div>
+  <button type="button" class="btn" (click)="openModal()">
+    <clr-icon shape="plus"></clr-icon>
+    Modèles de messages
+  </button>
 </div>
-<clr-modal [(clrModalOpen)]="openeModal" [clrModalSize]="'lg'">
+<clr-modal [(clrModalOpen)]="modalOpned" [clrModalSize]="'lg'">
   <h3 class="modal-title">Modèles de messages de la catégorie : {{category?.libelle | capitalizefirst}}</h3>
   <div class="modal-body">
     <div class="row">
-      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngFor="let msgModel of msgModels">
-        <div class="card">
+      <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+        <label for="categorie">Catégorie</label>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+        <div class="select form-control">
+          <select id="categorie" name="categorie" [(ngModel)]="category" (change)="categoryChanged()"
+                  [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let categorie of categories" [ngValue]="categorie">
+              {{categorie.libelle}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+
+    <div class="card-columns">
+      <div *ngFor="let msgModel of msgModels">
+        <div class="card" style="margin: 0rem !important;">
           <div class="card-header">
             <h3 class="card-title">{{msgModel.titre}}</h3>
           </div>
@@ -29,10 +43,10 @@
           </div>
         </div>
       </div>
-      <p *ngIf="msgModels.length === 0">AAucun modèle de message n'est disponible pour cette catégorie</p>
+      <p *ngIf="category && msgModels.length === 0">AAucun modèle de message n'est disponible pour cette catégorie</p>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="openeModal = false">Annuler</button>
+    <button type="button" class="btn btn-outline" (click)="modalOpned = false">Annuler</button>
   </div>
 </clr-modal>

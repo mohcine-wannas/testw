@@ -1,9 +1,7 @@
 <div class="form-group">
-  <div class="toggle-switch">
-    <input type="checkbox" id="toggle_2" [(ngModel)]="enabled"
-           (ngModelChange)="enabledChange()" [ngModelOptions]="{standalone: true}">
-    <label for="toggle_2">Enregistrer en tant que modéle de message</label>
-  </div>
+  <a class="label label-light-blue clickable" (click)="enabledChange()" style="cursor: pointer">
+    Enregistrer en tant que modéle de message
+  </a>
 </div>
 
 <clr-modal [(clrModalOpen)]="openeModal" [clrModalSize]="'lg'">
