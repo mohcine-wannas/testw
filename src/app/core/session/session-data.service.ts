@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { School } from 'app/admin/models/school.model';
 import { Subject } from 'rxjs/Subject';
 import { SessionConstants } from './session.constants';
+import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
 
 @Injectable()
 export class SessionDataService {
@@ -16,7 +17,7 @@ export class SessionDataService {
   sessionDataSubject: Subject<number> = new Subject<number>();
 
 
-  constructor(public sessionConstants: SessionConstants) {
+  constructor(public sessionConstants: SessionConstants, private sanitizer: DomSanitizer,) {
   }
 
   create(data: any) {
@@ -81,6 +82,16 @@ export class SessionDataService {
   getSchoolName(): string {
     const school: School = this.getCurrentSchool();
     return school.nom + ' : ' + school.code;
+  }
+
+  getSchoolLogo(): SafeStyle {
+    const school: School = this.getCurrentSchool();
+    return this.sanitizer.bypassSecurityTrustStyle(school.logoPath ? 'url(' + school.logoPath + ')' : 'auto');
+  }
+
+  setSchoolLogo(value: string) {
+    const school: School = this.getCurrentSchool();
+    school.logoPath = value;
   }
 
   getUser() {

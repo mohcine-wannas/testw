@@ -1,0 +1,12 @@
+#school-logo {
+  background-image: url(/assets/img/avatar.png);
+  width: 10rem;
+  height: 10rem;
+  background-size: cover;
+  background-position: top center;
+  border-radius: 50%;
+  border: 4px solid #FFF;
+  margin: 0 0 25px;
+  opacity: 0.9;
+  box-shadow: #3333335c 0px 0px 6px 0px;
+}

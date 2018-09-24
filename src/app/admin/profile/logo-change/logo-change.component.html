@@ -1,0 +1,41 @@
+<div class="container">
+  <div >
+    <div id="school-logo" [style.backgroundImage] ="getImageData()"  >
+    </div>
+  </div>
+
+  <div class="row">
+    <br />
+      <input #uploaderRef type="file" ng2FileSelect [uploader]="uploader" accept="image/png,image/jpeg,image/jpg"  />
+  </div>
+  <div class="row">
+
+    <table *ngIf="uploader?.queue.length > 0" class="table">
+      <thead>
+      <tr>
+        <th width="20%"> </th>
+        <th>Nom</th>
+        <th>Taille</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let item of uploader.queue">
+        <td> <img src="" imgPreview [image]="item?._file" style="width: 100%" /></td>
+        <td><strong>{{ item?.file?.name }}</strong></td>
+        <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+        <td nowrap>
+          <button type="button" style="width: 100%" class="btn btn-primary"
+                  (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+            <span class="glyphicon glyphicon-upload"></span> Upload
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+  </div>
+
+</div>

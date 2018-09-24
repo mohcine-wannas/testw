@@ -35,6 +35,7 @@ import { NotificationService } from './services/notification.service';
 import { ProfesseurService } from './services/professeur.service';
 import { UniteService } from './services/unite.service';
 import { AdminHistoriqueComponent } from './administration/admin-historique/admin-historique.component';
+import { LogoChangeComponent} from './profile/logo-change/logo-change.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { AdminHistoriqueComponent } from './administration/admin-historique/admi
     ProfileLayoutComponent,
     SchoolInfoComponent,
     PasswordChangeComponent,
+    LogoChangeComponent,
     GestionClassesComponent,
     ReferentielLayoutComponent,
     EleveListComponent,

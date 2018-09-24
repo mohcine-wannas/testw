@@ -21,6 +21,7 @@ import { LayoutComponent } from './layout/layout.component';
 // pages
 import { MainPageComponent} from './main-page/main-page.component';
 import { AdminHistoriqueComponent } from './administration/admin-historique/admin-historique.component';
+import {LogoChangeComponent} from "./profile/logo-change/logo-change.component";
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'ecole', pathMatch: 'full' },
           { path: 'ecole', component: SchoolInfoComponent },
           { path: 'password-change', component: PasswordChangeComponent },
+          { path: 'change-logo', component: LogoChangeComponent },
           { path: '**', component: PageNotFoundComponent },
         ]
       },

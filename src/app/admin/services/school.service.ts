@@ -12,4 +12,8 @@ export class SchoolService extends RestService<School> {
     super(baseUrl, http);
     super.setResource('ecoles');
   }
+
+  getLogoChangeApiPath() {
+    return this.getFullUrl('/change-logo');
+  }
 }
