@@ -14,6 +14,7 @@ export class School extends BaseModel {
   tel2: string;
   ville: Ville;
   pays: Pays;
+  logoPath: any;
 
   constructor(values: Object = {}) {
     super(values);

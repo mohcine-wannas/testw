@@ -106,8 +106,6 @@ export class AdminHistoriqueComponent implements OnInit {
           error => this.alert.error()
         );
       }
-
-
   }
 
   transferMessageToParent(id) {

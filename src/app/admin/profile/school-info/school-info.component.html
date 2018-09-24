@@ -4,8 +4,8 @@
     <section class="form-block">
         <label>Modifier les informations de l'établissement</label>
         <div>
-                <div id="school-logo" ></div>   
-                <button style="margin-left: 27px;" class="btn btn-sm">Changer</button>   
+                <div id="school-logo" [style.backgroundImage] ="getImageData()" ></div>
+                <button type="button" style="margin-left: 27px;" class="btn btn-sm" (click)="goToLogoChange()">Changer</button>
         </div>
         <div class="form-group">
             <label for="code">Code</label>
@@ -24,7 +24,7 @@
             <textarea rows="2" id="adresse" name="adresse" formControlName="adresse"></textarea>
         </div>
         <div class="form-group">
-            <label for="villeName">Ville</label>
+            <label>Ville</label>
             <input type="text" id="ville" name="villeName" formControlName="villeName">
         </div>
         <div class="form-group">
@@ -37,7 +37,7 @@
                 </span>
                 <span *ngIf="isNotValidPattern(entityForm.controls['tel'])" class="tooltip-content">
                         Veuillez saisir un numero teléphone valide
-                </span>    
+                </span>
             </label>
         </div>
         <div class="form-group">
@@ -47,7 +47,7 @@
                 pattern="^(?:0|\(?\+[0-9]{1,3}\)?\s?|00[0-9]{1,3}\s?)[1-79](?:[\.\-\s]?\d\d){4}$" >
                 <span *ngIf="isNotValidPattern(entityForm.controls['tel2'])" class="tooltip-content">
                         Veuillez saisir un numero telephone valide
-                </span>               
+                </span>
             </label>
         </div>
         <div class="form-group">

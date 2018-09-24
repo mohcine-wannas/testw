@@ -72,4 +72,8 @@ export class LayoutComponent implements OnInit {
     return this.sessionDataService.getCurrentAnneScolaire();
   }
 
+  getImageData() {
+    return this.sessionDataService.getSchoolLogo();
+  }
+
 }

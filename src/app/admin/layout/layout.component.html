@@ -38,14 +38,14 @@
       </clr-dropdown>
 
       <div id="avatar-wrapper" class="flex-items-xs-middle">
-        <div id="avatar"></div>
+        <div id="avatar" [style.backgroundImage] ="getImageData()"></div>
       </div>
       <clr-dropdown class="dropdown bottom-right">
         <button class="nav-text" clrDropdownToggle>
           {{ getSchoolName()}}
           <clr-icon shape="caret down"></clr-icon>
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu" >
           <a (click)="goToProfile()" clrDropdownItem>Profile</a>
           <div class="dropdown-divider"></div>
           <a (click)="logout()" clrDropdownItem>Déconnexion</a>
