@@ -339,11 +339,17 @@ export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
   }
 
   customCompareNiveau(n1: Niveau, n2: Niveau) {
-    return n1.id === n2.id;
+    if (n1 && n2) {
+      return n1.id === n2.id;
+    }
+    return false;
   }
 
-  customCompareClasse(n1: Classe, n2: Classe) {
-    return n1.id === n2.id;
+  customCompareClasse(c1: Classe, c2: Classe) {
+    if (c1 && c2) {
+      return c1.id === c2.id;
+    }
+    return false;
   }
 
 }
