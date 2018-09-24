@@ -124,7 +124,7 @@ export class MessageProfesseurFormComponent extends FormComponent<Message> imple
       this.transferService.message = null;
     }
 
-    this.createForm();
+    this.createForm(this.message);
   }
 
   getNiveauAppellationMap(groupeAppellation: GroupeAppellation) {
