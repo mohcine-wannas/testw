@@ -15,10 +15,10 @@ export class UploadModelMessageComponent implements OnInit {
   @Input() profil: string;
   @Output() msgModel = new EventEmitter<MessageModel>();
 
-  private categories: Categorie[];
-  private category: Categorie;
-  private modalOpned = false;
-  private msgModels: MessageModel[] = [];
+  categories: Categorie[];
+  category: Categorie;
+  openeModal = false;
+  msgModels: MessageModel[] = [];
 
   constructor(private categorieService: CategorieService,
               private alert: AlertService,
@@ -47,18 +47,13 @@ export class UploadModelMessageComponent implements OnInit {
     );
   }
 
-  openModal() {
-    this.modalOpned = true;
-    this.category = undefined;
-    this.msgModels = [];
-  }
-
   categoryChanged() {
+    this.openeModal = true;
     this.loadMessageModels(this.category.id);
   }
 
   setMessageModel(msgModel: MessageModel) {
-    this.modalOpned = false;
+    this.openeModal = false;
     this.msgModel.emit(msgModel);
   }
 

@@ -21,9 +21,9 @@ import { MessageModelService } from '../shared/services/message-model.service';
 })
 export class ModelesMessageListComponent extends FormComponent<MessageModel> implements OnInit {
 
-  private msgModels: MessageModel[] = [];
-  private openedForm = false;
-  private msgModel: MessageModel;
+  msgModels: MessageModel[] = [];
+  openedForm = false;
+  msgModel: MessageModel;
   private categories: Categorie[];
   private profil: string;
   private idCategory: number;
