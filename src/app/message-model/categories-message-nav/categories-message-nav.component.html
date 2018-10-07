@@ -6,7 +6,9 @@
       <a clrVerticalNavLink
          [routerLink]="['message-models', 'list','category',profil, categorie.id]"
          routerLinkActive="active">
-      {{categorie.libelle | capitalizefirst}}
+        <span>{{categorie.libelle | capitalizefirst}}</span>
+        <span *ngIf="categorie.type==='PROFESSEUR'"> ( Professeur )</span>
+        <span *ngIf="categorie.type==='PARENT'"> ( Parent )</span>
     </a>
     </span>
   </clr-vertical-nav-group-children>

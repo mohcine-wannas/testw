@@ -9,10 +9,12 @@ import { AlertService } from 'app/shared/services/alert.service';
 import { RestService } from 'app/shared/services/rest.service';
 import { ToastService } from 'app/shared/services/toast.service';
 import { NgDatepickerModule } from 'ng2-datepicker';
+import { FileUploadModule } from 'ng2-file-upload';
 import { ToastyModule } from 'ng2-toasty';
 import { NgxEditorModule } from 'ngx-editor';
 import { TreeviewModule } from 'ngx-treeview';
 import { LazyLoadedElevesComponent } from './components/lazy-loaded-eleves.component';
+import { ImagePreviewDirective} from './directives/image-preview.directive';
 import { CapitalizefirstPipe } from './pipes/capitalizefirst.pipe';
 
 @NgModule({
@@ -28,10 +30,12 @@ import { CapitalizefirstPipe } from './pipes/capitalizefirst.pipe';
     BrowserAnimationsModule,
     NgxEditorModule,
     TreeviewModule.forRoot(),
+    FileUploadModule,
   ],
   declarations: [
     LazyLoadedElevesComponent,
-    CapitalizefirstPipe
+    CapitalizefirstPipe,
+    ImagePreviewDirective
   ],
   providers: [
     AlertService,
@@ -48,7 +52,9 @@ import { CapitalizefirstPipe } from './pipes/capitalizefirst.pipe';
     NgxEditorModule,
     ClarityModule,
     LazyLoadedElevesComponent,
-    CapitalizefirstPipe
+    CapitalizefirstPipe,
+    FileUploadModule,
+    ImagePreviewDirective
   ]
 })
 export class SharedModule {

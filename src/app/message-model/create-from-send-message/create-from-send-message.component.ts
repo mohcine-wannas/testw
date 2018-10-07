@@ -46,17 +46,14 @@ export class CreateFromSendMessageComponent extends FormComponent<MessageModel> 
   enabledChange() {
     this.msgModel = new MessageModel();
     this.msgModel.message = this.message;
-    if (this.enabled) {
-      this.openeModal = true;
-      this.modeEdit = false;
-      this.msgModel.id = null;
-      this.id = null;
-      this.createForm();
-    }
+    this.openeModal = true;
+    this.modeEdit = false;
+    this.msgModel.id = null;
+    this.id = null;
+    this.createForm();
   }
 
   createForm() {
-    this.enabled = !this.enabled;
     this.entityForm = this.fb.group({
       'id': [this.msgModel.id],
       'categorie': [this.msgModel.categorie, Validators.required],

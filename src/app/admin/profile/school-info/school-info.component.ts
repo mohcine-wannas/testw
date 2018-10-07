@@ -7,6 +7,7 @@ import { SchoolService } from 'app/admin/services/school.service';
 import { SessionDataService } from 'app/core/session/session-data.service';
 import { FormComponent } from 'app/shared/components/form.component';
 import { BaseModel } from 'app/shared/models/base-model.model';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -23,7 +24,8 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
   constructor(private fb: FormBuilder,
               private sessionData: SessionDataService,
               private cycleService: CycleService,
-              private schoolService: SchoolService) {
+              private schoolService: SchoolService,
+              private router: Router) {
 
     super();
     this.restService = schoolService;
@@ -35,6 +37,10 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
     this.id = school.id;
     this.modeEdit = true;
     this.createForm(school);
+  }
+
+  goToLogoChange() {
+    this.router.navigate(['admin/profile/change-logo']);
   }
 
   createForm(school?: School) {
@@ -127,6 +133,9 @@ export class SchoolInfoComponent extends FormComponent<School> implements OnInit
     );
   }
 
+  getImageData() {
+    return this.sessionData.getSchoolLogo();
+  }
 
 }
 
