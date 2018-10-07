@@ -25,6 +25,7 @@ import { Categorie } from '../../../message-model/shared/models/categorie.model'
 import { Professeur } from '../../../prof/shared/models/Professeur.model';
 import { FormComponent } from '../../../shared/components/form.component';
 import { Niveau } from '../../models/niveau.model';
+import {SessionDataService} from "../../../core/session/session-data.service";
 
 @Component({
   selector: 'app-eleve-list',
@@ -71,9 +72,15 @@ export class EleveListComponent extends FormComponent<Eleve> implements OnInit {
               private router: Router,
               private affectationCycleService: AffectationCycleService,
               private toastyService: ToastyService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private sessionDataService: SessionDataService) {
     super();
     this.restService = this.eleveService;
+    this.sessionDataService.sessionDataSubject.subscribe(
+      res => {
+        this.ngOnInit();
+      }
+    );
   }
 
   eleves: Eleve[];

@@ -17,7 +17,6 @@ import { ToastyService } from 'ng2-toasty';
 export class GestionClassesComponent extends FormComponent<AffectationCycle> implements OnInit {
   niveauAppellation: any;
   groupeAppelations: GroupeAppellation[];
-  currentCycle: any;
   error: string;
 
   affectationCycle: AffectationCycle;
@@ -30,7 +29,11 @@ export class GestionClassesComponent extends FormComponent<AffectationCycle> imp
 
     super();
     this.restService = affectationCycleService;
-    this.currentCycle = this.sessionDataService.getCurrentCycle();
+    this.sessionDataService.sessionDataSubject.subscribe(
+      res => {
+        this.ngOnInit();
+      }
+    );
   }
 
   ngOnInit() {
