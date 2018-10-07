@@ -159,7 +159,7 @@
                   <div class="select">
                     <select id="selects_Classe_upload" [(ngModel)]="selectedClasseForUpload"
                             [ngModelOptions]="{standalone: true}">
-                      <option *ngFor="let element of selectedAffectationNiveau.classes" [ngValue]="element">
+                      <option *ngFor="let element of selectedAffectationNiveauForUpload.classes" [ngValue]="element">
                         {{element.libelle}}
                       </option>
                     </select>
