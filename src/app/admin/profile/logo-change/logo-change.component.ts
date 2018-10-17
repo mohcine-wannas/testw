@@ -14,7 +14,6 @@ import {SessionDataService} from "../../../core/session/session-data.service";
 export class LogoChangeComponent {
 
   public uploader: FileUploader = new FileUploader({
-    url: 'http://localhost:9000/tawassol/api/ecoles/change-logo',
     removeAfterUpload: true,
     method: 'POST',
     isHTML5: true
