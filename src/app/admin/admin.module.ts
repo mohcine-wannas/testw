@@ -54,6 +54,7 @@ import {ProfileMainComponent} from './profile/profile-main/profile-main.componen
     SchoolInfoComponent,
     PasswordChangeComponent,
     GestionClassesComponent,
+    LogoChangeComponent,
     ReferentielLayoutComponent,
     EleveListComponent,
     NotificationListComponent,
